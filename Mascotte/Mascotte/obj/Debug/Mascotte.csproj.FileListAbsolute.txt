@@ -1,0 +1,2 @@
+c:\users\myzaki\documents\visual studio 2012\Projects\Mascotte\Mascotte\bin\Debug\Mascotte.exe.config
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\Mascotte.exe.config
