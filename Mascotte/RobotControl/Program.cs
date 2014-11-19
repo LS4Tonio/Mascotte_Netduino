@@ -7,13 +7,12 @@ using Microsoft.SPOT.Hardware;
 using SecretLabs.NETMF.Hardware;
 using SecretLabs.NETMF.Hardware.Netduino;
 
-namespace NetduinoApplication5
+namespace RobotControl
 {
     public class Program
     {
         static private Rover rover;
         static private InputPort buttonOnOff;
-        static private bool _haveToContinue;
 
         public static void Main()
         {
@@ -22,7 +21,6 @@ namespace NetduinoApplication5
             
 
            buttonOnOff = new InputPort(Pins.ONBOARD_BTN, false, Port.ResistorMode.Disabled);
-           _haveToContinue = false;
             //RangeSensorTest();
             // IT WORKS !!!!
            // blinkTest();
@@ -38,7 +36,8 @@ namespace NetduinoApplication5
            Thread.Sleep(1000);
            onBoard_led.Write(false);
            Thread.Sleep(1000);
-           roverTest();
+           
+            roverTest();
             
         }
         public static void blinkTest()
@@ -63,8 +62,7 @@ namespace NetduinoApplication5
         public static void roverTestEvoluted()
         {
             Rover rover = new Rover();
-            //rover.Turn();
-            rover.CalibrateMotors();
+            rover.Turn();
         }
         public static void RangeSensorTest()
         {

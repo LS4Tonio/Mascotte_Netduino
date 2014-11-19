@@ -7,7 +7,7 @@ using Microsoft.SPOT.Hardware;
 using SecretLabs.NETMF.Hardware;
 using SecretLabs.NETMF.Hardware.Netduino;
 
-namespace NetduinoApplication5
+namespace RobotControl
 {
     class RangeSensor
     {

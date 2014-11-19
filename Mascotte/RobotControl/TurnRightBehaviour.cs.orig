@@ -24,10 +24,22 @@ namespace RobotControl
         }
         public void Stop()
         {
+<<<<<<< HEAD
+            _leftMotor.SetSpeed(-50);
+            _rightMotor.SetSpeed(50);
+            _left2Motor.SetSpeed(50);
+            _right2Motor.SetSpeed(-50);
+            _left2Motor.Start();
+            _right2Motor.Start();
+            _leftMotor.Start();
+            _rightMotor.Start();
+            return false;
+=======
             for (int i = 0; i < 4; i++)
             {
                 _motors[i].Stop();
             }
+>>>>>>> origin/develop
         }
     }
 }

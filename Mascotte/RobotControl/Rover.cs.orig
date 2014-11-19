@@ -13,8 +13,14 @@ namespace RobotControl
         private Motor _rightBackwardMotor;
         private RangeSensor _leftSensor;
         private RangeSensor _rightSensor;
+<<<<<<< HEAD
         private RangeSensor _frontSensor;
         //private IBehaviour[] _behaviours;
+=======
+        private ForwardBehaviour behaviour1;
+        private TurnRightBehaviour behaviour2;
+        private int STEER_CORRECTION = 320;
+>>>>>>> origin/develop
 
         private const int STEER_CORRECTION = 320;
 
@@ -79,10 +85,21 @@ namespace RobotControl
             _rightForwardMotor = new Motor(PWMChannels.PWM_PIN_D9, Pins.GPIO_PIN_D2, STEER_CORRECTION);     //CH3
             _rightBackwardMotor = new Motor(PWMChannels.PWM_PIN_D10, Pins.GPIO_PIN_D4, STEER_CORRECTION);   //CH4
 
+<<<<<<< HEAD
             //// Define inputs
             _frontSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_0);
             _leftSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_1);
             _rightSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_2);
+=======
+
+            //// Define inputs
+            //_leftSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_1);
+            //_rightSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_2);
+
+            // Define the behaviours you want - the order is very important!
+        //    _behaviours[0] = new ReverseBehaviour(_leftMotor, _rightMotor, _leftSensor, _rightSensor);
+        //    _behaviours[1] = new ForwardBehaviour(_leftMotor, _rightMotor, _left2Motor, _right2Motor);
+>>>>>>> origin/develop
         }
 
         /// <summary>
@@ -110,6 +127,7 @@ namespace RobotControl
             //TO DO
             //behaviour1.Stop();
         }
+<<<<<<< HEAD
         /// <summary>
         /// Calibrate rover motor
         /// </summary>
@@ -117,5 +135,9 @@ namespace RobotControl
         {
             //TO DO
             //behaviour1.Calibrate();
+        }
+=======
+
+>>>>>>> origin/develop
     }
 }
