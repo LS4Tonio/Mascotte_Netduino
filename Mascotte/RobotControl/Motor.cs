@@ -17,7 +17,36 @@ namespace NetduinoApplication5
  
         private const uint PERIOD = 1000 * 50;
         private const int TOP_SPEED = 10;
+
+        /// <summary>
+        /// Gets the PWM motor
+        /// </summary>
+        public PWM Motor
+        {
+            get { return _motor; }
+        }
+        /// <summary>
+        /// Gets or sets the direction of the motor
+        /// </summary>
+        public OutputPort Direction
+        {
+            get { return _direction; }
+            set { _direction = value; }
+        }
+        /// <summary>
+        /// Gets the correction of the motor
+        /// </summary>
+        private int Correction
+        {
+            get { return _correction; }
+        }
  
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="pwm"></param>
+        /// <param name="direction"></param>
+        /// <param name="correction"></param>
         public Motor(Cpu.PWMChannel pwm, Cpu.Pin direction, int correction)
         {
             _motor = new PWM(pwm, 261, 0.50, false);
@@ -25,35 +54,41 @@ namespace NetduinoApplication5
             _correction = correction;
         }
  
-        // Sets the motor speed and direction on a scale of -1 to 1
+        /// <summary>
+        /// Sets the speed of the motor
+        /// </summary>
+        /// <param name="percent"></param>
         public void SetSpeed(double percent)
         {
             // Set direction
             if (percent < 0)
             {
-                _direction.Write(false);
+                this.Direction.Write(false);
                 percent = percent * -1;
             }
             else
-                _direction.Write(true);
- 
-            // If the percent is negative, make it positive
-            //if (percent < 0)
-            //    percent = percent * -1;
- 
+            {
+                this.Direction.Write(true);
+            }
+
             // Set pulse width modulation (PWM)
             double duration = percent * TOP_SPEED;
-            duration += _correction;
-            _motor.Frequency = duration;
+            duration += this.Correction;
+            this.Motor.Frequency = duration;
         }
-        public void GoForward()
+        /// <summary>
+        /// Start the motor
+        /// </summary>
+        public void Start()
         {
-            _motor.Start();
+            this.Motor.Start();
         }
-        public void StopAction()
+        /// <summary>
+        /// Stop the motor
+        /// </summary>
+        public void Stop()
         {
-            _motor.Stop();
+            this.Motor.Stop();
         }
-    
     }
 }

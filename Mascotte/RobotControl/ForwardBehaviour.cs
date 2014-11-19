@@ -25,10 +25,10 @@ namespace NetduinoApplication5
             _rightMotor.SetSpeed(80);
             _left2Motor.SetSpeed(-50);
             _right2Motor.SetSpeed(-80);
-            _left2Motor.GoForward();
-            _right2Motor.GoForward();
-            _leftMotor.GoForward();
-            _rightMotor.GoForward();
+            _left2Motor.Start();
+            _right2Motor.Start();
+            _leftMotor.Start();
+            _rightMotor.Start();
             return false;
         }
         public void Calibrate()
@@ -37,22 +37,22 @@ namespace NetduinoApplication5
             _rightMotor.SetSpeed(80);
             _left2Motor.SetSpeed(-50);
             _right2Motor.SetSpeed(-80);
-            _left2Motor.GoForward();
-            _right2Motor.GoForward();
-            _leftMotor.GoForward();
-            _rightMotor.GoForward();
+            _left2Motor.Start();
+            _right2Motor.Start();
+            _leftMotor.Start();
+            _rightMotor.Start();
             Thread.Sleep(2000);
-            _left2Motor.StopAction();
-            _right2Motor.StopAction();
-            _leftMotor.StopAction();
-            _rightMotor.StopAction();
+            _left2Motor.Stop();
+            _right2Motor.Stop();
+            _leftMotor.Stop();
+            _rightMotor.Stop();
         }
         public void Stop()
         {
-            _left2Motor.StopAction();
-            _right2Motor.StopAction();
-            _leftMotor.StopAction();
-            _rightMotor.StopAction();
+            _left2Motor.Stop();
+            _right2Motor.Stop();
+            _leftMotor.Stop();
+            _rightMotor.Stop();
         }
 
     }
