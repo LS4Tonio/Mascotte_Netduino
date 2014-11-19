@@ -117,5 +117,6 @@ namespace RobotControl
         {
             //TO DO
             //behaviour1.Calibrate();
+        }
     }
 }

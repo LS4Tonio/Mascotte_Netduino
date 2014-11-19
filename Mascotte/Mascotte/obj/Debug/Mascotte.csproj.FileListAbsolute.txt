@@ -12,3 +12,16 @@ D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.Properties.Reso
 D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.csproj.GenerateResource.Cache
 D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.exe
 D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.pdb
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\Mascotte.exe.config
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\Mascotte.exe
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\Mascotte.pdb
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.csprojResolveAssemblyReference.cache
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\MainWindow.baml
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\MainWindow.g.cs
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\App.g.cs
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte_MarkupCompile.cache
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.g.resources
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.Properties.Resources.resources
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.csproj.GenerateResource.Cache
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.exe
+D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.pdb

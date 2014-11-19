@@ -21,7 +21,7 @@ namespace RobotControl
         /// <summary>
         /// Gets the PWM motor
         /// </summary>
-        public PWM Motor
+        public PWM PWMMotor
         {
             get { return _motor; }
         }
@@ -74,21 +74,21 @@ namespace RobotControl
             // Set pulse width modulation (PWM)
             double duration = percent * TOP_SPEED;
             duration += this.Correction;
-            this.Motor.Frequency = duration;
+            this.PWMMotor.Frequency = duration;
         }
         /// <summary>
         /// Start the motor
         /// </summary>
         public void Start()
         {
-            this.Motor.Start();
+            this.PWMMotor.Start();
         }
         /// <summary>
         /// Stop the motor
         /// </summary>
         public void Stop()
         {
-            this.Motor.Stop();
+            this.PWMMotor.Stop();
         }
     }
 }
