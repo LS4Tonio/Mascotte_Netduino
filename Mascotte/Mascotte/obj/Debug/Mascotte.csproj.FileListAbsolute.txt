@@ -1,2 +1,14 @@
 c:\users\myzaki\documents\visual studio 2012\Projects\Mascotte\Mascotte\bin\Debug\Mascotte.exe.config
 D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\Mascotte.exe.config
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\Mascotte.exe
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\Mascotte.pdb
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.csprojResolveAssemblyReference.cache
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\MainWindow.baml
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\MainWindow.g.cs
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\App.g.cs
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte_MarkupCompile.cache
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.g.resources
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.Properties.Resources.resources
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.csproj.GenerateResource.Cache
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.exe
+D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.pdb
