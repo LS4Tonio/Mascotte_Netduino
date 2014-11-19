@@ -3,7 +3,7 @@ using Microsoft.SPOT;
 using SecretLabs.NETMF.Hardware.Netduino;
 using Microsoft.SPOT.Hardware;
 
-namespace NetduinoApplication5
+namespace RobotControl
 {
     class Rover
     {
@@ -15,7 +15,6 @@ namespace NetduinoApplication5
         private RangeSensor _rightSensor;
         private ForwardBehaviour behaviour1;
         private TurnRightBehaviour behaviour2;
-        private IBehaviour[] _behaviours;
         private int STEER_CORRECTION = 320;
 
         public Rover()
@@ -26,14 +25,12 @@ namespace NetduinoApplication5
             _left2Motor = new Motor(PWMChannels.PWM_PIN_D9, Pins.GPIO_PIN_D2, STEER_CORRECTION);
             _right2Motor = new Motor(PWMChannels.PWM_PIN_D10, Pins.GPIO_PIN_D4, STEER_CORRECTION);
 
-            behaviour1 = new ForwardBehaviour(_leftMotor, _rightMotor, _left2Motor, _right2Motor);
-            behaviour2 = new TurnRightBehaviour(_leftMotor, _rightMotor, _left2Motor, _right2Motor);
+
             //// Define inputs
             //_leftSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_1);
             //_rightSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_2);
 
             // Define the behaviours you want - the order is very important!
-            _behaviours = new IBehaviour[2];
         //    _behaviours[0] = new ReverseBehaviour(_leftMotor, _rightMotor, _leftSensor, _rightSensor);
         //    _behaviours[1] = new ForwardBehaviour(_leftMotor, _rightMotor, _left2Motor, _right2Motor);
         }
@@ -59,9 +56,6 @@ namespace NetduinoApplication5
         {
             behaviour1.Stop();
         }
-        public void CalibrateMotors()
-        {
-            behaviour1.Calibrate();
-        }
+
     }
 }

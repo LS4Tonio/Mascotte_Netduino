@@ -7,7 +7,7 @@ using Microsoft.SPOT.Hardware;
 using SecretLabs.NETMF.Hardware;
 using SecretLabs.NETMF.Hardware.Netduino;
 
-namespace NetduinoApplication5
+namespace RobotControl
 {
     public class Motor
     {
@@ -46,11 +46,11 @@ namespace NetduinoApplication5
             duration += _correction;
             _motor.Frequency = duration;
         }
-        public void GoForward()
+        public void Start()
         {
             _motor.Start();
         }
-        public void StopAction()
+        public void Stop()
         {
             _motor.Stop();
         }

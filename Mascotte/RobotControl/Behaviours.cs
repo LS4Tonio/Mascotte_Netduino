@@ -3,17 +3,16 @@ using Microsoft.SPOT;
 
 namespace RobotControl
 {
-    public class TurnRightBehaviour : Behaviours
+    public abstract class Behaviours
     {
         Motor[] _motors;
-        public TurnRightBehaviour(Motor[] motors)
-            :base(motors)
+        public Behaviours(Motor[] motors)
         {
             _motors = motors;
-            motors[0].SetSpeed(25);
-            motors[1].SetSpeed(-25);
-            motors[2].SetSpeed(75);
-            motors[3].SetSpeed(-75);
+            _motors[0].SetSpeed(50);
+            _motors[1].SetSpeed(-50);
+            _motors[2].SetSpeed(50);
+            _motors[3].SetSpeed(-50);
         }
         public void Execute()
         {
