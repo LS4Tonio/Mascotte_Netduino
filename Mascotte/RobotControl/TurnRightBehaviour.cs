@@ -5,29 +5,14 @@ namespace RobotControl
 {
     public class TurnRightBehaviour : Behaviours
     {
-        Motor[] _motors;
         public TurnRightBehaviour(Motor[] motors)
             :base(motors)
         {
-            _motors = motors;
-            motors[0].SetSpeed(25);
-            motors[1].SetSpeed(-25);
-            motors[2].SetSpeed(75);
-            motors[3].SetSpeed(-75);
-        }
-        public void Execute()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                _motors[i].Start();
-            }
-        }
-        public void Stop()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                _motors[i].Stop();
-            }
+            
+            this.Motors[0].SetSpeed(25);
+            this.Motors[1].SetSpeed(-25);
+            this.Motors[2].SetSpeed(100);
+            this.Motors[3].SetSpeed(-100);
         }
     }
 }

@@ -11,13 +11,45 @@ namespace RobotControl
         private Motor _leftBackwardMotor;
         private Motor _rightForwardMotor;
         private Motor _rightBackwardMotor;
+        private Motor[] _motors;
         private RangeSensor _leftSensor;
         private RangeSensor _rightSensor;
         private RangeSensor _frontSensor;
-        //private IBehaviour[] _behaviours;
-
+        private ForwardBehaviour _forwardBehaviour;
+        private TurnRightBehaviour _rightBehaviour;
+        private int[] position;
+        private double _angleOfRobot;
         private const int STEER_CORRECTION = 320;
 
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        public Rover()
+        {
+            // Define outputs
+            _leftForwardMotor = new Motor(PWMChannels.PWM_PIN_D5, Pins.GPIO_PIN_D0, STEER_CORRECTION);      //CH1
+            _leftBackwardMotor = new Motor(PWMChannels.PWM_PIN_D6, Pins.GPIO_PIN_D1, STEER_CORRECTION);     //CH2
+            _rightForwardMotor = new Motor(PWMChannels.PWM_PIN_D9, Pins.GPIO_PIN_D2, STEER_CORRECTION);     //CH3
+            _rightBackwardMotor = new Motor(PWMChannels.PWM_PIN_D10, Pins.GPIO_PIN_D4, STEER_CORRECTION);   //CH4
+            _motors = new Motor[4];
+            _motors[0] = _leftForwardMotor;
+            _motors[1] = _leftBackwardMotor;
+            _motors[2] = _rightForwardMotor;
+            _motors[3] = _rightBackwardMotor;
+            // Define inputs
+            _frontSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_0, "Front");
+            _leftSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_1, "Left");
+            _rightSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_2, "Right");
+
+            // Define Behaviours
+            _forwardBehaviour = new ForwardBehaviour(_motors);
+            _rightBehaviour = new TurnRightBehaviour(_motors);
+
+            //Position in map
+            position = new int[2];
+            
+
+        }
         /// <summary>
         /// Gets front left motor
         /// </summary>
@@ -68,39 +100,21 @@ namespace RobotControl
             get { return FrontSensor; }
         }
 
-        /// <summary>
-        /// Public constructor
-        /// </summary>
-        public Rover()
-        {
-            // Define outputs
-            _leftForwardMotor = new Motor(PWMChannels.PWM_PIN_D5, Pins.GPIO_PIN_D0, STEER_CORRECTION);      //CH1
-            _leftBackwardMotor = new Motor(PWMChannels.PWM_PIN_D6, Pins.GPIO_PIN_D1, STEER_CORRECTION);     //CH2
-            _rightForwardMotor = new Motor(PWMChannels.PWM_PIN_D9, Pins.GPIO_PIN_D2, STEER_CORRECTION);     //CH3
-            _rightBackwardMotor = new Motor(PWMChannels.PWM_PIN_D10, Pins.GPIO_PIN_D4, STEER_CORRECTION);   //CH4
 
-            //// Define inputs
-            _frontSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_0);
-            _leftSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_1);
-            _rightSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_2);
-        }
 
         /// <summary>
         /// Makes rover movement
         /// </summary>
         public void Move()
         {
-            //TO DO
-            //behaviour1.Execute();
+            
         }
         /// <summary>
         /// Makes rover rotation
         /// </summary>
         public void Turn()
         {
-            //TO DO
-            //behaviour1.Stop();
-            //behaviour2.Execute();
+            _rightBehaviour.Execute();
         }
         /// <summary>
         /// Makes rover stop
@@ -115,8 +129,13 @@ namespace RobotControl
         /// </summary>
         public void CalibrateMotors()
         {
-            //TO DO
-            //behaviour1.Calibrate();
+            _forwardBehaviour.AdvanceForFiveSec();
         }
+
+        public int[] GetActualPosition
+        {
+            get { return position; }
+        }
+        public double AngleOfRobot { get; set; }
     }
 }

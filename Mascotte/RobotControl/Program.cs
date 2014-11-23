@@ -28,14 +28,7 @@ namespace RobotControl
            Thread.Sleep(1000);
            onBoard_led.Write(false);
            Thread.Sleep(1000); 
-            onBoard_led.Write(true);
-           Thread.Sleep(1000);
-           onBoard_led.Write(false);
-           Thread.Sleep(1000); 
-            onBoard_led.Write(true);
-           Thread.Sleep(1000);
-           onBoard_led.Write(false);
-           Thread.Sleep(1000);
+           
            
             roverTest();
             
@@ -54,10 +47,8 @@ namespace RobotControl
         }
         public static void roverTest()
         {
-           
             rover = new Rover();
-                rover.Move();
-                Thread.Sleep(100);
+            rover.CalibrateMotors();
         }
         public static void roverTestEvoluted()
         {
@@ -67,7 +58,7 @@ namespace RobotControl
         public static void RangeSensorTest()
         {
             OutputPort led = new OutputPort(Pins.ONBOARD_LED, false);
-            RangeSensor rs = new RangeSensor(AnalogChannels.ANALOG_PIN_A0);
+            RangeSensor rs = new RangeSensor(AnalogChannels.ANALOG_PIN_A0, "Front");
             while (true)
             {
                 if (rs.Read() == 100)

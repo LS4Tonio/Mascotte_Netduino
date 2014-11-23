@@ -13,7 +13,7 @@ namespace RobotControl
     {
         private AnalogInput _analogInput;
 
-        public RangeSensor(Cpu.AnalogChannel channel)
+        public RangeSensor(Cpu.AnalogChannel channel, string name)
         {
             _analogInput = new AnalogInput(channel);
         }
@@ -32,5 +32,11 @@ namespace RobotControl
             else
                 return 100; // default
         }
+        public string Name
+        {
+            get;
+            set;
+        }
+
     }
 }

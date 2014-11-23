@@ -6,20 +6,24 @@ namespace RobotControl
     public abstract class Behaviours
     {
         Motor[] _motors;
+        private const double UnityPerTenPercent = 0.65;
         public Behaviours(Motor[] motors)
         {
             _motors = motors;
-            _motors[0].SetSpeed(50);
-            _motors[1].SetSpeed(-50);
-            _motors[2].SetSpeed(50);
-            _motors[3].SetSpeed(-50);
+
+        }
+        public Motor[] Motors
+        {
+            get{ return _motors; }
         }
         public void Execute()
         {
             for (int i = 0; i < 4; i++)
             {
+                _motors[i].Stop();
                 _motors[i].Start();
             }
+
         }
         public void Stop()
         {
