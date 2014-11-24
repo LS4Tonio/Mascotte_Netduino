@@ -70,8 +70,8 @@ namespace RobotControl
 
             // Set pulse width modulation (PWM)
             //this.PWMMotor.Frequency = percent * TOP_SPEED + this.Correction;
-            //this.PWMMotor.Frequency = percent * TOP_SPEED;
-            this.PWMMotor.Frequency = percent;
+            this.PWMMotor.Frequency = percent * TOP_SPEED;
+            //this.PWMMotor.Frequency = percent;
             //this.PWMMotor.Frequency = 5320;
         }
         /// <summary>

@@ -10,7 +10,7 @@ namespace RobotControl
         public ForwardBehaviour(Motor[] motors)
             : base(motors)
         {
-            double speed = 5000;
+            double speed = 50;
 
             for (int i = 0; i < 4; i++)
             {
