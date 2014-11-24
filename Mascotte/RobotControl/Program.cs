@@ -27,8 +27,8 @@ namespace RobotControl
             onBoard_led.Write(false);
             Thread.Sleep(1000);
 
-            //roverTest();
-            RangeSensorTest();
+            roverTest();
+            //RangeSensorTest();
         }
 
         public static void blinkTest()

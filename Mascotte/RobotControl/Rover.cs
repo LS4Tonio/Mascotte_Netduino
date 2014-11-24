@@ -18,7 +18,7 @@ namespace RobotControl
         private ForwardBehaviour _forwardBehaviour;
         private TurnRightBehaviour _rightBehaviour;
         private int[] position;
-        private double _angleOfRobot;
+        //private double _angleOfRobot;
         private const int STEER_CORRECTION = 320;
 
         /// <summary>

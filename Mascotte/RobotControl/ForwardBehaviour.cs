@@ -10,7 +10,7 @@ namespace RobotControl
         public ForwardBehaviour(Motor[] motors)
             : base(motors)
         {
-            double speed = 50;
+            double speed = 5000;
 
             for (int i = 0; i < 4; i++)
             {
@@ -30,6 +30,7 @@ namespace RobotControl
             this.Execute();
             Thread.Sleep(5000);
             this.Stop();
+           
         }
     }
 }

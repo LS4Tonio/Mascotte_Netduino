@@ -21,17 +21,16 @@ namespace RobotControl
         // Returns approximate distance in cm
         public int Read()
         {
-            //double sensorReading = _analogInput.Read();
+            double sensorReading = _analogInput.Read();
 
-            // Very crude conversion to cm
-            //double distanceInCm = (1000 - sensorReading) * 0.1;
+             //Very crude conversion to cm
+            double distanceInCm = (1000 - sensorReading) * 0.1;
 
-            // Ensure answer is sensible
-            //if (distanceInCm > 0 && distanceInCm < 100)
-            //    return (int)distanceInCm;
-            //else
-            //    return 100; // default
-            return (int)_analogInput.Read();
+             //Ensure answer is sensible
+            if (distanceInCm > 0 && distanceInCm < 100)
+                return (int)distanceInCm;
+            else
+                return 100; // default
         }
        
 
