@@ -27,7 +27,8 @@ namespace RobotControl
             onBoard_led.Write(false);
             Thread.Sleep(1000);
 
-            roverTest();
+            //roverTest();
+            RGBTest();
         }
 
         public static void blinkTest()
@@ -42,7 +43,24 @@ namespace RobotControl
                 Thread.Sleep(1000);
             }
         }
+        public static void RGBTest()
+        {
+            AnalogInput red = new AnalogInput(Cpu.AnalogChannel.ANALOG_0);
+            AnalogInput green = new AnalogInput(Cpu.AnalogChannel.ANALOG_1);
+            AnalogInput blue = new AnalogInput(Cpu.AnalogChannel.ANALOG_2);
+            OutputPort ledOnSensor = new OutputPort(Pins.GPIO_PIN_D6, false);
+            ledOnSensor.Write(true);
+            while (true)
+            {
+                Debug.Print("R :" + red.Read().ToString());
+                Debug.Print("G :" + green.Read().ToString());
+                Debug.Print("B :" + blue.Read().ToString());
+                Thread.Sleep(1000);
 
+            }
+
+
+        }
         public static void roverTest()
         {
             rover = new Rover();

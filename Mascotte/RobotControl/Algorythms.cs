@@ -31,7 +31,7 @@ namespace NetduinoApplication5
 
         public bool IsObjectHere(RangeSensor captor)
         {
-            if (captor.Read().Equals(null))
+            if (captor.Read() >= 100)
                 return false;
             else
                 return true;
