@@ -16,23 +16,20 @@ namespace RobotControl
 
         public static void Main()
         {
-
             OutputPort onBoard_led = new OutputPort(Pins.ONBOARD_LED, false);
-            
 
-           buttonOnOff = new InputPort(Pins.ONBOARD_BTN, false, Port.ResistorMode.Disabled);
+            buttonOnOff = new InputPort(Pins.ONBOARD_BTN, false, Port.ResistorMode.Disabled);
             //RangeSensorTest();
             // IT WORKS !!!!
-           // blinkTest();
-           onBoard_led.Write(true);
-           Thread.Sleep(1000);
-           onBoard_led.Write(false);
-           Thread.Sleep(1000); 
-           
-           
+            // blinkTest();
+            onBoard_led.Write(true);
+            Thread.Sleep(1000);
+            onBoard_led.Write(false);
+            Thread.Sleep(1000);
+
             roverTest();
-            
         }
+
         public static void blinkTest()
         {
             OutputPort onBoard_led = new OutputPort(Pins.ONBOARD_LED, false);
@@ -45,16 +42,19 @@ namespace RobotControl
                 Thread.Sleep(1000);
             }
         }
+
         public static void roverTest()
         {
             rover = new Rover();
             rover.CalibrateMotors();
         }
+
         public static void roverTestEvoluted()
         {
             Rover rover = new Rover();
             rover.Turn();
         }
+
         public static void RangeSensorTest()
         {
             OutputPort led = new OutputPort(Pins.ONBOARD_LED, false);
@@ -67,6 +67,5 @@ namespace RobotControl
                     led.Write(false);
             }
         }
-
     }
 }

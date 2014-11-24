@@ -36,6 +36,7 @@ namespace RobotControl
             _motors[1] = _leftBackwardMotor;
             _motors[2] = _rightForwardMotor;
             _motors[3] = _rightBackwardMotor;
+
             // Define inputs
             _frontSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_0, "Front");
             _leftSensor = new RangeSensor(Cpu.AnalogChannel.ANALOG_1, "Left");
@@ -45,11 +46,10 @@ namespace RobotControl
             _forwardBehaviour = new ForwardBehaviour(_motors);
             _rightBehaviour = new TurnRightBehaviour(_motors);
 
-            //Position in map
+            // Position in map
             position = new int[2];
-            
-
         }
+
         /// <summary>
         /// Gets front left motor
         /// </summary>
@@ -100,7 +100,15 @@ namespace RobotControl
             get { return FrontSensor; }
         }
 
-
+        public int[] GetActualPosition
+        {
+            get { return position; }
+        }
+        public double AngleOfRobot
+        { 
+            get; 
+            set; 
+        }
 
         /// <summary>
         /// Makes rover movement
@@ -131,11 +139,5 @@ namespace RobotControl
         {
             _forwardBehaviour.AdvanceForFiveSec();
         }
-
-        public int[] GetActualPosition
-        {
-            get { return position; }
-        }
-        public double AngleOfRobot { get; set; }
     }
 }
