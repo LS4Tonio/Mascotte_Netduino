@@ -12,6 +12,6 @@ namespace Mascotte
         {
             
         }
-        public abstract void Synchronisation() {}
+        //public abstract void Synchronisation() {}
     }
 }

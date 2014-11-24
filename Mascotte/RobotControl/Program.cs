@@ -28,7 +28,7 @@ namespace RobotControl
             Thread.Sleep(1000);
 
             //roverTest();
-            RGBTest();
+            RangeSensorTest();
         }
 
         public static void blinkTest()
@@ -61,6 +61,44 @@ namespace RobotControl
 
 
         }
+        public static void RangeSensorTest()
+        {
+            RangeSensor rs = new RangeSensor(Cpu.AnalogChannel.ANALOG_0, "Test");
+            OutputPort redLed = new OutputPort(Pins.GPIO_PIN_D0, false);
+            OutputPort yellowLed = new OutputPort(Pins.GPIO_PIN_D1, false);
+            OutputPort greenLed = new OutputPort(Pins.GPIO_PIN_D2, false);
+
+            while (true)
+            {
+                Thread.Sleep(10);
+                double distance = rs.Read();
+
+                if (distance > 0.8)
+                {
+                    yellowLed.Write(false);
+                    redLed.Write(false);
+                    greenLed.Write(true);
+                }
+                else if (distance > 0.4)
+                {
+                    yellowLed.Write(true);
+                    redLed.Write(false);
+                    greenLed.Write(false);
+                }
+                else if (distance > 0.2)
+                {
+                    yellowLed.Write(false);
+                    redLed.Write(true);
+                    greenLed.Write(false);
+                }
+                else
+                {
+                    yellowLed.Write(false);
+                    redLed.Write(false);
+                    greenLed.Write(false);
+                }
+            }
+        }
         public static void roverTest()
         {
             rover = new Rover();
@@ -73,17 +111,5 @@ namespace RobotControl
             rover.Turn();
         }
 
-        public static void RangeSensorTest()
-        {
-            OutputPort led = new OutputPort(Pins.ONBOARD_LED, false);
-            RangeSensor rs = new RangeSensor(AnalogChannels.ANALOG_PIN_A0, "Front");
-            while (true)
-            {
-                if (rs.Read() == 100)
-                    led.Write(true);
-                else
-                    led.Write(false);
-            }
-        }
     }
 }
