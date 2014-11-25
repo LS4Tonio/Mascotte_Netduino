@@ -57,20 +57,20 @@ namespace RobotControl
         /// <summary>
         /// Sets the speed of the motor
         /// </summary>
-        /// <param name="percent"></param>
-        public void SetSpeed(double percent)
+        /// <param name="frequency"></param>
+        public void SetSpeed(double frequency)
         {
             // Set direction
             this.Direction.Write(true);
-            if (percent < 0)
+            if (frequency < 0)
             {
                 this.Direction.Write(false);
-                percent = percent * -1;
+                frequency = frequency * -1;
             }
 
             // Set pulse width modulation (PWM)
             //this.PWMMotor.Frequency = percent * TOP_SPEED + this.Correction;
-            this.PWMMotor.Frequency = percent;
+            this.PWMMotor.Frequency = frequency;
             //this.PWMMotor.Frequency = percent;
             //this.PWMMotor.Frequency = 5320;
         }
