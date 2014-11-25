@@ -5,6 +5,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mascotte", "Mascotte\Mascot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotControl", "RobotControl\RobotControl.csproj", "{999C2573-590A-4B37-BE89-4E1F058B5BED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{784BC5B6-3E3B-431B-9C37-70E9C342F20D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{17D413DC-3C04-446E-937F-20EACAB3AE12}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +28,10 @@ Global
 		{999C2573-590A-4B37-BE89-4E1F058B5BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{999C2573-590A-4B37-BE89-4E1F058B5BED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{999C2573-590A-4B37-BE89-4E1F058B5BED}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{784BC5B6-3E3B-431B-9C37-70E9C342F20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{784BC5B6-3E3B-431B-9C37-70E9C342F20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{784BC5B6-3E3B-431B-9C37-70E9C342F20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{784BC5B6-3E3B-431B-9C37-70E9C342F20D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
