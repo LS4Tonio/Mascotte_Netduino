@@ -54,3 +54,7 @@ D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\be
 D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\be\RobotControl.pdbx
 D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\le\RobotControl.pe
 D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\le\RobotControl.pdbx
+D:\INTECH\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\be\RobotControl.pe
+D:\INTECH\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\be\RobotControl.pdbx
+D:\INTECH\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\le\RobotControl.pe
+D:\INTECH\Mascotte_Netduino\Mascotte\RobotControl\obj\Debug\le\RobotControl.pdbx

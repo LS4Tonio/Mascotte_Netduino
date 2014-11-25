@@ -14,11 +14,20 @@ namespace Mascotte
         {
             _datas = datas;
         }
-        public byte[][] DatasInMiniMap { get; set; }
+        /// <summary>
+        /// Grid content
+        /// </summary>
+        public byte[][] DatasInMiniMap {
+            get { return _datas; }
+            set { value =_datas ; } 
+        }
         public int MapPosX { get; set; }
         public int MapPosY { get; set; }
         public byte MapConfidenceIndice { get; set; }
 
-        
+        public void AddAPoint()
+        {
+            
+        }
     }
 }
