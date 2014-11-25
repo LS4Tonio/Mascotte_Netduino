@@ -15,8 +15,8 @@ namespace RobotControl
         private OutputPort _direction;
         private int _correction;
  
-        private const uint PERIOD = 1000 * 50;
-        private const int TOP_SPEED = 10;
+        // private const uint PERIOD = 1000 * 50; // NOT USED
+        private const int TOP_SPEED = 100;
 
         /// <summary>
         /// Gets the PWM motor
@@ -61,20 +61,18 @@ namespace RobotControl
         public void SetSpeed(double percent)
         {
             // Set direction
+            this.Direction.Write(true);
             if (percent < 0)
             {
                 this.Direction.Write(false);
                 percent = percent * -1;
             }
-            else
-            {
-                this.Direction.Write(true);
-            }
 
             // Set pulse width modulation (PWM)
-            double duration = percent * TOP_SPEED;
-            duration += this.Correction;
-            this.PWMMotor.Frequency = duration;
+            //this.PWMMotor.Frequency = percent * TOP_SPEED + this.Correction;
+            this.PWMMotor.Frequency = percent * TOP_SPEED;
+            //this.PWMMotor.Frequency = percent;
+            //this.PWMMotor.Frequency = 5320;
         }
         /// <summary>
         /// Start the motor

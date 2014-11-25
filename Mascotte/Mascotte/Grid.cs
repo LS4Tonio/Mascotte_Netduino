@@ -10,7 +10,8 @@ namespace Mascotte
     {
         public Grid(byte[][] grid)
         {
-
+            
         }
+        public abstract void Synchronisation() {}
     }
 }

@@ -10,20 +10,26 @@ namespace RobotControl
         public ForwardBehaviour(Motor[] motors)
             : base(motors)
         {
-            this.Motors[0].SetSpeed(50);
-            this.Motors[1].SetSpeed(-50);
-            this.Motors[2].SetSpeed(50);
-            this.Motors[3].SetSpeed(-50);
+            double speed = 50;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    this.Motors[i].SetSpeed(speed);
+                }
+                else
+                {
+                    this.Motors[i].SetSpeed(-speed);
+                }
+            }
         }
+
         public void AdvanceForFiveSec()
         {
             this.Execute();
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
             this.Stop();
         }
-        
-        
-        
-
     }
 }

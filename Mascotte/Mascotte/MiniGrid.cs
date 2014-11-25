@@ -20,9 +20,6 @@ namespace Mascotte
         public byte MapConfidenceIndice { get; set; }
         
 
-        public void Synchronize(int[][] positions)
-        {
-
-        }
+        
     }
 }
