@@ -18,8 +18,11 @@ namespace Mascotte
         public int MapPosX { get; set; }
         public int MapPosY { get; set; }
         public byte MapConfidenceIndice { get; set; }
-        
 
+
+        override public void Synchronisation() {
+            throw new NotImplementedException();
         
+        }
     }
 }
