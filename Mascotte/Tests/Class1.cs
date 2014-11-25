@@ -16,8 +16,6 @@ namespace Tests
         public void test1()
         {
             //Assert.That( engine.LiveInfo.FindPlugin( "Yodii.Host.Tests.ChoucroutePlugin" ).Capability.CanStop == true );
-            
-
         }
     }
 }
