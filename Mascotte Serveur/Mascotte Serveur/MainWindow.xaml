@@ -1,0 +1,8 @@
+﻿<Window x:Class="Mascotte_Serveur.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Serveur Mascotte" Height="350" Width="525" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Background="White" Cursor="Arrow" FontFamily="Calibri" UseLayoutRounding="False">
+    <Grid>
+        <TextBox x:Name="ipandmacaddresses" Height="300" Margin="10" TextWrapping="Wrap" Text="Liste des adresses IP et MAC présentes sur le réseau :" Width="497" IsReadOnlyCaretVisible="True" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True"/>
+    </Grid>
+</Window>
