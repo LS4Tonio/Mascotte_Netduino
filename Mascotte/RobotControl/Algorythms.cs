@@ -55,12 +55,12 @@ namespace NetduinoApplication5
                 tmp = objectPos;
                 rover.Move(); // TODO : Add distance 
                 hypotenuse = captor.Read();
-                int adjacent = (int)(rover.AngleOfRobot * System.Math.Acos(hypotenuse));
-                int opposite = (int)(rover.AngleOfRobot * System.Math.Asin(hypotenuse));
+                int distY = (int)(rover.AngleOfRobot * System.Math.Acos(hypotenuse));
+                int distX = (int)(rover.AngleOfRobot * System.Math.Asin(hypotenuse));
                 i++;
                 objectPos = new int[i][];
                 tmp.CopyTo(objectPos, 0);
-                objectPos[i - 1] = new int[2] { adjacent, opposite };
+                objectPos[i - 1] = new int[2] { distY, distX };
             }
             return objectPos;
         }

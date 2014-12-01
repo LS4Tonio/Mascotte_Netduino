@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Mascotte
 {
-    public class MiniGrid : Grid
+    public class MiniGrid
     {
         byte[][] _datas;
         byte[][] _parentGrid;
+        private const int TAB_SIZE = 8;
+
         public MiniGrid(byte[][] datas, byte[][] parentGrid)
-            : base(datas, parentGrid)
+            
         {
             _datas = datas;
             _parentGrid = parentGrid;
@@ -26,15 +28,12 @@ namespace Mascotte
         public int MapPosX { get; set; }
         public int MapPosY { get; set; }
         public byte MapConfidenceIndice { get; set; }
-
-        public void AddAPoint()
-        {
-            
-        }
-        public override void Synchronize()
-        {
-            
-        }
+        
+        /// <summary>
+        /// Get direction and move the local gridMap for the robot.
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <returns></returns>
         public byte[] MoveGrid(int direction)
         {
             byte[] tmp = new byte[_datas[0].Length];
@@ -46,7 +45,10 @@ namespace Mascotte
                     {
                         _datas[i] = _datas[i - 1];
                     }
-                    _datas[0] = _parentGrid[MapPosY];
+                    for (int i = 0; i < _datas[0].Length; i++)
+                    {
+                        _datas[0][i] = _parentGrid[MapPosY][MapPosX + i];
+                    }
                     return _datas[0];
                 case 2 :
                     MapPosY++;
@@ -54,7 +56,10 @@ namespace Mascotte
                     {
                         _datas[i] = _datas[i + 1];
                     }
-                    _datas[_datas.Length] = _parentGrid[MapPosY + _datas.Length];
+                    for (int i = 0; i < _datas[0].Length; i++)
+                    {
+                        _datas[_datas.Length][i] = _parentGrid[MapPosY + _datas.Length][i + MapPosX];
+                    }
                     return _datas[_datas.Length];
                 case 3 : 
                      MapPosX--;

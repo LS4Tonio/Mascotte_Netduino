@@ -25,7 +25,3 @@ D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascot
 D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.csproj.GenerateResource.Cache
 D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.exe
 D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\obj\Debug\Mascotte.pdb
-D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\RobotControl.exe
-D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\SecretLabs.NETMF.Hardware.Netduino.dll
-D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\RobotControl.pdb
-D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\bin\Debug\SecretLabs.NETMF.Hardware.Netduino.pdb
