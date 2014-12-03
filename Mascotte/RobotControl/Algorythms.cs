@@ -15,7 +15,7 @@ namespace NetduinoApplication5
 
             dist1 = captor.Read();
             Rover rover = new Rover();
-            rover.Move();// TODO : Add distance 
+            rover.Move(DELTA);// TODO : Add distance 
             dist2 = captor.Read();
             _angleOfRobot = System.Math.Atan((dist1 - dist2) / 15);
 
@@ -53,7 +53,7 @@ namespace NetduinoApplication5
             while (IsObjectHere(captor))
             {
                 tmp = objectPos;
-                rover.Move(); // TODO : Add distance 
+                rover.Move(DELTA); // TODO : Add distance 
                 hypotenuse = captor.Read();
                 int distY = (int)(rover.AngleOfRobot * System.Math.Acos(hypotenuse));
                 int distX = (int)(rover.AngleOfRobot * System.Math.Asin(hypotenuse));

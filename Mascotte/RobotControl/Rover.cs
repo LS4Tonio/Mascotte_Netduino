@@ -113,9 +113,9 @@ namespace RobotControl
         /// <summary>
         /// Makes rover movement
         /// </summary>
-        public void Move()
+        public void Move(int distance)
         {
-            
+            _forwardBehaviour.MoveStraight(distance);
         }
         /// <summary>
         /// Makes rover rotation

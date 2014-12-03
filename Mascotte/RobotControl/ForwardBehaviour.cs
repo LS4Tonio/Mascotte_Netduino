@@ -32,5 +32,9 @@ namespace RobotControl
             this.Stop();
            
         }
+        public void MoveStraight(int distance)
+        {
+            this.Execute();
+        }
     }
 }
