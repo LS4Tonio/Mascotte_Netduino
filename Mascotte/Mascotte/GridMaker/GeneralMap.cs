@@ -10,6 +10,7 @@ namespace Mascotte.GridMaker
     {
         MiniGrid minimap;
         protected const int GENERAL_MAP_SIZE = 200;
+        
         public GeneralMap()
         {
             byte[][] datas = new byte[8][];
@@ -20,6 +21,9 @@ namespace Mascotte.GridMaker
             minimap = new MiniGrid(datas, this.GridContent);
         }
 
+        /// <summary>
+        /// Gets or set map content
+        /// </summary>
         public byte[][] GridContent { get; set; }
 
         /// <summary>
@@ -51,6 +55,7 @@ namespace Mascotte.GridMaker
         /// <param name="p"></param>
         private void ThrowMessage(string p)
         {
+            //TO DO
         }
         /// <summary>
         /// Show a validation Form in interface 
@@ -58,6 +63,7 @@ namespace Mascotte.GridMaker
         /// <param name="posX"></param>
         /// <param name="posY"></param>
         private void ValidateObject(int posX, int posY) { } // Not sure this func will
+        
         private enum CaseState
         {
             Moving = 0 << 7,
