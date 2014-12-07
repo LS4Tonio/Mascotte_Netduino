@@ -10,10 +10,11 @@ namespace Mascotte.GridMaker
     {
         private enum CaseState
         {
-            Moving = 0 << 7,
-            Stable = 1 << 7,
-            Validated = 1 << 8,
-            OnValidating = 0 << 8
+            Moving = 0 << 6,
+            Stable = 1 << 6,
+            OnValidating = 0 << 7,
+            Validated = 1 << 7
+
         }
 
         MiniGrid _minimap;
@@ -22,17 +23,16 @@ namespace Mascotte.GridMaker
         
         public GeneralMap()
         {
-            int size = 1024;
             int size2 = 8;
 
             byte[][] datas = new byte[size2][];
             for (int i = 0; i < datas.Length; i++)
                 datas[i] = new byte[size2];
 
-            _gridContent = new byte[size][];
+            _gridContent = new byte[GENERAL_MAP_SIZE][];
             for (int i = 0; i < _gridContent.Length; i++)
             {
-                _gridContent[i] = new byte[size];
+                _gridContent[i] = new byte[GENERAL_MAP_SIZE];
                 for (int j = 0; j < _gridContent[i].Length; j++)
                 {
                     _gridContent[i][j] = 0;
@@ -59,24 +59,54 @@ namespace Mascotte.GridMaker
 
         /// <summary>
         /// Merge present Minigrid with parentMap 
-        /// The last bit is a flag made for indicating provisory or not
+        /// The last bit is a flag used for indicating Validated or not
         /// 1 : true , 0 : false
+        /// The 7th it is a flag used for indicating moving or not
+        /// 1 : true , 0 : false
+        /// For each case synchronization value 1 increments surety of a detected object, value 0 decrements it
         /// </summary>
         public void Synchronize()
         {
             for (int i = 0; i < _minimap.DatasInMiniMap.Length; i++)
             {
-                for (int j = 0; j < _minimap.DatasInMiniMap[i].Length; i++)
+                for (int j = 0; j < _minimap.DatasInMiniMap[i].Length; j++)
                 {
-                    if (GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] < 63)
+                    if (GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] < 63
+                        && _minimap.DatasInMiniMap[i][j] > 0)
                     {
-                        GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] += _minimap.DatasInMiniMap[i][j];
+                        GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX]++;
+
                         // When adding is done, scan new value
-                        if (GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] >= 63)
+                        if (GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] >= 63
+                            && GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] < 128)
+                        {
                             GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] += 1 << 7;
+                            ThrowMessage("Nouvel objet Fixe identifié");
+                        }
                     }
-                    else if(GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] > 63 && GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] > _minimap.DatasInMiniMap[i][j])
+                    else if (GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] <= 127
+                             && _minimap.DatasInMiniMap[i][j] == 0
+                             && 0 < GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX])
+                    {
+                        GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX]--;
+                    }
+                    else if (GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] > 254
+                             && _minimap.DatasInMiniMap[i][j] == 0)
+                    {
+                        GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] -= 1 << 7;
                         ThrowMessage("L'Objet anciennement validé semble avoir bougé");
+                    }
+                    else if (GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] == 63
+                             || GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] >= 63
+                             && GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] < 128
+                             && _minimap.DatasInMiniMap[i][j] > 0)
+                    {
+                        GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] = 64;
+                        GridContent[i + _minimap.MapPosY][j + _minimap.MapPosX] += 1 << 7;
+                        ThrowMessage("Nouvel objet Fixe identifié");
+                    }
+                    else
+                        ThrowMessage("Cas non identifié");
                 }
             }
         }
@@ -88,14 +118,6 @@ namespace Mascotte.GridMaker
         {
             //TO DO
         }
-        /// <summary>
-        /// Show a validation Form in interface 
-        /// </summary>
-        /// <param name="posX"></param>
-        /// <param name="posY"></param>
-        private void ValidateObject(int posX, int posY)
-        {
-            //TO DO
-        } // Not sure this func will
+
     }
 }
