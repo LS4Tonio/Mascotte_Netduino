@@ -4,6 +4,7 @@
 
 # NuGet packages
 /packages/
+/Mascotte/packages/
 
 # Thumbnails
 Thumbs.db
