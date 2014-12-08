@@ -69,6 +69,7 @@ namespace Tests
                 }
             }
         }
+        
         public void addDatasInMinimap(MiniGrid grid)
         {
 
