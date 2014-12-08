@@ -15,7 +15,7 @@ namespace NetduinoApplication5
 
             dist1 = captor.Read();
             Rover rover = new Rover();
-            rover.Move();// TODO : Add distance 
+            rover.Move(DELTA);
             dist2 = captor.Read();
             _angleOfRobot = System.Math.Atan((dist1 - dist2) / 15);
 
@@ -31,7 +31,7 @@ namespace NetduinoApplication5
 
         public bool IsObjectHere(RangeSensor captor)
         {
-            if (captor.Read().Equals(null))
+            if (captor.Read() >= 100)
                 return false;
             else
                 return true;
@@ -48,19 +48,20 @@ namespace NetduinoApplication5
         {
             int hypotenuse;
             int[][] objectPos = new int[0][];
+            
             int[][] tmp;
             int i = 0;
             while (IsObjectHere(captor))
             {
                 tmp = objectPos;
-                rover.Move(); // TODO : Add distance 
+                rover.Move(DELTA);
                 hypotenuse = captor.Read();
-                int adjacent = (int)(rover.AngleOfRobot * System.Math.Acos(hypotenuse));
-                int opposite = (int)(rover.AngleOfRobot * System.Math.Asin(hypotenuse));
+                int distY = (int)(rover.AngleOfRobot * System.Math.Acos(hypotenuse));
+                int distX = (int)(rover.AngleOfRobot * System.Math.Asin(hypotenuse));
                 i++;
                 objectPos = new int[i][];
                 tmp.CopyTo(objectPos, 0);
-                objectPos[i - 1] = new int[2] { adjacent, opposite };
+                objectPos[i - 1] = new int[2] { distY, distX };
             }
             return objectPos;
         }

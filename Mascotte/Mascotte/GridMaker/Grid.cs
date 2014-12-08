@@ -12,6 +12,10 @@ namespace Mascotte
         {
             
         }
-        public abstract void Synchronisation() {}
+        public Grid(byte[][] grid, byte[][] parentGrid)
+        {
+            
+        }
+        public abstract void Synchronize();
     }
 }

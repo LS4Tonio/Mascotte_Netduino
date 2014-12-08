@@ -9,7 +9,7 @@ using SecretLabs.NETMF.Hardware.Netduino;
 
 namespace RobotControl
 {
-    class RangeSensor
+    public class RangeSensor
     {
         private AnalogInput _analogInput;
 
@@ -17,26 +17,22 @@ namespace RobotControl
         {
             _analogInput = new AnalogInput(channel);
         }
-
+        public string Name { get; set; }
         // Returns approximate distance in cm
         public int Read()
         {
             double sensorReading = _analogInput.Read();
 
-            // Very crude conversion to cm
+             //Very crude conversion to cm
             double distanceInCm = (1000 - sensorReading) * 0.1;
 
-            // Ensure answer is sensible
+             //Ensure answer is sensible
             if (distanceInCm > 0 && distanceInCm < 100)
                 return (int)distanceInCm;
             else
                 return 100; // default
         }
-        public string Name
-        {
-            get;
-            set;
-        }
+       
 
     }
 }
