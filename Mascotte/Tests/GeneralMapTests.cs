@@ -69,6 +69,14 @@ namespace Tests
                 }
             }
         }
+
+        public void MarginOfErrorTest()
+        {
+            GeneralMap gm = new GeneralMap();
+
+            addDatasInGrid(gm.GridContent);
+        }
+
         public void addDatasInMinimap(MiniGrid grid)
         {
 
@@ -88,8 +96,28 @@ namespace Tests
 
                 }
             }
-            
-            
+        }
+
+        public void addDatasInGrid(byte[][] grid)
+        {
+            for (int i = 2; i < 5; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (i == 2 && j < 10)
+                    {
+                        grid[i][j] = 63;
+                    }
+                    else if (i == 3 && j < 10)
+                    {
+                        grid[i][j] = 127;
+                    }
+                    else if (i == 4 && j < 10)
+                    {
+                        grid[i][j] = 63;
+                    }
+                }
+            }
         }
     }
 }

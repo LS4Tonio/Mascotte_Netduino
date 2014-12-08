@@ -14,7 +14,6 @@ namespace Mascotte.GridMaker
             Stable = 1 << 6,
             OnValidating = 0 << 7,
             Validated = 1 << 7
-
         }
 
         MiniGrid _minimap;
@@ -118,6 +117,54 @@ namespace Mascotte.GridMaker
         {
             //TO DO
         }
+        /// <summary>
+        /// Merge differents obstacles that seem the same into 
+        /// songle obstacle
+        /// </summary>
+        public void MergePoints()
+        {
+            byte[][] area = new byte[3][];
+            for (int i = 0; i < area.Length; i++)
+            {
+                area[i] = new byte[3];
+            }
+            byte tmp = 0;
+            int[] position = new int[2];
 
+            // Check for points with obstacle
+            for (int i = 0; i < this.GridContent.Length; i++)
+            {
+                for (int j = 0; j < this.GridContent[i].Length; j++)
+                {
+                    if (this.GridContent[i][j] != 0)
+                    {
+                        // Set area
+                        area[0][0] = this.GridContent[i - 1][j - 1];
+                        area[0][1] = this.GridContent[i - 1][j];
+                        area[0][2] = this.GridContent[i - 1][j + 1];
+                        area[1][0] = this.GridContent[i][j - 1];
+                        area[1][1] = this.GridContent[i][j];
+                        area[1][2] = this.GridContent[i][j + 1];
+                        area[2][0] = this.GridContent[i + 1][j - 1];
+                        area[2][1] = this.GridContent[i + 1][j];
+                        area[2][2] = this.GridContent[i + 1][j + 1];
+
+                        // Get most important square
+                        for (int k = 0; k < area.Length; k++)
+                        {
+                            for (int l = 0; l < area[k].Length; l++)
+                            {
+                                if (area[k][l] > tmp)
+                                {
+                                    tmp = area[k][l];
+                                    position[0] = k;
+                                    position[1] = l;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
