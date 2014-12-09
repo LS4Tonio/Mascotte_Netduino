@@ -19,7 +19,8 @@ namespace Mascotte.GridMaker
 
         MiniGrid _minimap;
         byte[][] _gridContent;
-        protected const int GENERAL_MAP_SIZE = 200;
+        protected const int GENERAL_MAP_SIZE = 200; 
+        protected const int DELTA_MARGIN = 1; //Error margin scale
         
         public GeneralMap()
         {

@@ -12,7 +12,7 @@ namespace RobotControl
             _actualGrid = actualGrid;
         }
       
-        public void Send(byte[][] grid) { }
+        public void Send(byte[][] grid, double angleOfRobot) { }
 
         public void Send(Directions direction) { }
 

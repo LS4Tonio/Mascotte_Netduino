@@ -69,6 +69,21 @@ namespace Tests
                 }
             }
         }
+        [Test]
+        public void MarginCorrectionTest()
+        {
+
+        }
+        public void addDatasInMinimapMargin(MiniGrid grid)
+        {
+            for (int i = 0; i < grid.DatasInMiniMap.Length; i++)
+            {
+                for (int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
+                {
+
+                }
+            }
+        }
         public void addDatasInMinimap(MiniGrid grid)
         {
 
