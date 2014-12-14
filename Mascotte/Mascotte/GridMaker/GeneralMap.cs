@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Mascotte.GridMaker
 {
+    [Serializable]
     public class GeneralMap
     {
         private enum CaseState
@@ -19,9 +21,14 @@ namespace Mascotte.GridMaker
 
         MiniGrid _minimap;
         byte[][] _gridContent;
+<<<<<<< AlgoTest
         protected const int GENERAL_MAP_SIZE = 200; 
         protected const int DELTA_MARGIN = 1; //Error margin scale
         
+=======
+        protected const int GENERAL_MAP_SIZE = 200;
+
+>>>>>>> local
         public GeneralMap()
         {
             int size2 = 8;
