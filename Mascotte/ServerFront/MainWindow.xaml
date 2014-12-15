@@ -15,6 +15,11 @@
             <!--Backstage-->
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage>
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="New"/>
+                        <Fluent:BackstageTabItem Header="Print"/>
+                        <Fluent:Button Header="Blue" Icon="Images\Blue.png"/>
+                    </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
             <!--Tabs-->
@@ -29,7 +34,7 @@ LargeIcon="Images\GrayLarge.png" />
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
-        <Grid>
+        <Grid Name="backgroundGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" />

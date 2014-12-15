@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Fluent;
+using Mascotte.GridMaker;
+using Mascotte;
 
 namespace ServerFront
 {
@@ -21,8 +23,10 @@ namespace ServerFront
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
+        MainWindowViewModel _vm;
         public MainWindow()
         {
+            _vm = new MainWindowViewModel();
             a = new List<Test>();
             a.Add( new Test() );
             a.Add( new Test() );
@@ -37,6 +41,41 @@ namespace ServerFront
             Canvas.SetLeft( textbox1, 50 );
             this.Canvas1.Children.Add( textbox1 );
             this.Show();
+
+            Mascotte.GridMaker.GeneralMap map1 = new Mascotte.GridMaker.GeneralMap();
+            double coef=Canvas1.ActualHeight / map1.GridContent.Count();
+
+             PathSegmentCollection segs= new PathSegmentCollection();
+            LineSegment seg =new LineSegment();
+            seg.Point=new Point(250,250);
+            segs.Add(seg );
+            seg = new LineSegment();
+            seg.Point = new Point( 250, 251 );
+            segs.Add( seg );
+            //PathFigureCollection collec= new PathFigureCollection();
+            //collec.Add(new PathFigure(new Point(1,0),segs,false));
+            PathGeometry pgeo = new PathGeometry();
+            pgeo.Figures.Add( new PathFigure( new Point( 1, 0 ), segs, false ) );
+            Path p=new Path();
+            p.Data = pgeo;
+            //p.StrokeThickness = coef;
+            
+            /*if (Canvas1.Children[0] is Path)
+                p.Stroke = ((Path) Canvas1.Children[0]).Stroke;*/
+
+            p.Stroke = Brushes.Black;
+            
+            this.Canvas1.Children.Add( p);
+
+            //var grid1 = new MainGrid();
+            //grid1.SizeBigGrid(5,3);
+            //this.Canvas1.Children.Add( grid1 );
+            MainGrid maingrid= new MainGrid();
+            Grid.SetColumn( maingrid, 0 );
+            this.backgroundGrid.Children.Add( maingrid );
+            maingrid.SizeBigGrid( 8, 5 );
+            maingrid.Name = "MainGrid1";
+            
             //InitializeComponent();
             /*Grid grid=new Grid();
             this.AddChild( grid );
@@ -63,5 +102,12 @@ namespace ServerFront
                 arrayOfArrays[i] = new byte[10];
             }
         }
+        //map1.GridContent
+        
     }
+
+    //load file: canvas OR grid.
+    //implement a grid to canvas and a canvas to grid
+    //save file
+
 }
