@@ -23,20 +23,14 @@ namespace Tests
                 }
             }
             s.Serialize();
-            for (int i = 0; i < s.GeneralMap.GridContent.Length; i++)
-            {
-                for (int j = 0; j < s.GeneralMap.GridContent[i].Length; j++)
-                {
-                    s.GeneralMap.GridContent[i][j] = 0;
-                }
-            }
             s = new Server();
             s.Deserialize();
             for (int i = 0; i < s.GeneralMap.GridContent.Length; i++)
             {
+                System.Console.WriteLine(s.GeneralMap.GridContent.ToString());
                 for (int j = 0; j < s.GeneralMap.GridContent[i].Length; j++)
                 {
-                   // Assert.Equals((int)s.GeneralMap.GridContent[i][j], 1);
+                    Assert.AreEqual((int)s.GeneralMap.GridContent[i][j], 1);
                 }
             }
         }

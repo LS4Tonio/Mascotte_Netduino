@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -11,13 +12,13 @@ namespace Mascotte
 {
     public class Server
     {
-        XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
         GeneralMap _generalMap;
-        string xml;
+        string path;
 
         public Server()
         {
             _generalMap = new GeneralMap();
+            path = @"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.dat";
         }
         public GeneralMap GeneralMap
         {
@@ -26,33 +27,40 @@ namespace Mascotte
         }
         public void Serialize()
         {
-            //using (StreamWriter streamWriter = File.CreateText(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt"))
-            //{
-                _generalMap = new GeneralMap();
-            //    serializer.Serialize(streamWriter, _generalMap);
-            //    xml = streamWriter.ToString();
-            //}
-
-
-            XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
-            StreamWriter streamWriter = File.CreateText(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
-            TextWriter tw = streamWriter;
-            serializer.Serialize(tw, _generalMap);
-            tw.Close(); 
+            //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
+            //TextWriter tw = File.CreateText(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
+            //serializer.Serialize(tw, _generalMap);
+            //tw.Close(); 
+            FileStream file;
+            if (!(File.Exists(path)))
+            {
+                file = File.Create(path);
+            }
+            else
+            {
+                file = File.Open(path, FileMode.Open);
+            }
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(file, _generalMap);
+            file.Close();
         }
         public void Deserialize()
         {
-            //using (StringReader _stringReader = new StringReader(xml))
-            //{
-            //    _generalMap = (GeneralMap)serializer.Deserialize(_stringReader);
-            //}
-            XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
-            TextReader tr = new StreamReader(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
-            //Book b = (Book)serializer.Deserialize(tr);
-            _generalMap = (GeneralMap)serializer.Deserialize(tr);
-            tr.Close(); 
+            //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
+            //TextReader tr = new StreamReader(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
+            //_generalMap = (GeneralMap)serializer.Deserialize(tr);
+            //tr.Close();
+            FileStream file;
+            if (!(File.Exists(path)))
+            {
+                throw new NullReferenceException("Le fichier n'a pas été trouvé par le programme");
+            }
+            else
+            {
+                file = File.OpenRead(path);
+                var formatter = new BinaryFormatter();
+                _generalMap = (GeneralMap)formatter.Deserialize(file);
+            }
         }
-
-
     }
 }
