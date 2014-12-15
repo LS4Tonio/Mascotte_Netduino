@@ -23,9 +23,12 @@ namespace ServerFront
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
+<<<<<<< HEAD
         Server server = new Server();
-        MainWindowViewModel _vm;
         protected const int MARGIN_ACCEPTABLE = 1; // TODO : no inspiration, change this name
+=======
+        MainWindowViewModel _vm;
+>>>>>>> origin/Serveur
         public MainWindow()
         {
             _vm = new MainWindowViewModel();
