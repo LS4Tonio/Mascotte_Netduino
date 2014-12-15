@@ -19,7 +19,7 @@ namespace Mascotte
             _datas = datas;
             _parentGrid = parentGrid;
         }
-        
+
         /// <summary>
         /// Gets grid content
         /// </summary>
@@ -32,14 +32,14 @@ namespace Mascotte
         /// Can't be negative.
         /// </summary>
         public int MapPosX
-        { 
+        {
             get
             {
                 return _xPos;
             }
             set
             {
-                if(value < 0)
+                if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException();
                 }
@@ -105,7 +105,7 @@ namespace Mascotte
 
                 case 2:     // Down
                     var length = _datas.Length - 1;
-                    
+
                     MapPosY++;
 
                     // Move datas
@@ -155,7 +155,7 @@ namespace Mascotte
 
                         // Get last column from parent 
                         _datas[i][_datas[i].Length - 1] = _parentGrid[i][MapPosX + _datas[i].Length - 1];
-                        
+
                         tmp[i] = _datas[i][_datas[i].Length - 1];
                     }
                     return tmp;

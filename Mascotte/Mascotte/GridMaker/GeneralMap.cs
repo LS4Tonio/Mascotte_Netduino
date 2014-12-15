@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Mascotte.GridMaker
 {
+    [Serializable]
     public class GeneralMap
     {
         private enum CaseState
@@ -15,11 +17,15 @@ namespace Mascotte.GridMaker
             OnValidating = 0 << 7,
             Validated = 1 << 7
         }
-
+        [NonSerialized]
         MiniGrid _minimap;
         byte[][] _gridContent;
+        int _actualPosX;
+        int _actualPosY;
         protected const int GENERAL_MAP_SIZE = 200;
-        
+        protected const int DELTA_MARGIN = 1; //Error margin scale
+
+
         public GeneralMap()
         {
             int size2 = 8;
@@ -55,14 +61,29 @@ namespace Mascotte.GridMaker
         {
             get { return _minimap; }
         }
-
+        public int ActualPosX
+        {
+            get
+            {
+                _actualPosX = this.Minimap.MapPosX;
+                return _actualPosX;
+            }
+        }
+        public int ActualPosY
+        {
+            get
+            {
+                _actualPosY = this.Minimap.MapPosY;
+                return _actualPosY;
+            }
+        }
         /// <summary>
         /// Merge present Minigrid with parentMap 
         /// The last bit is a flag used for indicating Validated or not
         /// 1 : true , 0 : false
         /// The 7th it is a flag used for indicating moving or not
         /// 1 : true , 0 : false
-        /// For each case synchronization value 1 increments surety of a detected object, value 0 decrements it
+        /// For each case synchronization value 1 increments confidence in the detected object, value 0 decrements it
         /// </summary>
         public void Synchronize()
         {
