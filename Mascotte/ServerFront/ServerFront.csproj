@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Server.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,6 +69,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AspectRatioLayoutDecorator.cs" />
+    <Compile Include="GridMaker\GeneralMap.cs" />
+    <Compile Include="GridMaker\MiniGrid.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

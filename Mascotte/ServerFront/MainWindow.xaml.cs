@@ -21,21 +21,23 @@ namespace ServerFront
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
+        Server server = new Server();
+        protected const int MARGIN_ACCEPTABLE = 1; // TODO : no inspiration, change this name
         public MainWindow()
         {
             a = new List<Test>();
-            a.Add( new Test() );
-            a.Add( new Test() );
+            a.Add(new Test());
+            a.Add(new Test());
             test2 = "coucou";
             InitializeComponent();
-            Fluent.TextBox textbox1= new Fluent.TextBox();
+            Fluent.TextBox textbox1 = new Fluent.TextBox();
             textbox1.Text = "HELLO WORLD";
             textbox1.FontSize = 20;
             //textbox1.Height = Double.NaN;
             textbox1.Height = 21;
-            Canvas.SetTop( textbox1, 50 );
-            Canvas.SetLeft( textbox1, 50 );
-            this.Canvas1.Children.Add( textbox1 );
+            Canvas.SetTop(textbox1, 50);
+            Canvas.SetLeft(textbox1, 50);
+            this.Canvas1.Children.Add(textbox1);
             this.Show();
             //InitializeComponent();
             /*Grid grid=new Grid();
@@ -45,6 +47,9 @@ namespace ServerFront
         }
         public string test2 { get; set; }
         public List<Test> a;
+        public void Refresh()
+        {
+        }
     }
     public class Test
     {
@@ -58,7 +63,7 @@ namespace ServerFront
         {
             byte[,] multiDimensionalArray = new byte[4, 10];
             byte[][] arrayOfArrays = new byte[4][];
-            for( int i=0; i < arrayOfArrays.Length; i++ )
+            for (int i = 0; i < arrayOfArrays.Length; i++)
             {
                 arrayOfArrays[i] = new byte[10];
             }

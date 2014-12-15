@@ -69,8 +69,7 @@ namespace Tests
                 }
             }
         }
-<<<<<<< .merge_file_a09828
-
+        [Test]
         public void MarginOfErrorTest()
         {
             GeneralMap gm = new GeneralMap();
@@ -78,8 +77,7 @@ namespace Tests
             addDatasInGrid(gm.GridContent);
         }
 
-=======
-        [Test]
+
         public void MarginCorrectionTest()
         {
 
@@ -94,13 +92,12 @@ namespace Tests
                 }
             }
         }
->>>>>>> .merge_file_a08188
         public void addDatasInMinimap(MiniGrid grid)
         {
 
             for (int i = 0; i < grid.DatasInMiniMap.Length; i++)
             {
-                for(int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
+                for (int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
                 {
                     if (i % 2 == 0)
                     {
