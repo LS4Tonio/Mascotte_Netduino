@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ServerFront.GridMaker
 {
@@ -24,7 +26,7 @@ namespace ServerFront.GridMaker
         int _actualPosY;
         protected const int GENERAL_MAP_SIZE = 200;
         protected const int DELTA_MARGIN = 1; //Error margin scale
-
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public GeneralMap()
         {
@@ -34,13 +36,13 @@ namespace ServerFront.GridMaker
             for (int i = 0; i < datas.Length; i++)
                 datas[i] = new byte[size2];
 
-            _gridContent = new byte[GENERAL_MAP_SIZE][];
-            for (int i = 0; i < _gridContent.Length; i++)
+            GridContent = new byte[GENERAL_MAP_SIZE][];
+            for (int i = 0; i < GridContent.Length; i++)
             {
-                _gridContent[i] = new byte[GENERAL_MAP_SIZE];
-                for (int j = 0; j < _gridContent[i].Length; j++)
+                GridContent[i] = new byte[GENERAL_MAP_SIZE];
+                for (int j = 0; j < GridContent[i].Length; j++)
                 {
-                    _gridContent[i][j] = 0;
+                    GridContent[i][j] = 0;
                 }
             }
 
@@ -53,6 +55,11 @@ namespace ServerFront.GridMaker
         public byte[][] GridContent
         {
             get { return _gridContent; }
+            private set
+            {
+                _gridContent = value;
+                RaisePropertyChanged();
+            }
         }
         /// <summary>
         /// Gets minimap
@@ -68,6 +75,11 @@ namespace ServerFront.GridMaker
                 _actualPosX = this.Minimap.MapPosX;
                 return _actualPosX;
             }
+            private set
+            {
+                _actualPosX = value;
+                RaisePropertyChanged();
+            }
         }
         public int ActualPosY
         {
@@ -75,6 +87,11 @@ namespace ServerFront.GridMaker
             {
                 _actualPosY = this.Minimap.MapPosY;
                 return _actualPosY;
+            }
+            private set
+            {
+                _actualPosY = value;
+                RaisePropertyChanged();
             }
         }
         /// <summary>
@@ -187,5 +204,11 @@ namespace ServerFront.GridMaker
                 }
             }
         }
+        private void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var h = PropertyChanged;
+            if (h != null) h(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

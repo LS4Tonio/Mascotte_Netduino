@@ -25,6 +25,7 @@ namespace ServerFront
     {
         Server server = new Server();
         MainWindowViewModel _vm;
+        MainGrid maingrid;
         protected const int MARGIN_ACCEPTABLE = 1; // TODO : no inspiration, change this name
         public MainWindow()
         {
@@ -45,39 +46,39 @@ namespace ServerFront
             this.Show();
 
             Mascotte.GridMaker.GeneralMap map1 = new Mascotte.GridMaker.GeneralMap();
-            double coef=Canvas1.ActualHeight / map1.GridContent.Count();
+            double coef = Canvas1.ActualHeight / map1.GridContent.Count();
 
-             PathSegmentCollection segs= new PathSegmentCollection();
-            LineSegment seg =new LineSegment();
-            seg.Point=new Point(250,250);
-            segs.Add(seg );
+            PathSegmentCollection segs = new PathSegmentCollection();
+            LineSegment seg = new LineSegment();
+            seg.Point = new Point(250, 250);
+            segs.Add(seg);
             seg = new LineSegment();
-            seg.Point = new Point( 250, 251 );
-            segs.Add( seg );
+            seg.Point = new Point(250, 251);
+            segs.Add(seg);
             //PathFigureCollection collec= new PathFigureCollection();
             //collec.Add(new PathFigure(new Point(1,0),segs,false));
             PathGeometry pgeo = new PathGeometry();
-            pgeo.Figures.Add( new PathFigure( new Point( 1, 0 ), segs, false ) );
-            Path p=new Path();
+            pgeo.Figures.Add(new PathFigure(new Point(1, 0), segs, false));
+            Path p = new Path();
             p.Data = pgeo;
             //p.StrokeThickness = coef;
-            
+
             /*if (Canvas1.Children[0] is Path)
                 p.Stroke = ((Path) Canvas1.Children[0]).Stroke;*/
 
             p.Stroke = Brushes.Black;
-            
-            this.Canvas1.Children.Add( p);
+
+            this.Canvas1.Children.Add(p);
 
             //var grid1 = new MainGrid();
             //grid1.SizeBigGrid(5,3);
             //this.Canvas1.Children.Add( grid1 );
-            MainGrid maingrid= new MainGrid();
-            Grid.SetColumn( maingrid, 0 );
-            this.backgroundGrid.Children.Add( maingrid );
-            maingrid.SizeBigGrid( 8, 5 );
+            maingrid = new MainGrid();
+            Grid.SetColumn(maingrid, 0);
+            this.backgroundGrid.Children.Add(maingrid);
+            maingrid.SizeBigGrid(200, 200);
             maingrid.Name = "MainGrid1";
-            
+            Refresh();
             //InitializeComponent();
             /*Grid grid=new Grid();
             this.AddChild( grid );
@@ -88,6 +89,22 @@ namespace ServerFront
         public List<Test> a;
         public void Refresh()
         {
+            for (int i = 0; i < server.GeneralMap.GridContent.Length; i++)
+            {
+                for (int j = 0; j < server.GeneralMap.GridContent[i].Length; j++)
+                {
+                    server.GeneralMap.GridContent[i][j] = 42;
+                    var background = new Image();
+                    background.Source = new BitmapImage(new Uri(@"D:\INTECH\Mascotte_Netduino\Mascotte\ServerFront\Images\Gray.png"));
+                    //if (server.GeneralMap.GridContent[i][j] < 63)
+                    //    background.Opacity = (server.GeneralMap.GridContent[i][j] / 100);
+
+                    Grid.SetColumn(background, i);
+                    Grid.SetRow(background, j);
+                    maingrid.MainGrid1.Children.Add(background);
+                }
+
+            }
         }
     }
     public class Test
@@ -108,7 +125,7 @@ namespace ServerFront
             }
         }
         //map1.GridContent
-        
+
     }
 
     //load file: canvas OR grid.

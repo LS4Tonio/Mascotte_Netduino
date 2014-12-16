@@ -27,6 +27,10 @@ namespace ServerFront.GridMaker
         {
             get { return _datas; }
         }
+        public int MiniMapSize
+        {
+            get { return TAB_SIZE; }
+        }
         /// <summary>
         /// Gets or sets X parent's map position.
         /// Can't be negative.
