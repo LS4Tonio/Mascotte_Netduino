@@ -208,7 +208,7 @@ namespace ServerFront.GridMaker
         {
             var h = PropertyChanged;
             if (h != null) h(this, new PropertyChangedEventArgs(propertyName));
-        }
+        } 
 
     }
 }
