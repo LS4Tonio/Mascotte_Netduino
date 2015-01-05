@@ -70,13 +70,6 @@ namespace Tests
             }
         }
 
-        public void MarginOfErrorTest()
-        {
-            GeneralMap gm = new GeneralMap();
-
-            addDatasInGrid(gm.GridContent);
-        }
-
         public void addDatasInMinimap(MiniGrid grid)
         {
 
