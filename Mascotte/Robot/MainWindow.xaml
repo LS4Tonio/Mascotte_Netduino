@@ -1,0 +1,150 @@
+﻿<Fluent:RibbonWindow x:Class="ServerFront.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:local="clr-namespace:ServerFront"
+                     WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="350" Width="525">
+    <!--Yodii.Model;assembly=Yodii.Model"-->
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" ShowQuickAccessToolBarAboveRibbon="True"
+                                   AutomaticStateManagement="False"
+            CanCustomizeQuickAccessToolBar="False"
+            CanQuickAccessLocationChanging="False"
+            CanCustomizeRibbon="False">
+            <!--Backstage-->
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+            <!--Tabs-->
+            <Fluent:RibbonTabItem Header="Tab">
+                <Fluent:RibbonGroupBox Header="Group">
+                    <Fluent:Button Name="buttonGreen" Header="Green"
+Icon="Images\Green.png"
+LargeIcon="Images\GreenLarge.png"/>
+                    <Fluent:Button Name="buttonGray" Header="Grey" Icon="Images\Gray.png"
+LargeIcon="Images\GrayLarge.png" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+            <Border ClipToBounds="True" >
+                <ContentPresenter RenderTransformOrigin="0.5,0.5">
+                    <ContentPresenter.RenderTransform>
+                        <ScaleTransform 
+                    ScaleX="{Binding Path=Value, 
+                                ElementName=zoomSlider}" 
+                    ScaleY="{Binding Path=Value, 
+                                ElementName=zoomSlider}"/>
+                    </ContentPresenter.RenderTransform>
+                    <ContentPresenter.Content>
+                        <local:AspectRatioLayoutDecorator AspectRatio="1" >
+
+                        <Canvas Width="500" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center"
+            Grid.Column="0" Left="0" 
+            Name="Canvas1"   Background="LightSteelBlue" >
+            <Path Stroke="Black" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathGeometry.Figures>
+                            <PathFigureCollection>
+                                <PathFigure IsClosed="True" StartPoint="10,100">
+                                    <PathFigure.Segments>
+                                        <PathSegmentCollection>
+                                            <LineSegment Point="20,10" />
+                                            <LineSegment Point="10,5" />
+                                        </PathSegmentCollection>
+                                    </PathFigure.Segments>
+                                </PathFigure>
+                                                    <PathFigure IsClosed="True" StartPoint="225,275">
+                                                        <PathFigure.Segments>
+                                                            <PathSegmentCollection>
+                                                                <LineSegment Point="225,275" />
+                                                                <LineSegment Point="275,275" />
+                                                                <LineSegment Point="275,225" />
+                                                                <LineSegment Point="225,225" />
+                                                            </PathSegmentCollection>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathFigureCollection>
+                        </PathGeometry.Figures>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+        </Canvas>
+                            </local:AspectRatioLayoutDecorator>
+
+                    </ContentPresenter.Content>
+                </ContentPresenter>
+            </Border>
+
+            <Slider x:Name="zoomSlider"  Orientation="Vertical"
+            Maximum="10" 
+            Minimum="0.9" 
+            Value="1.0" Margin="53,85" />
+
+            <GridSplitter
+                
+            ResizeBehavior="PreviousAndNext"
+                    Grid.Column="1"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Stretch"
+              Background="Black" 
+              ShowsPreview="True"
+              Width="5" ResizeDirection="Columns"  >
+            <GridSplitter.RenderTransform>
+                <TransformGroup>
+                    <!--<ScaleTransform ScaleX="-1"/>-->
+                        <ScaleTransform />
+                        <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform X="1"/>
+                </TransformGroup>
+            </GridSplitter.RenderTransform>
+        </GridSplitter>
+        <StackPanel 
+             Grid.Column="2"
+            >
+            <WrapPanel HorizontalAlignment="Stretch" Height="Auto" Orientation="Horizontal" FlowDirection="LeftToRight" >
+                <RadioButton Name="Manuel" GroupName="Options1" Margin="2,10" >
+                </RadioButton>
+                <RadioButton Name="Decouverte" GroupName="Options1" Margin="2,10">
+                </RadioButton>
+                <RadioButton Name="Ordres" GroupName="Options1" Margin="2,10">
+                </RadioButton>
+                <RadioButton Name="RetourBase" GroupName="Options1" Margin="2,10">
+                </RadioButton>
+                <Button Margin="10,5" Content="Stop" HorizontalAlignment="Center" Height="Auto"></Button>
+                <Button Margin="10,5" Content="Record" HorizontalAlignment="Center" Height="Auto"></Button>
+            </WrapPanel>
+                <Button Content="avancer" Margin="103,0"/>
+                <Grid HorizontalAlignment="Stretch" Height="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="gauche" Margin="52,0,69,0" Grid.ColumnSpan="3"/>
+                    <Button Grid.Column="2"  Margin="67,0,54,0" Content="droite" Grid.ColumnSpan="3" RenderTransformOrigin="0.38,0.545"/>
+                </Grid>
+                <Button Margin="103,5" Content="reculer" Width="Auto" Height="Auto"></Button>
+                <WrapPanel HorizontalAlignment="Stretch" Height="Auto" Orientation="Horizontal" FlowDirection="LeftToRight"  >
+                    <Slider MinWidth="100"/>
+                    <TextBox MinWidth="20"/>
+                    <Button Margin="10,0,0,0" Content="ok"/>
+                </WrapPanel>
+
+            </StackPanel>
+
+    </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

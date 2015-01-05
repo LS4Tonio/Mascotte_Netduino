@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment.cs" />
+    <Compile Include="EnvironmentMap.cs" />
     <Compile Include="InfraredSensor.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Motor.cs" />
