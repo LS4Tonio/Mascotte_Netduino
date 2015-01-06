@@ -44,6 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationWindow.Designer.cs">
+      <DependentUpon>ConfigurationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GridSquare.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GridSquare.Designer.cs">
+      <DependentUpon>GridSquare.cs</DependentUpon>
+    </Compile>
     <Compile Include="RobotMockApp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -52,6 +64,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ConfigurationWindow.resx">
+      <DependentUpon>ConfigurationWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RobotMockApp.resx">
       <DependentUpon>RobotMockApp.cs</DependentUpon>
     </EmbeddedResource>

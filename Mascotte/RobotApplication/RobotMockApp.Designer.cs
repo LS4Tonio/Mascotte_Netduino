@@ -35,7 +35,7 @@
             this.menuStrip = new System.Windows.Forms.ToolStrip();
             this.applicationStripMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.loadMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuButton = new System.Windows.Forms.ToolStripMenuItem();
             this.configureMenuButton = new System.Windows.Forms.ToolStripButton();
             this.controlPanel = new System.Windows.Forms.GroupBox();
@@ -56,9 +56,7 @@
             this.speedTextBox = new System.Windows.Forms.TextBox();
             this.mapsPanel = new System.Windows.Forms.TabControl();
             this.robotMapPanel = new System.Windows.Forms.TabPage();
-            this.robotDataGrid = new System.Windows.Forms.DataGridView();
             this.obstaclesMapPanel = new System.Windows.Forms.TabPage();
-            this.obstacleDataGrid = new System.Windows.Forms.DataGridView();
             this.loadMapDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMapDialog = new System.Windows.Forms.SaveFileDialog();
             this.statusStrip.SuspendLayout();
@@ -70,10 +68,6 @@
             this.speedBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
             this.mapsPanel.SuspendLayout();
-            this.robotMapPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.robotDataGrid)).BeginInit();
-            this.obstaclesMapPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.obstacleDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -122,7 +116,7 @@
             this.applicationStripMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.applicationStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadMapMenuButton,
-            this.SaveMapMenuButton,
+            this.saveMapMenuButton,
             this.quitMenuButton});
             this.applicationStripMenu.Image = ((System.Drawing.Image)(resources.GetObject("applicationStripMenu.Image")));
             this.applicationStripMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -137,12 +131,12 @@
             this.loadMapMenuButton.Text = "Charger carte";
             this.loadMapMenuButton.Click += new System.EventHandler(this.loadMapMenuButton_Click);
             // 
-            // SaveMapMenuButton
+            // saveMapMenuButton
             // 
-            this.SaveMapMenuButton.Name = "SaveMapMenuButton";
-            this.SaveMapMenuButton.Size = new System.Drawing.Size(168, 22);
-            this.SaveMapMenuButton.Text = "Sauvegarder carte";
-            this.SaveMapMenuButton.Click += new System.EventHandler(this.SaveMapMenuButton_Click);
+            this.saveMapMenuButton.Name = "saveMapMenuButton";
+            this.saveMapMenuButton.Size = new System.Drawing.Size(168, 22);
+            this.saveMapMenuButton.Text = "Sauvegarder carte";
+            this.saveMapMenuButton.Click += new System.EventHandler(this.saveMapMenuButton_Click);
             // 
             // quitMenuButton
             // 
@@ -373,7 +367,6 @@
             // 
             // robotMapPanel
             // 
-            this.robotMapPanel.Controls.Add(this.robotDataGrid);
             this.robotMapPanel.Location = new System.Drawing.Point(4, 22);
             this.robotMapPanel.Name = "robotMapPanel";
             this.robotMapPanel.Padding = new System.Windows.Forms.Padding(3);
@@ -382,19 +375,8 @@
             this.robotMapPanel.Text = "Robot";
             this.robotMapPanel.UseVisualStyleBackColor = true;
             // 
-            // robotDataGrid
-            // 
-            this.robotDataGrid.BackgroundColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.robotDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.robotDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.robotDataGrid.Location = new System.Drawing.Point(3, 3);
-            this.robotDataGrid.Name = "robotDataGrid";
-            this.robotDataGrid.Size = new System.Drawing.Size(395, 368);
-            this.robotDataGrid.TabIndex = 0;
-            // 
             // obstaclesMapPanel
             // 
-            this.obstaclesMapPanel.Controls.Add(this.obstacleDataGrid);
             this.obstaclesMapPanel.Location = new System.Drawing.Point(4, 22);
             this.obstaclesMapPanel.Name = "obstaclesMapPanel";
             this.obstaclesMapPanel.Padding = new System.Windows.Forms.Padding(3);
@@ -402,17 +384,6 @@
             this.obstaclesMapPanel.TabIndex = 1;
             this.obstaclesMapPanel.Text = "Obstacles";
             this.obstaclesMapPanel.UseVisualStyleBackColor = true;
-            // 
-            // obstacleDataGrid
-            // 
-            this.obstacleDataGrid.BackgroundColor = System.Drawing.SystemColors.ControlLight;
-            this.obstacleDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.obstacleDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.obstacleDataGrid.GridColor = System.Drawing.SystemColors.ControlLight;
-            this.obstacleDataGrid.Location = new System.Drawing.Point(3, 3);
-            this.obstacleDataGrid.Name = "obstacleDataGrid";
-            this.obstacleDataGrid.Size = new System.Drawing.Size(395, 368);
-            this.obstacleDataGrid.TabIndex = 0;
             // 
             // loadMapDialog
             // 
@@ -424,7 +395,7 @@
             this.saveMapDialog.Title = "Sauvegarder la map";
             this.saveMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMapDialog_FileOk);
             // 
-            // Form1
+            // RobotMockApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -436,7 +407,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(1300, 940);
             this.MinimumSize = new System.Drawing.Size(650, 470);
-            this.Name = "Form1";
+            this.Name = "RobotMockApp";
             this.Text = "Netduino Simulator";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
@@ -450,10 +421,6 @@
             this.speedBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).EndInit();
             this.mapsPanel.ResumeLayout(false);
-            this.robotMapPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.robotDataGrid)).EndInit();
-            this.obstaclesMapPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.obstacleDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -466,7 +433,7 @@
         private System.Windows.Forms.ToolStrip menuStrip;
         private System.Windows.Forms.ToolStripDropDownButton applicationStripMenu;
         private System.Windows.Forms.ToolStripMenuItem loadMapMenuButton;
-        private System.Windows.Forms.ToolStripMenuItem SaveMapMenuButton;
+        private System.Windows.Forms.ToolStripMenuItem saveMapMenuButton;
         private System.Windows.Forms.ToolStripMenuItem quitMenuButton;
         private System.Windows.Forms.ToolStripButton configureMenuButton;
         private System.Windows.Forms.GroupBox controlPanel;
@@ -486,9 +453,7 @@
         private System.Windows.Forms.Button directionTopButton;
         private System.Windows.Forms.TabControl mapsPanel;
         private System.Windows.Forms.TabPage robotMapPanel;
-        private System.Windows.Forms.DataGridView robotDataGrid;
         private System.Windows.Forms.TabPage obstaclesMapPanel;
-        private System.Windows.Forms.DataGridView obstacleDataGrid;
         private System.Windows.Forms.ToolStripStatusLabel robotStatus;
         private System.Windows.Forms.Button pauseButton;
         private System.Windows.Forms.OpenFileDialog loadMapDialog;

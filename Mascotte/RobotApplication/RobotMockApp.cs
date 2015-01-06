@@ -12,9 +12,12 @@ namespace RobotApplication
 {
     public partial class RobotMockApp : Form
     {
+        ConfigurationWindow confWindow;
+
         public RobotMockApp()
         {
             InitializeComponent();
+            confWindow = new ConfigurationWindow();
         }
 
         // Menu
@@ -24,24 +27,22 @@ namespace RobotApplication
         }
         private void configureMenuButton_Click(object sender, EventArgs e)
         {
-            //TO DO: Set connection parameters
+            confWindow.ShowDialog();
         }
         private void loadMapMenuButton_Click(object sender, EventArgs e)
         {
             this.loadMapDialog.ShowDialog();
         }
-        private void SaveMapMenuButton_Click(object sender, EventArgs e)
+        private void saveMapMenuButton_Click(object sender, EventArgs e)
         {
             this.saveMapDialog.ShowDialog();
         }
 
-        // Load dialog
+        // Load/Save dialog
         private void loadMapDialog_FileOk(object sender, CancelEventArgs e)
         {
             //TO DO: Set loaded map in grid
         }
-
-        // Save dialog
         private void saveMapDialog_FileOk(object sender, CancelEventArgs e)
         {
             //TO DO: Create/Replace actual map file
