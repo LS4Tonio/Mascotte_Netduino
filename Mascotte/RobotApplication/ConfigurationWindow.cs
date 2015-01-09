@@ -87,11 +87,11 @@ namespace RobotApplication
             this.localNetwork.Checked = false;
 
             // Network conf
-            this.ip0TextBox.Text = "255";
-            this.ip1TextBox.Text = "255";
-            this.ip2TextBox.Text = "255";
-            this.ip3TextBox.Text = "255";
-            this.portTextBox.Text = "99999";
+            this.ip0TextBox.Text = "";
+            this.ip1TextBox.Text = "";
+            this.ip2TextBox.Text = "";
+            this.ip3TextBox.Text = "";
+            this.portTextBox.Text = "";
 
             // Disable ip & port text box
             toggleIPConf(false);

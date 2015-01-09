@@ -39,6 +39,12 @@
             this.quitMenuButton = new System.Windows.Forms.ToolStripMenuItem();
             this.configureMenuButton = new System.Windows.Forms.ToolStripButton();
             this.controlPanel = new System.Windows.Forms.GroupBox();
+            this.rectangleBox = new System.Windows.Forms.GroupBox();
+            this.yLabel = new System.Windows.Forms.Label();
+            this.xLabel = new System.Windows.Forms.Label();
+            this.yTextBox = new System.Windows.Forms.TextBox();
+            this.xTextBox = new System.Windows.Forms.TextBox();
+            this.fillRectangleButton = new System.Windows.Forms.Button();
             this.mapBox = new System.Windows.Forms.GroupBox();
             this.forceSendButton = new System.Windows.Forms.Button();
             this.forceGetMapButton = new System.Windows.Forms.Button();
@@ -55,19 +61,26 @@
             this.speedBar = new System.Windows.Forms.TrackBar();
             this.speedTextBox = new System.Windows.Forms.TextBox();
             this.mapsPanel = new System.Windows.Forms.TabControl();
-            this.robotMapPanel = new System.Windows.Forms.TabPage();
-            this.obstaclesMapPanel = new System.Windows.Forms.TabPage();
+            this.robotMapTab = new System.Windows.Forms.TabPage();
+            this.robotMapPanel = new System.Windows.Forms.Panel();
+            this.obstaclesMapTab = new System.Windows.Forms.TabPage();
+            this.obstacleMapPictureBox = new System.Windows.Forms.PictureBox();
             this.loadMapDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMapDialog = new System.Windows.Forms.SaveFileDialog();
+            this.emptyRectangleButton = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.controlPanel.SuspendLayout();
+            this.rectangleBox.SuspendLayout();
             this.mapBox.SuspendLayout();
             this.directionBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.actualMovement)).BeginInit();
             this.speedBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
             this.mapsPanel.SuspendLayout();
+            this.robotMapTab.SuspendLayout();
+            this.obstaclesMapTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.obstacleMapPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -87,6 +100,7 @@
             this.connectionStatus.Name = "connectionStatus";
             this.connectionStatus.Size = new System.Drawing.Size(129, 17);
             this.connectionStatus.Text = "Status de connexion";
+            this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
             // robotStatus
             // 
@@ -96,6 +110,7 @@
             this.robotStatus.Name = "robotStatus";
             this.robotStatus.Size = new System.Drawing.Size(103, 17);
             this.robotStatus.Text = "Status du robot";
+            this.robotStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
             // menuStrip
             // 
@@ -160,6 +175,7 @@
             this.controlPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.controlPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.controlPanel.Controls.Add(this.rectangleBox);
             this.controlPanel.Controls.Add(this.mapBox);
             this.controlPanel.Controls.Add(this.directionBox);
             this.controlPanel.Controls.Add(this.speedBox);
@@ -169,6 +185,76 @@
             this.controlPanel.TabIndex = 0;
             this.controlPanel.TabStop = false;
             this.controlPanel.Text = "Panneau de contrôle";
+            // 
+            // rectangleBox
+            // 
+            this.rectangleBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rectangleBox.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.rectangleBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.rectangleBox.Controls.Add(this.emptyRectangleButton);
+            this.rectangleBox.Controls.Add(this.yLabel);
+            this.rectangleBox.Controls.Add(this.xLabel);
+            this.rectangleBox.Controls.Add(this.yTextBox);
+            this.rectangleBox.Controls.Add(this.xTextBox);
+            this.rectangleBox.Controls.Add(this.fillRectangleButton);
+            this.rectangleBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rectangleBox.Location = new System.Drawing.Point(9, 327);
+            this.rectangleBox.Name = "rectangleBox";
+            this.rectangleBox.Size = new System.Drawing.Size(221, 66);
+            this.rectangleBox.TabIndex = 9;
+            this.rectangleBox.TabStop = false;
+            this.rectangleBox.Text = "Rectangle";
+            // 
+            // yLabel
+            // 
+            this.yLabel.AutoSize = true;
+            this.yLabel.Location = new System.Drawing.Point(70, 24);
+            this.yLabel.Name = "yLabel";
+            this.yLabel.Size = new System.Drawing.Size(20, 13);
+            this.yLabel.TabIndex = 11;
+            this.yLabel.Text = "Y :";
+            // 
+            // xLabel
+            // 
+            this.xLabel.AutoSize = true;
+            this.xLabel.Location = new System.Drawing.Point(7, 24);
+            this.xLabel.Name = "xLabel";
+            this.xLabel.Size = new System.Drawing.Size(23, 13);
+            this.xLabel.TabIndex = 10;
+            this.xLabel.Text = "X : ";
+            // 
+            // yTextBox
+            // 
+            this.yTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.yTextBox.Location = new System.Drawing.Point(92, 21);
+            this.yTextBox.Name = "yTextBox";
+            this.yTextBox.Size = new System.Drawing.Size(33, 20);
+            this.yTextBox.TabIndex = 9;
+            this.yTextBox.Text = "0";
+            this.yTextBox.TextChanged += new System.EventHandler(this.yTextBox_TextChanged);
+            // 
+            // xTextBox
+            // 
+            this.xTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.xTextBox.Location = new System.Drawing.Point(29, 21);
+            this.xTextBox.Name = "xTextBox";
+            this.xTextBox.Size = new System.Drawing.Size(33, 20);
+            this.xTextBox.TabIndex = 2;
+            this.xTextBox.Text = "0";
+            this.xTextBox.TextChanged += new System.EventHandler(this.xTextBox_TextChanged);
+            // 
+            // fillRectangleButton
+            // 
+            this.fillRectangleButton.Location = new System.Drawing.Point(140, 12);
+            this.fillRectangleButton.Name = "fillRectangleButton";
+            this.fillRectangleButton.Size = new System.Drawing.Size(75, 23);
+            this.fillRectangleButton.TabIndex = 8;
+            this.fillRectangleButton.Text = "Remplir";
+            this.fillRectangleButton.UseVisualStyleBackColor = true;
+            this.fillRectangleButton.Click += new System.EventHandler(this.fillRectangleButton_Click);
             // 
             // mapBox
             // 
@@ -284,7 +370,7 @@
             this.directionDownButton.Size = new System.Drawing.Size(30, 30);
             this.directionDownButton.TabIndex = 2;
             this.directionDownButton.UseVisualStyleBackColor = true;
-            this.directionDownButton.Click += new System.EventHandler(this.directionDownButton_Click);
+            this.directionDownButton.Click += new System.EventHandler(this.directionBackwardButton_Click);
             // 
             // directionTurnLeftButton
             // 
@@ -306,7 +392,7 @@
             this.directionTopButton.Size = new System.Drawing.Size(30, 30);
             this.directionTopButton.TabIndex = 0;
             this.directionTopButton.UseVisualStyleBackColor = true;
-            this.directionTopButton.Click += new System.EventHandler(this.directionTopButton_Click);
+            this.directionTopButton.Click += new System.EventHandler(this.directionForwardButton_Click);
             // 
             // speedBox
             // 
@@ -357,33 +443,54 @@
             this.mapsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.mapsPanel.Controls.Add(this.robotMapPanel);
-            this.mapsPanel.Controls.Add(this.obstaclesMapPanel);
+            this.mapsPanel.Controls.Add(this.robotMapTab);
+            this.mapsPanel.Controls.Add(this.obstaclesMapTab);
             this.mapsPanel.Location = new System.Drawing.Point(0, 28);
             this.mapsPanel.Name = "mapsPanel";
             this.mapsPanel.SelectedIndex = 0;
             this.mapsPanel.Size = new System.Drawing.Size(409, 400);
             this.mapsPanel.TabIndex = 4;
             // 
+            // robotMapTab
+            // 
+            this.robotMapTab.Controls.Add(this.robotMapPanel);
+            this.robotMapTab.Location = new System.Drawing.Point(4, 22);
+            this.robotMapTab.Name = "robotMapTab";
+            this.robotMapTab.Padding = new System.Windows.Forms.Padding(3);
+            this.robotMapTab.Size = new System.Drawing.Size(401, 374);
+            this.robotMapTab.TabIndex = 0;
+            this.robotMapTab.Text = "Robot";
+            this.robotMapTab.UseVisualStyleBackColor = true;
+            // 
             // robotMapPanel
             // 
-            this.robotMapPanel.Location = new System.Drawing.Point(4, 22);
+            this.robotMapPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.robotMapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.robotMapPanel.Location = new System.Drawing.Point(3, 3);
             this.robotMapPanel.Name = "robotMapPanel";
-            this.robotMapPanel.Padding = new System.Windows.Forms.Padding(3);
-            this.robotMapPanel.Size = new System.Drawing.Size(401, 374);
+            this.robotMapPanel.Size = new System.Drawing.Size(395, 368);
             this.robotMapPanel.TabIndex = 0;
-            this.robotMapPanel.Text = "Robot";
-            this.robotMapPanel.UseVisualStyleBackColor = true;
+            this.robotMapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.robotMapPanel_Paint);
             // 
-            // obstaclesMapPanel
+            // obstaclesMapTab
             // 
-            this.obstaclesMapPanel.Location = new System.Drawing.Point(4, 22);
-            this.obstaclesMapPanel.Name = "obstaclesMapPanel";
-            this.obstaclesMapPanel.Padding = new System.Windows.Forms.Padding(3);
-            this.obstaclesMapPanel.Size = new System.Drawing.Size(401, 374);
-            this.obstaclesMapPanel.TabIndex = 1;
-            this.obstaclesMapPanel.Text = "Obstacles";
-            this.obstaclesMapPanel.UseVisualStyleBackColor = true;
+            this.obstaclesMapTab.Controls.Add(this.obstacleMapPictureBox);
+            this.obstaclesMapTab.Location = new System.Drawing.Point(4, 22);
+            this.obstaclesMapTab.Name = "obstaclesMapTab";
+            this.obstaclesMapTab.Padding = new System.Windows.Forms.Padding(3);
+            this.obstaclesMapTab.Size = new System.Drawing.Size(401, 374);
+            this.obstaclesMapTab.TabIndex = 1;
+            this.obstaclesMapTab.Text = "Obstacles";
+            this.obstaclesMapTab.UseVisualStyleBackColor = true;
+            // 
+            // obstacleMapPictureBox
+            // 
+            this.obstacleMapPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.obstacleMapPictureBox.Location = new System.Drawing.Point(3, 3);
+            this.obstacleMapPictureBox.Name = "obstacleMapPictureBox";
+            this.obstacleMapPictureBox.Size = new System.Drawing.Size(395, 368);
+            this.obstacleMapPictureBox.TabIndex = 0;
+            this.obstacleMapPictureBox.TabStop = false;
             // 
             // loadMapDialog
             // 
@@ -394,6 +501,16 @@
             // 
             this.saveMapDialog.Title = "Sauvegarder la map";
             this.saveMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMapDialog_FileOk);
+            // 
+            // emptyRectangleButton
+            // 
+            this.emptyRectangleButton.Location = new System.Drawing.Point(140, 39);
+            this.emptyRectangleButton.Name = "emptyRectangleButton";
+            this.emptyRectangleButton.Size = new System.Drawing.Size(75, 23);
+            this.emptyRectangleButton.TabIndex = 12;
+            this.emptyRectangleButton.Text = "Vider";
+            this.emptyRectangleButton.UseVisualStyleBackColor = true;
+            this.emptyRectangleButton.Click += new System.EventHandler(this.emptyRectangleButton_Click);
             // 
             // RobotMockApp
             // 
@@ -414,6 +531,8 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.controlPanel.ResumeLayout(false);
+            this.rectangleBox.ResumeLayout(false);
+            this.rectangleBox.PerformLayout();
             this.mapBox.ResumeLayout(false);
             this.directionBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.actualMovement)).EndInit();
@@ -421,6 +540,9 @@
             this.speedBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).EndInit();
             this.mapsPanel.ResumeLayout(false);
+            this.robotMapTab.ResumeLayout(false);
+            this.obstaclesMapTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.obstacleMapPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -452,12 +574,21 @@
         private System.Windows.Forms.Button directionTurnLeftButton;
         private System.Windows.Forms.Button directionTopButton;
         private System.Windows.Forms.TabControl mapsPanel;
-        private System.Windows.Forms.TabPage robotMapPanel;
-        private System.Windows.Forms.TabPage obstaclesMapPanel;
+        private System.Windows.Forms.TabPage robotMapTab;
+        private System.Windows.Forms.TabPage obstaclesMapTab;
         private System.Windows.Forms.ToolStripStatusLabel robotStatus;
         private System.Windows.Forms.Button pauseButton;
         private System.Windows.Forms.OpenFileDialog loadMapDialog;
         private System.Windows.Forms.SaveFileDialog saveMapDialog;
+        private System.Windows.Forms.PictureBox obstacleMapPictureBox;
+        private System.Windows.Forms.Panel robotMapPanel;
+        private System.Windows.Forms.GroupBox rectangleBox;
+        private System.Windows.Forms.Button fillRectangleButton;
+        private System.Windows.Forms.Label yLabel;
+        private System.Windows.Forms.Label xLabel;
+        private System.Windows.Forms.TextBox yTextBox;
+        private System.Windows.Forms.TextBox xTextBox;
+        private System.Windows.Forms.Button emptyRectangleButton;
     }
 }
 

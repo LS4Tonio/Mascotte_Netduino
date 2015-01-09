@@ -18,6 +18,7 @@ namespace RobotMock
         private bool _isMoving;
         private int _xPos;
         private int _yPos;
+        private int _direction;
 
         public Rover()
         {
@@ -79,6 +80,14 @@ namespace RobotMock
         public int YPos
         {
             get { return _xPos; }
+        }
+        /// <summary>
+        /// Gets Rover's direction exprimed with angle.
+        /// 0 (or 360): up, 180: down, 90: left, 270: right
+        /// </summary>
+        public int Direction
+        {
+            get { return _direction; }
         }
 
         /// <summary>
@@ -170,11 +179,16 @@ namespace RobotMock
         /// Rotates the robot.
         /// If true, the robot will turn right else turn left.
         /// Rotation speed must be between 0 & 1.
+        /// Angle is between 0 and 360.
         /// </summary>
         /// <param name="turnRight"></param>
         /// <param name="rotationSpeed"></param>
-        public void Turn(bool turnRight, double rotationSpeed, double angle)
+        /// <param name="angle"></param>
+        public void Turn(bool turnRight, double rotationSpeed, int angle)
         {
+            if(angle < 0 || angle > 360)
+                angle = 0;
+
             // Stop robot
             Stop();
 
@@ -192,6 +206,11 @@ namespace RobotMock
                     _rightMotors[0].Direction = false;
                 if (!_rightMotors[1].Direction)
                     _rightMotors[1].Direction = true;
+
+                // Change direction angle
+                _direction += angle;
+                if (_direction >= 360)
+                    _direction -= 360;
             }
             else
             {
@@ -206,6 +225,11 @@ namespace RobotMock
                     _rightMotors[0].Direction = true;
                 if (_rightMotors[1].Direction)
                     _rightMotors[1].Direction = false;
+
+                // Change direction angle
+                _direction -= angle;
+                if (_direction <= 0)
+                    _direction += 360;
             }
 
             // Set same speed to all motors

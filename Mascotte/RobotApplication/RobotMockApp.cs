@@ -1,9 +1,12 @@
-﻿using System;
+﻿using RobotMock;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,11 +16,17 @@ namespace RobotApplication
     public partial class RobotMockApp : Form
     {
         ConfigurationWindow confWindow;
+        Robot robot;
+        Graphics robotMapGraphic;
+        const int ROBOTMAP_X_SIZE = 8;
+        const int ROBOTMAP_Y_SIZE = 8;
 
         public RobotMockApp()
         {
             InitializeComponent();
             confWindow = new ConfigurationWindow();
+            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
+            robotMapGraphic = this.robotMapPanel.CreateGraphics();
         }
 
         // Menu
@@ -41,7 +50,16 @@ namespace RobotApplication
         // Load/Save dialog
         private void loadMapDialog_FileOk(object sender, CancelEventArgs e)
         {
-            //TO DO: Set loaded map in grid
+            //TO DO: Set loaded map in obstacle grid
+            string file = this.loadMapDialog.FileName;
+
+            try
+            {
+                this.obstacleMapPictureBox.ImageLocation = file;
+            }
+            catch (IOException)
+            {
+            }
         }
         private void saveMapDialog_FileOk(object sender, CancelEventArgs e)
         {
@@ -70,39 +88,199 @@ namespace RobotApplication
         }
 
         // Direction
-        private void directionTopButton_Click(object sender, EventArgs e)
+        private void directionForwardButton_Click(object sender, EventArgs e)
         {
-            //TO DO: Move robot up
+            // Move robot
+            robot.Rover.Move(true, this.speedBar.Value / 100);
+
+            // Change status
+            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
+
+            // Move map
+            MoveRobotMap(robot.Rover.Direction, false, robot.MiniMap);
         }
-        private void directionDownButton_Click(object sender, EventArgs e)
+        private void directionBackwardButton_Click(object sender, EventArgs e)
         {
             //TO DO: Move robot down
+            robot.Rover.Move(false, this.speedBar.Value / 100);
+            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
             //TO DO: Move robot left
+            robot.Rover.Turn(false, this.speedBar.Value / 100, 90);
+            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
         }
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
             //TO DO: Move robot right
+            robot.Rover.Turn(true, this.speedBar.Value / 100, 90);
+            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
+        }
+        private void MoveRobotMap(int direction, bool reverse, Map map)
+        {
+            byte[] deletedByte;
+
+            if (reverse)
+            {
+                direction += 180;
+                if (direction > 360)
+                    direction -= 360;
+            }
+            switch (direction)
+            {
+                case 0: 
+                {
+                    deletedByte = map.MapArray[map.MapArray.Length - 1];
+                    break;
+                }
+                case 90:
+                {
+                    break;
+                }
+                case 180:
+                {
+                    break;
+                }
+                case 270:
+                {
+                    break;
+                }
+                case 360:
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
         }
 
         // Movement
         private void startButton_Click(object sender, EventArgs e)
         {
             //TO DO: Start robot movement
+            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
         }
         private void stopButton_Click(object sender, EventArgs e)
         {
             //TO DO: Stop robot movement
+            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
         }
         private void pauseButton_Click(object sender, EventArgs e)
         {
             //TO DO: Stop robot movement, but when robot restart finish 
             //what it was doing before pause
+            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
         }
 
-        // Map
+        // Robot Map
+        private void CreateRobotMap(Graphics g)
+        {
+            int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE;
+            int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
+            int index = 0;
+            Pen pen = new Pen(Color.Black, 1);
+            Rectangle[] rectangles = new Rectangle[ROBOTMAP_X_SIZE * ROBOTMAP_Y_SIZE];
+
+            for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+            {
+                for (int j = 0; j < ROBOTMAP_X_SIZE; j++)
+                {
+                    int x = j * width;
+                    int y = i * height;
+                    Rectangle rectangle = new Rectangle(x, y, width, height);
+                    rectangles[index] = rectangle;
+                    index++;
+                }
+            }
+
+            g.DrawRectangles(pen, rectangles);
+        }
+        private void FillRectangle(int x, int y, Graphics g)
+        {
+            int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x;
+            int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y;
+            int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE;
+            int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
+            Brush brush = new SolidBrush(Color.Black);
+
+            g.FillRectangle(brush, xPos, yPos, width, height);
+            brush.Dispose();
+        }
+        private void EmptyRectangle(int x, int y, Graphics g)
+        {
+            int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x + 1;
+            int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y + 1;
+            int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE - 1;
+            int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE - 1;
+            Brush brush = new SolidBrush(Color.White);
+
+            g.FillRectangle(brush, xPos, yPos, width, height);
+            brush.Dispose();
+        }
+        private void robotMapPanel_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            using (Graphics g = e.Graphics)
+            {
+                CreateRobotMap(g);
+            }
+        }
+        private void xTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int x = 0;
+            int.TryParse(this.xTextBox.Text, out x);
+
+            if (x < 0)
+                x = 0;
+            if (x > ROBOTMAP_X_SIZE - 1)
+                x = ROBOTMAP_X_SIZE - 1;
+
+            this.xTextBox.Text = x.ToString();
+        }
+        private void yTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int y = 0;
+            int.TryParse(this.yTextBox.Text, out y);
+
+            if (y < 0)
+                y = 0;
+            if (y > ROBOTMAP_Y_SIZE - 1)
+                y = ROBOTMAP_Y_SIZE - 1;
+
+            this.yTextBox.Text = y.ToString();
+        }
+        private void fillRectangleButton_Click(object sender, EventArgs e)
+        {
+            int x = 0;
+            int y = 0;
+
+            int.TryParse(this.xTextBox.Text, out x);
+            int.TryParse(this.yTextBox.Text, out y);
+
+            FillRectangle(x, y, robotMapGraphic);
+        }
+        private void emptyRectangleButton_Click(object sender, EventArgs e)
+        {
+            int x = 0;
+            int y = 0;
+
+            int.TryParse(this.xTextBox.Text, out x);
+            int.TryParse(this.yTextBox.Text, out y);
+
+            EmptyRectangle(x, y, robotMapGraphic);
+        }
+
+        // Map operations
         private void forceGetMapButton_Click(object sender, EventArgs e)
         {
             //TO DO: Force getting map from server

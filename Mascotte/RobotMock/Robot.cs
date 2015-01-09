@@ -13,15 +13,13 @@ namespace RobotMock
         private Rover _rover;
         private InfraredSensor[] _infraredSensors;
         private Map _map;
-        private const int I_SIZE = 30;
-        private const int J_SIZE = 30;
 
-        public Robot()
+        public Robot(int xMapSize, int yMapSize)
         {
             _wifi = new Wifi();
             _rover = new Rover();
             _infraredSensors = new InfraredSensor[3] { new InfraredSensor('F'), new InfraredSensor('L'), new InfraredSensor('R') };
-            _map = new Map(I_SIZE, J_SIZE);
+            _map = new Map(xMapSize, yMapSize);
         }
 
         /// <summary>

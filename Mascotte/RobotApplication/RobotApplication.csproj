@@ -67,6 +67,9 @@
     <EmbeddedResource Include="ConfigurationWindow.resx">
       <DependentUpon>ConfigurationWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GridSquare.resx">
+      <DependentUpon>GridSquare.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RobotMockApp.resx">
       <DependentUpon>RobotMockApp.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,6 +134,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\pause.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OpenSpace.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RobotMock\RobotMock.csproj">
+      <Project>{2528d388-6a7d-4a98-aaae-6a449c9a4c22}</Project>
+      <Name>RobotMock</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

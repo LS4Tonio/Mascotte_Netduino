@@ -30,7 +30,6 @@
         {
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.connectionBox = new System.Windows.Forms.GroupBox();
             this.serverBox = new System.Windows.Forms.GroupBox();
             this.portTextBox = new System.Windows.Forms.TextBox();
             this.portLabel = new System.Windows.Forms.Label();
@@ -49,14 +48,13 @@
             this.exportConfFileButton = new System.Windows.Forms.Button();
             this.importConfFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.exportConfFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.connectionBox.SuspendLayout();
             this.serverBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(216, 121);
+            this.saveButton.Location = new System.Drawing.Point(216, 101);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 0;
@@ -67,25 +65,13 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(297, 121);
+            this.cancelButton.Location = new System.Drawing.Point(297, 101);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Annuler";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            // 
-            // connectionBox
-            // 
-            this.connectionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.connectionBox.Controls.Add(this.serverBox);
-            this.connectionBox.Location = new System.Drawing.Point(12, 12);
-            this.connectionBox.Name = "connectionBox";
-            this.connectionBox.Size = new System.Drawing.Size(360, 101);
-            this.connectionBox.TabIndex = 2;
-            this.connectionBox.TabStop = false;
-            this.connectionBox.Text = "Réseau";
             // 
             // serverBox
             // 
@@ -104,9 +90,9 @@
             this.serverBox.Controls.Add(this.serverLocationLabel);
             this.serverBox.Controls.Add(this.localhost);
             this.serverBox.Controls.Add(this.localNetwork);
-            this.serverBox.Location = new System.Drawing.Point(6, 19);
+            this.serverBox.Location = new System.Drawing.Point(12, 12);
             this.serverBox.Name = "serverBox";
-            this.serverBox.Size = new System.Drawing.Size(348, 74);
+            this.serverBox.Size = new System.Drawing.Size(360, 74);
             this.serverBox.TabIndex = 2;
             this.serverBox.TabStop = false;
             this.serverBox.Text = "Serveur";
@@ -118,7 +104,6 @@
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(47, 20);
             this.portTextBox.TabIndex = 12;
-            this.portTextBox.Text = "99999";
             // 
             // portLabel
             // 
@@ -137,7 +122,6 @@
             this.ip3TextBox.Name = "ip3TextBox";
             this.ip3TextBox.Size = new System.Drawing.Size(32, 20);
             this.ip3TextBox.TabIndex = 10;
-            this.ip3TextBox.Text = "255";
             // 
             // label3
             // 
@@ -156,7 +140,6 @@
             this.ip2TextBox.Name = "ip2TextBox";
             this.ip2TextBox.Size = new System.Drawing.Size(32, 20);
             this.ip2TextBox.TabIndex = 8;
-            this.ip2TextBox.Text = "255";
             // 
             // label2
             // 
@@ -175,7 +158,6 @@
             this.ip1TextBox.Name = "ip1TextBox";
             this.ip1TextBox.Size = new System.Drawing.Size(32, 20);
             this.ip1TextBox.TabIndex = 6;
-            this.ip1TextBox.Text = "255";
             // 
             // label1
             // 
@@ -194,7 +176,6 @@
             this.ip0TextBox.Name = "ip0TextBox";
             this.ip0TextBox.Size = new System.Drawing.Size(32, 20);
             this.ip0TextBox.TabIndex = 4;
-            this.ip0TextBox.Text = "255";
             // 
             // ipLabel
             // 
@@ -242,7 +223,7 @@
             // importConfFileButton
             // 
             this.importConfFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.importConfFileButton.Location = new System.Drawing.Point(12, 121);
+            this.importConfFileButton.Location = new System.Drawing.Point(12, 101);
             this.importConfFileButton.Name = "importConfFileButton";
             this.importConfFileButton.Size = new System.Drawing.Size(75, 23);
             this.importConfFileButton.TabIndex = 3;
@@ -253,7 +234,7 @@
             // exportConfFileButton
             // 
             this.exportConfFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.exportConfFileButton.Location = new System.Drawing.Point(93, 121);
+            this.exportConfFileButton.Location = new System.Drawing.Point(93, 101);
             this.exportConfFileButton.Name = "exportConfFileButton";
             this.exportConfFileButton.Size = new System.Drawing.Size(75, 23);
             this.exportConfFileButton.TabIndex = 4;
@@ -275,17 +256,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 156);
+            this.ClientSize = new System.Drawing.Size(384, 136);
+            this.Controls.Add(this.serverBox);
             this.Controls.Add(this.exportConfFileButton);
             this.Controls.Add(this.importConfFileButton);
-            this.Controls.Add(this.connectionBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ConfigurationWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Configuration";
-            this.connectionBox.ResumeLayout(false);
             this.serverBox.ResumeLayout(false);
             this.serverBox.PerformLayout();
             this.ResumeLayout(false);
@@ -296,7 +276,6 @@
 
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.GroupBox connectionBox;
         private System.Windows.Forms.GroupBox serverBox;
         private System.Windows.Forms.Label serverLocationLabel;
         private System.Windows.Forms.RadioButton localhost;
