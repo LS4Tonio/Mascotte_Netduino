@@ -21,13 +21,13 @@ namespace RobotControl
             buttonOnOff = new InputPort(Pins.ONBOARD_BTN, false, Port.ResistorMode.Disabled);
             //RangeSensorTest();
             // IT WORKS !!!!
-            // blinkTest();
+            blinkTest();
             onBoard_led.Write(true);
             Thread.Sleep(1000);
             onBoard_led.Write(false);
             Thread.Sleep(1000);
 
-            roverTest();
+            //roverTest();
             //RangeSensorTest();
         }
 

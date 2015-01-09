@@ -155,60 +155,159 @@ namespace ServerFront.GridMaker
         {
             //TO DO
         }
-        /// <summary>
-        /// Merge differents obstacles that seem the same into 
-        /// songle obstacle
-        /// </summary>
-        public void MergePoints()
+
+
+        public byte[][] MoveGrid(int direction, byte[] newLine)
         {
-            byte[][] area = new byte[3][];
-            for (int i = 0; i < area.Length; i++)
+            byte[] tmpX = new byte[this.Minimap.DatasInMiniMap[0].Length];
+            byte[] tmpY = new byte[this.Minimap.DatasInMiniMap.Length];
+            switch (direction)
             {
-                area[i] = new byte[3];
-            }
-            byte tmp = 0;
-            int[] position = new int[2];
-
-            // Check for points with obstacle
-            for (int i = 0; i < this.GridContent.Length; i++)
-            {
-                for (int j = 0; j < this.GridContent[i].Length; j++)
-                {
-                    if (this.GridContent[i][j] != 0)
+                case 1:     // Up
+                    if (this.ActualPosY > 0)
                     {
-                        // Set area
-                        area[0][0] = this.GridContent[i - 1][j - 1];
-                        area[0][1] = this.GridContent[i - 1][j];
-                        area[0][2] = this.GridContent[i - 1][j + 1];
-                        area[1][0] = this.GridContent[i][j - 1];
-                        area[1][1] = this.GridContent[i][j];
-                        area[1][2] = this.GridContent[i][j + 1];
-                        area[2][0] = this.GridContent[i + 1][j - 1];
-                        area[2][1] = this.GridContent[i + 1][j];
-                        area[2][2] = this.GridContent[i + 1][j + 1];
+                        this.ActualPosY--;
 
-                        // Get most important square
-                        for (int k = 0; k < area.Length; k++)
+                        // Save datas of the last line
+                        tmpX = this.Minimap.DatasInMiniMap[this.Minimap.DatasInMiniMap.Length - 1];
+                        // Move datas
+                        for (int i = this.Minimap.DatasInMiniMap.Length - 1; i > 0; i--)
                         {
-                            for (int l = 0; l < area[k].Length; l++)
-                            {
-                                if (area[k][l] > tmp)
-                                {
-                                    tmp = area[k][l];
-                                    position[0] = k;
-                                    position[1] = l;
-                                }
-                            }
+                            if (i == this.Minimap.DatasInMiniMap.Length)
+                                MergePoints(tmpX, this.GridContent[this.ActualPosY]);
+                            this.Minimap.DatasInMiniMap[i] = this.Minimap.DatasInMiniMap[i - 1];
+                        }
+
+                        // Get first line from parent
+                        for (int i = 0; i < this.Minimap.DatasInMiniMap[0].Length; i++)
+                        {
+                            this.Minimap.DatasInMiniMap[0][i] = this.GridContent[this.ActualPosY][this.ActualPosX + i];
                         }
                     }
+                    return this.GridContent;
+
+                case 2:     // Down
+                    var length = this.Minimap.DatasInMiniMap.Length - 1;
+
+                    this.ActualPosY++;
+
+                    //Save and merge old line 
+                    tmpX = this.Minimap.DatasInMiniMap[0];
+                    MergePoints(tmpX, this.GridContent[this.ActualPosY]);
+
+                    // Move datas
+                    for (int i = 0; i < length; i++)
+                    {
+                        this.Minimap.DatasInMiniMap[i] = this.Minimap.DatasInMiniMap[i + 1];
+                    }
+
+                    // Get last line from parent
+                    for (int i = 0; i < this.Minimap.DatasInMiniMap[0].Length; i++)
+                    {
+                        this.Minimap.DatasInMiniMap[length][i] = this.GridContent[this.ActualPosY + length][i + this.ActualPosX];
+                    }
+                    return this.GridContent;
+
+                case 3:     // Left
+                    if (this.ActualPosX > 0)
+                    {
+                        this.ActualPosX--;
+                        //Save dataline to rewrite
+                        tmpY = new byte[1];
+                        var data = new byte[1];
+                        for (int i = 0; i < this.Minimap.DatasInMiniMap.Length; i++)
+                        {
+                            tmpY[0] = this.Minimap.DatasInMiniMap[i][0];
+                            data[0] = this.GridContent[i][0];
+                            MergePoints(tmpY, data);
+                            // TODO rewriting
+                        }
+
+
+                        for (int i = 0; i < this.Minimap.DatasInMiniMap.Length; i++)
+                        {
+                            // Move datas
+                            for (int j = this.Minimap.DatasInMiniMap[i].Length - 1; j > 1; j--)
+                            {
+
+                                this.Minimap.DatasInMiniMap[i][j] = this.Minimap.DatasInMiniMap[i][j - 1];
+                            }
+
+                            // Get first column from parent
+                            this.Minimap.DatasInMiniMap[i][0] = this.GridContent[this.ActualPosY + i][this.ActualPosX];
+
+                            tmpX[i] = this.Minimap.DatasInMiniMap[i][0];
+                        }
+                    }
+                    return this.GridContent;
+
+                case 4:     // Right
+                    this.ActualPosX++;
+
+                    for (int i = 0; i < this.Minimap.DatasInMiniMap.Length; i++)
+                    {
+                        // Move datas
+                        for (int j = 0; j < this.Minimap.DatasInMiniMap[i].Length - 1; j++)
+                        {
+                            this.Minimap.DatasInMiniMap[i][j] = this.Minimap.DatasInMiniMap[i][j + 1];
+                        }
+
+                        // Get last column from parent 
+                        this.Minimap.DatasInMiniMap[i][this.Minimap.DatasInMiniMap[i].Length - 1] = this.GridContent[i][this.ActualPosX + this.Minimap.DatasInMiniMap[i].Length - 1];
+
+                        tmpY[i] = this.Minimap.DatasInMiniMap[i][this.Minimap.DatasInMiniMap[i].Length - 1];
+                    }
+                    return this.GridContent;
+
+                default:
+                    throw new ArgumentException();
+
+            }
+        }
+        public void MergePoints(byte[] tabToMerge, byte[] parentTab)
+        {
+            for (int i = 0; i < tabToMerge.Length; i++)
+            {
+                if (parentTab[i] < 63
+                            && tabToMerge[i] > 0)
+                {
+                    parentTab[i]++;
+
+                    // When adding is done, scan new value
+                    if (parentTab[i] >= 63
+                        && parentTab[i] < 128)
+                    {
+                        parentTab[i] += 1 << 7;
+                    }
                 }
+                else if (parentTab[i] <= 127
+                         && tabToMerge[i] == 0
+                         && 0 < parentTab[i])
+                {
+                    parentTab[i]--;
+                }
+                else if (parentTab[i] > 254
+                         && tabToMerge[i] == 0)
+                {
+                    parentTab[i] -= 1 << 7;
+                }
+                else if (parentTab[i] == 63
+                         || parentTab[i] >= 63
+                         && parentTab[i] < 128
+                         && tabToMerge[i] > 0)
+                {
+                    parentTab[i] = 64;
+                    parentTab[i] += 1 << 7;
+                }
+                else
+                    Console.WriteLine("Cas non identifié"); // TODO : remove that 
             }
         }
         private void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             var h = PropertyChanged;
             if (h != null) h(this, new PropertyChangedEventArgs(propertyName));
-        } 
+        }
 
     }
 }

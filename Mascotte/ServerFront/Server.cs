@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Net.Sockets;
+using System.Net;
 
 namespace ServerFront
 {
@@ -15,17 +16,28 @@ namespace ServerFront
     {
         GeneralMap _generalMap;
         string path;
+        TcpListener listener;
+        Socket soc;
+        Stream s;
+        BinaryReader _binaryReader;
+        BinaryWriter _binaryWriter;
 
         public Server()
         {
             _generalMap = new GeneralMap();
             path = @"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.dat";
+            byte[] localIP = new byte[4];
+            localIP = LocalIPAddress();
+            listener = new TcpListener(new IPAddress(localIP), 8080);
+            listener.Start();
         }
+
         public GeneralMap GeneralMap
         {
             get { return _generalMap; }
             set { _generalMap = value; }
         }
+
         public void Serialize()
         {
             //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
@@ -62,6 +74,81 @@ namespace ServerFront
                 var formatter = new BinaryFormatter();
                 _generalMap = (GeneralMap)formatter.Deserialize(file);
             }
+        }
+        public void InitializeConnection()
+        {
+            while (true)
+            {
+                soc = listener.AcceptSocket();
+                s = new NetworkStream(soc);
+                _binaryReader = new BinaryReader(s);
+                _binaryWriter = new BinaryWriter(s);
+                string order;
+                order = _binaryReader.ReadString();
+                switch (order)
+                {
+                    case "MOVE":
+                        GetGridAndMove(soc);
+                        break;
+                    case "MAP":
+                        _generalMap.Synchronize();
+                        break;
+                }
+                _binaryReader.Close();
+                s.Close();
+                soc.Close();
+            }
+        }
+        public void GetGridAndMove(Socket soc)
+        {
+            try
+            {
+                Stream s = new NetworkStream(soc);
+                Console.WriteLine(@"Some works to do");
+                while (true)
+                {
+                    //GET POSITIONs AND DIRECTION IN ONE BYTE ARRAY
+                    // DIRECTION | POSX | POSY |
+                    byte[] informations = _binaryReader.ReadBytes(3); // read position with direction of movement
+
+                    
+                    // GET LENGTH FIRST
+                    byte[] lineLen;
+                    lineLen = _binaryReader.ReadBytes(4);
+                    int dataLen = BitConverter.ToInt32(lineLen, 0);
+
+
+                    // GET CONTENT
+
+                    byte[] readMsgData = new byte[dataLen];
+                    readMsgData = _binaryReader.ReadBytes(dataLen);
+                    if (readMsgData != null)
+                    {
+                        _binaryWriter.Write(true);
+                        _generalMap.MoveGrid(informations[0], readMsgData);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public byte[] LocalIPAddress()
+        {
+            IPHostEntry host;
+            byte[] localIP = null;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.GetAddressBytes();
+                    break;
+                }
+            }
+            return localIP;
         }
     }
 }

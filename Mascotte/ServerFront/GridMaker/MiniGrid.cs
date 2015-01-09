@@ -19,13 +19,21 @@ namespace ServerFront.GridMaker
             _datas = datas;
             _parentGrid = parentGrid;
         }
-
+        /// <summary>
+        /// Getter & setter for the map calling the minimap
+        /// </summary>
+        public byte[][] ParentGridContent
+        {
+            get { return _parentGrid; }
+            set { _parentGrid = value; }
+        }
         /// <summary>
         /// Gets grid content
         /// </summary>
         public byte[][] DatasInMiniMap
         {
             get { return _datas; }
+            set { _datas = value; }
         }
         public int MiniMapSize
         {
@@ -80,93 +88,7 @@ namespace ServerFront.GridMaker
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public byte[] MoveGrid(int direction)
-        {
-            byte[] tmp = new byte[_datas[0].Length];
-            switch (direction)
-            {
-                case 1:     // Up
-                    if (MapPosY > 0)
-                    {
-                        MapPosY--;
-
-                        // Save datas of the last line
-                        tmp = _datas[_datas.Length - 1];
-
-                        // Move datas
-                        for (int i = _datas.Length - 1; i > 0; i--)
-                        {
-                            _datas[i] = _datas[i - 1];
-                        }
-
-                        // Get first line from parent
-                        for (int i = 0; i < _datas[0].Length; i++)
-                        {
-                            _datas[0][i] = _parentGrid[MapPosY][MapPosX + i];
-                        }
-                    }
-                    return _datas[0];
-
-                case 2:     // Down
-                    var length = _datas.Length - 1;
-
-                    MapPosY++;
-
-                    // Move datas
-                    for (int i = 0; i < length; i++)
-                    {
-                        _datas[i] = _datas[i + 1];
-                    }
-
-                    // Get last line from parent
-                    for (int i = 0; i < _datas[0].Length; i++)
-                    {
-                        _datas[length][i] = _parentGrid[MapPosY + length][i + MapPosX];
-                    }
-                    return _datas[length];
-
-                case 3:     // Left
-                    if (MapPosX > 0)
-                    {
-                        MapPosX--;
-
-                        for (int i = 0; i < _datas.Length; i++)
-                        {
-                            // Move datas
-                            for (int j = _datas[i].Length - 1; j > 1; j--)
-                            {
-                                _datas[i][j] = _datas[i][j - 1];
-                            }
-
-                            // Get first column from parent
-                            _datas[i][0] = _parentGrid[MapPosY + i][MapPosX];
-
-                            tmp[i] = _datas[i][0];
-                        }
-                    }
-                    return tmp;
-
-                case 4:     // Right
-                    MapPosX++;
-
-                    for (int i = 0; i < _datas.Length; i++)
-                    {
-                        // Move datas
-                        for (int j = 0; j < _datas[i].Length - 1; j++)
-                        {
-                            _datas[i][j] = _datas[i][j + 1];
-                        }
-
-                        // Get last column from parent 
-                        _datas[i][_datas[i].Length - 1] = _parentGrid[i][MapPosX + _datas[i].Length - 1];
-
-                        tmp[i] = _datas[i][_datas[i].Length - 1];
-                    }
-                    return tmp;
-
-                default:
-                    throw new ArgumentException();
-            }
-        }
+        
+        
     }
 }

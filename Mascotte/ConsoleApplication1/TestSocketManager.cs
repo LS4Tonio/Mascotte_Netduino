@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,9 @@ namespace ServerFront
         TcpListener listener;
         public TestSocketManager()
         {
-            listener = new TcpListener(8080);
+            byte[] localIP = new byte[4];
+            localIP = LocalIPAddress();
+            TcpListener listener = new TcpListener(new IPAddress(localIP), 8080);
             listener.Start();
 
             while (true)
@@ -43,30 +46,21 @@ namespace ServerFront
                 soc.Close();
             }
         }
-    }
-    public class TCPClientNetduino
-    {
-        TcpClient client;
-        public TCPClientNetduino()
+        public byte[] LocalIPAddress()
         {
-            client = new TcpClient("host", 8080);
-            try
+            IPHostEntry host;
+            byte[] localIP = null;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
             {
-                Stream s = client.GetStream();
-                StreamReader sr = new StreamReader(s);
-                StreamWriter sw = new StreamWriter(s);
-                sw.AutoFlush = true;
-
-                while (true)
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    // TODO : some mysterious things 
+                    localIP = ip.GetAddressBytes();
+                    break;
                 }
-                s.Close();
             }
-            finally
-            {
-                client.Close();
-            }
+            return localIP;
         }
     }
+
 }
