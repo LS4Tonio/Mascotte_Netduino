@@ -168,7 +168,7 @@ namespace Tests
         [Test]
         public void RobotTests()
         {
-            Robot r = new Robot();
+            Robot r = new Robot(8, 8);
             Assert.NotNull(r, "robot doesn't exist");
 
             r.Rover.Move(true, 0.75);

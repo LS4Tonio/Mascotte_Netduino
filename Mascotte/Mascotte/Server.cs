@@ -18,7 +18,8 @@ namespace Mascotte
         public Server()
         {
             _generalMap = new GeneralMap();
-            path = @"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.dat";
+            //path = @"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.dat";
+            path = @"D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\Mascotte\toto.dat"; // Pour le PC d'Antoine
         }
         public GeneralMap GeneralMap
         {

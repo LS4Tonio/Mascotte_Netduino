@@ -10,7 +10,7 @@ namespace Tests
 {
     public class EnvironmentTests
     {
-        string bitmapPath = @"D:\LS4Tonio\Pictures\OpenSpace.bmp";
+        string bitmapPath = @"D:\LS4Tonio\Pictures\Mascotte\OpenSpace.bmp";
 
         [Test]
         public void IsExists()
