@@ -47,8 +47,11 @@
     <Compile Include="GeneralMapTests.cs" />
     <Compile Include="MiniGridTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
     <Compile Include="RobotMockTests.cs" />
+=======
     <Compile Include="ServerTest.cs" />
+>>>>>>> origin/Interface-Noyau
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mascotte\Mascotte.csproj">

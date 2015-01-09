@@ -18,6 +18,7 @@ namespace NetduinoApplication5
             rover.Move(DELTA);
             dist2 = captor.Read();
             _angleOfRobot = System.Math.Atan((dist1 - dist2) / 15);
+            rover.AngleOfRobot = _angleOfRobot;
 
             if (_angleOfRobot < 0 && captor.Name == "Left")
                 rover.Turn(); // TODO : Add -angle
@@ -27,6 +28,7 @@ namespace NetduinoApplication5
                 rover.Turn(); // TODO : Add angle
             else if (_angleOfRobot > 0 && captor.Name == "Right")
                 rover.Turn(); // TODO : Add -angle
+            
         }
 
         public bool IsObjectHere(RangeSensor captor)

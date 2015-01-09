@@ -59,6 +59,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Server.cs" />
+    <Page Include="MainGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,12 +73,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AspectRatioLayoutDecorator.cs" />
+    <Compile Include="GridMaker\GeneralMap.cs" />
+    <Compile Include="GridMaker\MiniGrid.cs" />
+    <Compile Include="MainGrid.xaml.cs">
+      <DependentUpon>MainGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -108,6 +119,12 @@
   <ItemGroup>
     <Resource Include="Images\GrayLarge.png" />
     <Resource Include="Images\GreenLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mascotte\Mascotte.csproj">
+      <Project>{dd201426-361b-4f5b-950f-4b17aa44c996}</Project>
+      <Name>Mascotte</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -69,13 +69,21 @@ namespace Tests
                 }
             }
         }
-
+        public void addDatasInMinimapMargin(MiniGrid grid)
+        {
+            for (int i = 0; i < grid.DatasInMiniMap.Length; i++)
+            {
+                for (int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
+                {
+                }
+            }
+        }
         public void addDatasInMinimap(MiniGrid grid)
         {
 
             for (int i = 0; i < grid.DatasInMiniMap.Length; i++)
             {
-                for(int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
+                for (int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
                 {
                     if (i % 2 == 0)
                     {

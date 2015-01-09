@@ -70,23 +70,25 @@ namespace Tests
             }
         }
 <<<<<<< HEAD
-        
+
 =======
-
-        public void MarginOfErrorTest()
+        public void addDatasInMinimapMargin(MiniGrid grid)
         {
-            GeneralMap gm = new GeneralMap();
+            for (int i = 0; i < grid.DatasInMiniMap.Length; i++)
+            {
+                for (int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
+                {
 
-            addDatasInGrid(gm.GridContent);
+                }
+            }
         }
-
->>>>>>> MarginError
+>>>>>>> origin/Interface-Noyau
         public void addDatasInMinimap(MiniGrid grid)
         {
 
             for (int i = 0; i < grid.DatasInMiniMap.Length; i++)
             {
-                for(int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
+                for (int j = 0; j < grid.DatasInMiniMap[i].Length; j++)
                 {
                     if (i % 2 == 0)
                     {

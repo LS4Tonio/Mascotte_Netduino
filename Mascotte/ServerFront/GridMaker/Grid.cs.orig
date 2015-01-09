@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Mascotte
+{
+    public abstract class Grid
+    {
+        public Grid(byte[][] grid)
+        {
+            
+        }
+<<<<<<< HEAD:Mascotte/Mascotte/GridMaker/Grid.cs
+        public Grid(byte[][] grid, byte[][] parentGrid)
+        {
+            
+        }
+        public abstract void Synchronize();
+=======
+        public abstract void Synchronisation();
+>>>>>>> Serveur:Mascotte/Mascotte/Grid.cs
+    }
+}
