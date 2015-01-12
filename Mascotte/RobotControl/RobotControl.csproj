@@ -49,9 +49,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AngrySquirrel.Netduino.ProximitySensor">
-      <HintPath>..\packages\AngrySquirrel.Netduino.ProximitySensor.1.0.0.0\lib\netmf42\AngrySquirrel.Netduino.ProximitySensor.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.SPOT.Hardware" />
     <Reference Include="Microsoft.SPOT.Hardware.PWM" />
     <Reference Include="Microsoft.SPOT.Hardware.SerialPort" />
