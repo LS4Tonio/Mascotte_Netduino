@@ -91,13 +91,30 @@ namespace ServerFront
                         GetGridAndMove(soc);
                         break;
                     case "MAP":
+                        GeneralMap.Minimap.DatasInMiniMap = SyncMap();
                         _generalMap.Synchronize();
+                        _binaryWriter.Write(true);
                         break;
                 }
                 _binaryReader.Close();
                 s.Close();
                 soc.Close();
             }
+        }
+        public byte[][] SyncMap()
+        {
+            byte[] tableLen;
+            tableLen = _binaryReader.ReadBytes(4);
+            int dataLen = BitConverter.ToInt32(tableLen, 0);
+            byte[][] tmpMap = new byte[dataLen][];
+            for (int i = 0; i < dataLen; i++)
+            {
+                byte[] lineLen = _binaryReader.ReadBytes(4);
+                int _dataLen = BitConverter.ToInt32(lineLen, 0);
+                tmpMap[i] = new byte[_dataLen];
+                tmpMap[i] = _binaryReader.ReadBytes(_dataLen);
+            }
+            return tmpMap;
         }
         public void GetGridAndMove(Socket soc)
         {
@@ -111,7 +128,7 @@ namespace ServerFront
                     // DIRECTION | POSX | POSY |
                     byte[] informations = _binaryReader.ReadBytes(3); // read position with direction of movement
 
-                    
+
                     // GET LENGTH FIRST
                     byte[] lineLen;
                     lineLen = _binaryReader.ReadBytes(4);

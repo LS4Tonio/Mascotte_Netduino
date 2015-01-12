@@ -18,6 +18,7 @@ namespace RobotApplication
         ConfigurationWindow confWindow;
         Robot robot;
         Graphics robotMapGraphic;
+        ClientConnection connection;
         const int ROBOTMAP_X_SIZE = 8;
         const int ROBOTMAP_Y_SIZE = 8;
 
@@ -27,6 +28,7 @@ namespace RobotApplication
             confWindow = new ConfigurationWindow();
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
+            connection = new ClientConnection();
         }
 
         // Menu
