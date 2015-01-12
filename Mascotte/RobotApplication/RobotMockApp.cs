@@ -29,6 +29,8 @@ namespace RobotApplication
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
             connection = new ClientConnection();
+            if (connection.IsConnected)
+                connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;
         }
 
         // Menu

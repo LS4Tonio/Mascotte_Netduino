@@ -12,6 +12,7 @@ namespace RobotApplication
     public class ClientConnection
     {
         TcpClient client;
+        bool isConnected;
         public ClientConnection()
         {
             string name = Dns.GetHostName();
@@ -20,14 +21,21 @@ namespace RobotApplication
                 IPAddress[] addrs = Dns.GetHostEntry(name).AddressList;
                 foreach (IPAddress addr in addrs)
                     Console.WriteLine("{0}/{1}", name, addr);
+                isConnected = true;
             }
             catch (Exception e)
             {
+                isConnected = false;
                 Console.WriteLine(e.Message);
             }
 
             client = new TcpClient(name, 8080);
 
+        }
+        public bool IsConnected
+        {
+            get { return isConnected; }
+            set { isConnected = value; }
         }
         /// <summary>
         /// Sending datas for action move

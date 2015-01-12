@@ -6,7 +6,6 @@ using Microsoft.SPOT;
 using Microsoft.SPOT.Hardware;
 using SecretLabs.NETMF.Hardware;
 using SecretLabs.NETMF.Hardware.Netduino;
-using AngrySquirrel.Netduino.ProximitySensor;
 
 namespace RobotControl
 {
@@ -31,7 +30,6 @@ namespace RobotControl
             //roverTest();
             //RangeSensorTest();
 
-            ProximitySensor ps = new ProximitySensor();
         }
 
         public static void blinkTest()
