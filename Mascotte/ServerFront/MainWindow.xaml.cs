@@ -27,7 +27,6 @@ namespace ServerFront
         MainWindowViewModel _vm;
         MainGrid maingrid;
         protected const int MARGIN_ACCEPTABLE = 1; // TODO : no inspiration, change this name
-        public List<Test> a;
         
         public MainWindow()
         {

@@ -27,9 +27,9 @@ namespace RobotApplication
             InitializeComponent();
 
             confWindow = new ConfigurationWindow();
-            /*connection = new ClientConnection();
+            connection = new ClientConnection();
             if (connection.IsConnected)
-                connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;*/
+                connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;
 
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
