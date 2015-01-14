@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\Fluent.Ribbon.3.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -125,6 +126,12 @@
       <Project>{dd201426-361b-4f5b-950f-4b17aa44c996}</Project>
       <Name>Mascotte</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Green.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
