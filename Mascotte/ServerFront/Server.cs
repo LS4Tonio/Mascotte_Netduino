@@ -128,15 +128,12 @@ namespace ServerFront
                     // DIRECTION | POSX | POSY |
                     byte[] informations = _binaryReader.ReadBytes(3); // read position with direction of movement
 
-
                     // GET LENGTH FIRST
                     byte[] lineLen;
                     lineLen = _binaryReader.ReadBytes(4);
                     int dataLen = BitConverter.ToInt32(lineLen, 0);
 
-
                     // GET CONTENT
-
                     byte[] readMsgData = new byte[dataLen];
                     readMsgData = _binaryReader.ReadBytes(dataLen);
                     if (readMsgData != null)

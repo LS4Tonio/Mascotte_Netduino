@@ -558,6 +558,7 @@
             this.MinimumSize = new System.Drawing.Size(650, 470);
             this.Name = "RobotMockApp";
             this.Text = "Netduino Simulator";
+            this.Shown += new System.EventHandler(this.RobotMockApp_Shown);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);

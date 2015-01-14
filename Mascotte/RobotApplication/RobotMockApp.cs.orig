@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,27 +16,46 @@ namespace RobotApplication
 {
     public partial class RobotMockApp : Form
     {
-        ConfigurationWindow confWindow;
-        Robot robot;
-        Graphics robotMapGraphic;
-        ClientConnection connection;
+        private ConfigurationWindow confWindow;
+        private ErrorWindow errorWindow;
+        private Robot robot;
+        private Graphics robotMapGraphic;
+        private ClientConnection client;
+        private System.Windows.Forms.Timer timer;
+        private bool isConnectionErrorShown;
         const int ROBOTMAP_X_SIZE = 8;
         const int ROBOTMAP_Y_SIZE = 8;
 
         public RobotMockApp()
         {
+            // Window components
             InitializeComponent();
             confWindow = new ConfigurationWindow();
-            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
-            robotMapGraphic = this.robotMapPanel.CreateGraphics();
 <<<<<<< HEAD
-            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
-            robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
-=======
             connection = new ClientConnection();
             if (connection.IsConnected)
                 connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;
->>>>>>> origin/Interface-Noyau
+=======
+            errorWindow = new ErrorWindow();
+
+            // Server
+            client = new ClientConnection();
+>>>>>>> origin/AppMock
+
+            // Mock
+            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
+            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+
+            // Robot map
+            robotMapGraphic = this.robotMapPanel.CreateGraphics();
+            robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
+
+            // Timer for connection checks
+            timer = new System.Windows.Forms.Timer();
+            timer.Tick += new EventHandler(ConnectionTimer);
+            timer.Interval = 500; // in miliseconds
+            timer.Start();
+            isConnectionErrorShown = false;
         }
 
         // Menu
@@ -147,7 +167,7 @@ namespace RobotApplication
             // Change status
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
-            
+
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
         }
@@ -281,6 +301,7 @@ namespace RobotApplication
             int.TryParse(this.xTextBox.Text, out x);
             int.TryParse(this.yTextBox.Text, out y);
 
+            robot.MiniMap.MapArray[x][y] = 255;
             FillRectangle(x, y, robotMapGraphic);
         }
         private void emptyRectangleButton_Click(object sender, EventArgs e)
@@ -291,6 +312,7 @@ namespace RobotApplication
             int.TryParse(this.xTextBox.Text, out x);
             int.TryParse(this.yTextBox.Text, out y);
 
+            robot.MiniMap.MapArray[x][y] = 0;
             EmptyRectangle(x, y, robotMapGraphic);
         }
 
@@ -306,6 +328,41 @@ namespace RobotApplication
         private void MiniMap_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateMap(robotMapGraphic, robot.MiniMap);
+        }
+
+        // Server
+        private void CheckConnectionWithServer()
+        {
+            var networkOff = global::RobotApplication.Properties.Resources.networkOff;
+            var networkOn = global::RobotApplication.Properties.Resources.networkOn;
+            string message = "";
+
+            if (client.CheckConnection(out message))
+            {
+                this.connectionStatus.Text = @"Connecté";
+                this.connectionStatus.Image = networkOn;
+                isConnectionErrorShown = false;
+            }
+            else
+            {
+                this.connectionStatus.Text = @"Déconnecté";
+                this.connectionStatus.Image = networkOff;
+                if (!isConnectionErrorShown)
+                {
+                    isConnectionErrorShown = true;
+                    errorWindow.SetErrorMessage("Erreur de connexion", "Aucune connexion", message);
+                }
+            }
+        }
+
+        // Connection Events
+        private void RobotMockApp_Shown(object sender, EventArgs e)
+        {
+            CheckConnectionWithServer();
+        }
+        private void ConnectionTimer(object sender, EventArgs e)
+        {
+            CheckConnectionWithServer();
         }
     }
 }
