@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 using System.Net.Sockets;
 using System.Net;
 
-namespace ServerFront
+namespace RobotServer
 {
     public class Server
     {

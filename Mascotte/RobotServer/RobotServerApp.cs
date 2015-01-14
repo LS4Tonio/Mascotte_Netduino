@@ -12,9 +12,12 @@ namespace RobotServer
 {
     public partial class RobotServerApp : Form
     {
+        Server server;
+
         public RobotServerApp()
         {
             InitializeComponent();
+            server = new Server();
         }
     }
 }

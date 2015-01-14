@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GridMaker\GeneralMap.cs" />
+    <Compile Include="GridMaker\MiniGrid.cs" />
     <Compile Include="RobotServerApp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -52,6 +54,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server.cs" />
     <EmbeddedResource Include="RobotServerApp.resx">
       <DependentUpon>RobotServerApp.cs</DependentUpon>
     </EmbeddedResource>
