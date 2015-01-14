@@ -27,6 +27,8 @@ namespace ServerFront
         MainWindowViewModel _vm;
         MainGrid maingrid;
         protected const int MARGIN_ACCEPTABLE = 1; // TODO : no inspiration, change this name
+        public List<Test> a;
+        
         public MainWindow()
         {
             _vm = new MainWindowViewModel();
@@ -85,8 +87,9 @@ namespace ServerFront
             grid.ColumnDefinitions.Add( new ColumnDefinition() );
             grid.RowDefinitions.Add( new RowDefinition() );*/
         }
+
         public string test2 { get; set; }
-        public List<Test> a;
+
         public void Refresh()
         {
             for (int i = 0; i < server.GeneralMap.GridContent.Length; i++)
@@ -95,7 +98,13 @@ namespace ServerFront
                 {
                     server.GeneralMap.GridContent[i][j] = 42;
                     var background = new Image();
-                    background.Source = new BitmapImage(new Uri(@"D:\INTECH\Mascotte_Netduino\Mascotte\ServerFront\Images\Gray.png"));
+
+                    var logo = new BitmapImage();
+                    logo.BeginInit();
+                    logo.UriSource = new Uri("pack://ServerFront:,,,/ResourceFile.xaml", UriKind.Absolute);
+                    logo.EndInit();
+                    background.Source = logo;
+
                     //if (server.GeneralMap.GridContent[i][j] < 63)
                     //    background.Opacity = (server.GeneralMap.GridContent[i][j] / 100);
 
@@ -103,7 +112,6 @@ namespace ServerFront
                     Grid.SetRow(background, j);
                     maingrid.MainGrid1.Children.Add(background);
                 }
-
             }
         }
     }
@@ -113,6 +121,7 @@ namespace ServerFront
         {
             Un = "un";
         }
+
         public String Un { get; set; }
 
         public void truc()
@@ -120,16 +129,11 @@ namespace ServerFront
             byte[,] multiDimensionalArray = new byte[4, 10];
             byte[][] arrayOfArrays = new byte[4][];
             for (int i = 0; i < arrayOfArrays.Length; i++)
-            {
                 arrayOfArrays[i] = new byte[10];
-            }
         }
         //map1.GridContent
-
     }
-
     //load file: canvas OR grid.
     //implement a grid to canvas and a canvas to grid
     //save file
-
 }

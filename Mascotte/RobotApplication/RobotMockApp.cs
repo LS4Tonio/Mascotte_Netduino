@@ -25,14 +25,16 @@ namespace RobotApplication
         public RobotMockApp()
         {
             InitializeComponent();
+
             confWindow = new ConfigurationWindow();
+            /*connection = new ClientConnection();
+            if (connection.IsConnected)
+                connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;*/
+
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
             robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
-            connection = new ClientConnection();
-            if (connection.IsConnected)
-                connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;
         }
 
         // Menu
@@ -278,6 +280,7 @@ namespace RobotApplication
             int.TryParse(this.xTextBox.Text, out x);
             int.TryParse(this.yTextBox.Text, out y);
 
+            robot.MiniMap.MapArray[x][y] = 255;
             FillRectangle(x, y, robotMapGraphic);
         }
         private void emptyRectangleButton_Click(object sender, EventArgs e)
@@ -288,6 +291,7 @@ namespace RobotApplication
             int.TryParse(this.xTextBox.Text, out x);
             int.TryParse(this.yTextBox.Text, out y);
 
+            robot.MiniMap.MapArray[x][y] = 0;
             EmptyRectangle(x, y, robotMapGraphic);
         }
 

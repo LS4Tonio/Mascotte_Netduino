@@ -13,6 +13,7 @@ namespace RobotApplication
     {
         TcpClient client;
         bool isConnected;
+
         public ClientConnection()
         {
             string name = Dns.GetHostName();
@@ -32,11 +33,13 @@ namespace RobotApplication
             client = new TcpClient(name, 8080);
 
         }
+
         public bool IsConnected
         {
             get { return isConnected; }
             set { isConnected = value; }
         }
+
         /// <summary>
         /// Sending datas for action move
         /// </summary>
@@ -73,17 +76,19 @@ namespace RobotApplication
         {
             try
             {
-
                 Stream s = client.GetStream();
                 BinaryReader _binaryReader = new BinaryReader(s);
                 BinaryWriter _binaryWriter = new BinaryWriter(s);
+
                 _binaryWriter.Write("MAP");
                 _binaryWriter.Write(BitConverter.GetBytes((Int32)map.Length)); // Sending length of the table with 4 bytes
+
                 for (int i = 0; i < map.Length; i++)
                 {
                     _binaryWriter.Write(BitConverter.GetBytes((Int32)map[i].Length)); // Sending length of the table with 4 bytes
                     _binaryWriter.Write(map[i], 0, map[i].Length);
                 }
+
                 while (_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
             }
             catch (Exception e)

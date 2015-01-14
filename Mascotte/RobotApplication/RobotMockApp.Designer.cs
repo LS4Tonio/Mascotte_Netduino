@@ -50,6 +50,8 @@
             this.forceSendButton = new System.Windows.Forms.Button();
             this.forceGetMapButton = new System.Windows.Forms.Button();
             this.directionBox = new System.Windows.Forms.GroupBox();
+            this.robotAngleTextBox = new System.Windows.Forms.TextBox();
+            this.robotAngleLabel = new System.Windows.Forms.Label();
             this.pauseButton = new System.Windows.Forms.Button();
             this.actualMovement = new System.Windows.Forms.PictureBox();
             this.stopButton = new System.Windows.Forms.Button();
@@ -69,8 +71,6 @@
             this.obstacleMapPictureBox = new System.Windows.Forms.PictureBox();
             this.loadMapDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMapDialog = new System.Windows.Forms.SaveFileDialog();
-            this.robotAngleLabel = new System.Windows.Forms.Label();
-            this.robotAngleTextBox = new System.Windows.Forms.TextBox();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.controlPanel.SuspendLayout();
@@ -118,15 +118,12 @@
             // 
             // menuStrip
             // 
-            this.menuStrip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.applicationStripMenu,
             this.configureMenuButton});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(161, 25);
+            this.menuStrip.Size = new System.Drawing.Size(657, 25);
             this.menuStrip.TabIndex = 3;
             this.menuStrip.Text = "Menu";
             // 
@@ -330,6 +327,24 @@
             this.directionBox.TabStop = false;
             this.directionBox.Text = "Direction";
             // 
+            // robotAngleTextBox
+            // 
+            this.robotAngleTextBox.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.robotAngleTextBox.Location = new System.Drawing.Point(47, 17);
+            this.robotAngleTextBox.Name = "robotAngleTextBox";
+            this.robotAngleTextBox.ReadOnly = true;
+            this.robotAngleTextBox.Size = new System.Drawing.Size(31, 20);
+            this.robotAngleTextBox.TabIndex = 9;
+            // 
+            // robotAngleLabel
+            // 
+            this.robotAngleLabel.AutoSize = true;
+            this.robotAngleLabel.Location = new System.Drawing.Point(7, 20);
+            this.robotAngleLabel.Name = "robotAngleLabel";
+            this.robotAngleLabel.Size = new System.Drawing.Size(43, 13);
+            this.robotAngleLabel.TabIndex = 8;
+            this.robotAngleLabel.Text = "Angle : ";
+            // 
             // pauseButton
             // 
             this.pauseButton.Image = global::RobotApplication.Properties.Resources.pause;
@@ -528,24 +543,6 @@
             // 
             this.saveMapDialog.Title = "Sauvegarder la map";
             this.saveMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMapDialog_FileOk);
-            // 
-            // robotAngleLabel
-            // 
-            this.robotAngleLabel.AutoSize = true;
-            this.robotAngleLabel.Location = new System.Drawing.Point(7, 20);
-            this.robotAngleLabel.Name = "robotAngleLabel";
-            this.robotAngleLabel.Size = new System.Drawing.Size(43, 13);
-            this.robotAngleLabel.TabIndex = 8;
-            this.robotAngleLabel.Text = "Angle : ";
-            // 
-            // robotAngleTextBox
-            // 
-            this.robotAngleTextBox.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.robotAngleTextBox.Location = new System.Drawing.Point(47, 17);
-            this.robotAngleTextBox.Name = "robotAngleTextBox";
-            this.robotAngleTextBox.ReadOnly = true;
-            this.robotAngleTextBox.Size = new System.Drawing.Size(31, 20);
-            this.robotAngleTextBox.TabIndex = 9;
             // 
             // RobotMockApp
             // 
