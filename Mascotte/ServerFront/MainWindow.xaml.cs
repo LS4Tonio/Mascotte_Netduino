@@ -30,9 +30,6 @@ namespace ServerFront
         public MainWindow()
         {
             _vm = new MainWindowViewModel();
-            a = new List<Test>();
-            a.Add(new Test());
-            a.Add(new Test());
             test2 = "coucou";
             InitializeComponent();
             Fluent.TextBox textbox1 = new Fluent.TextBox();
@@ -86,7 +83,6 @@ namespace ServerFront
             grid.RowDefinitions.Add( new RowDefinition() );*/
         }
         public string test2 { get; set; }
-        public List<Test> a;
         public void Refresh()
         {
             for (int i = 0; i < server.GeneralMap.GridContent.Length; i++)
@@ -95,39 +91,19 @@ namespace ServerFront
                 {
                     server.GeneralMap.GridContent[i][j] = 42;
                     var background = new Image();
-                    background.Source = new BitmapImage(new Uri(@"D:\INTECH\Mascotte_Netduino\Mascotte\ServerFront\Images\Gray.png"));
-                    //if (server.GeneralMap.GridContent[i][j] < 63)
-                    //    background.Opacity = (server.GeneralMap.GridContent[i][j] / 100);
+                    //background.Source = new BitmapImage(new Uri(@"D:\INTECH\Mascotte_Netduino\Mascotte\ServerFront\Images\Gray.png"));     
+                    background.Source = (ImageSource)Resources["Gray.png"];
 
                     Grid.SetColumn(background, i);
                     Grid.SetRow(background, j);
                     maingrid.MainGrid1.Children.Add(background);
+                    
                 }
 
             }
         }
     }
-    public class Test
-    {
-        public Test()
-        {
-            Un = "un";
-        }
-        public String Un { get; set; }
-
-        public void truc()
-        {
-            byte[,] multiDimensionalArray = new byte[4, 10];
-            byte[][] arrayOfArrays = new byte[4][];
-            for (int i = 0; i < arrayOfArrays.Length; i++)
-            {
-                arrayOfArrays[i] = new byte[10];
-            }
-        }
-        //map1.GridContent
-
-    }
-
+    
     //load file: canvas OR grid.
     //implement a grid to canvas and a canvas to grid
     //save file

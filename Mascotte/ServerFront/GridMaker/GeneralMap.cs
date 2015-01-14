@@ -22,6 +22,7 @@ namespace ServerFront.GridMaker
         [NonSerialized]
         MiniGrid _minimap;
         byte[][] _gridContent;
+        string actualMessage;
         int _actualPosX;
         int _actualPosY;
         protected const int GENERAL_MAP_SIZE = 200;
@@ -45,7 +46,7 @@ namespace ServerFront.GridMaker
                     GridContent[i][j] = 0;
                 }
             }
-
+            actualMessage = null;
             _minimap = new MiniGrid(datas, this.GridContent);
         }
 
@@ -61,6 +62,7 @@ namespace ServerFront.GridMaker
                 RaisePropertyChanged();
             }
         }
+        public string ActualMessage { get; set; }
         /// <summary>
         /// Gets minimap
         /// </summary>
@@ -153,7 +155,8 @@ namespace ServerFront.GridMaker
         /// <param name="p"></param>
         private void ThrowMessage(string p)
         {
-            //TO DO
+            ActualMessage = p;
+            RaisePropertyChanged();
         }
 
 
