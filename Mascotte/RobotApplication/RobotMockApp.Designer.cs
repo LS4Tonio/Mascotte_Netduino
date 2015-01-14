@@ -40,6 +40,7 @@
             this.configureMenuButton = new System.Windows.Forms.ToolStripButton();
             this.controlPanel = new System.Windows.Forms.GroupBox();
             this.rectangleBox = new System.Windows.Forms.GroupBox();
+            this.emptyRectangleButton = new System.Windows.Forms.Button();
             this.yLabel = new System.Windows.Forms.Label();
             this.xLabel = new System.Windows.Forms.Label();
             this.yTextBox = new System.Windows.Forms.TextBox();
@@ -64,10 +65,12 @@
             this.robotMapTab = new System.Windows.Forms.TabPage();
             this.robotMapPanel = new System.Windows.Forms.Panel();
             this.obstaclesMapTab = new System.Windows.Forms.TabPage();
+            this.obstacleMapPanel = new System.Windows.Forms.Panel();
             this.obstacleMapPictureBox = new System.Windows.Forms.PictureBox();
             this.loadMapDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMapDialog = new System.Windows.Forms.SaveFileDialog();
-            this.emptyRectangleButton = new System.Windows.Forms.Button();
+            this.robotAngleLabel = new System.Windows.Forms.Label();
+            this.robotAngleTextBox = new System.Windows.Forms.TextBox();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.controlPanel.SuspendLayout();
@@ -80,6 +83,7 @@
             this.mapsPanel.SuspendLayout();
             this.robotMapTab.SuspendLayout();
             this.obstaclesMapTab.SuspendLayout();
+            this.obstacleMapPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.obstacleMapPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,8 +102,8 @@
             // 
             this.connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOff;
             this.connectionStatus.Name = "connectionStatus";
-            this.connectionStatus.Size = new System.Drawing.Size(129, 17);
-            this.connectionStatus.Text = "Status de connexion";
+            this.connectionStatus.Size = new System.Drawing.Size(135, 17);
+            this.connectionStatus.Text = "Status de connexion :";
             this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
             // robotStatus
@@ -108,8 +112,8 @@
             this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
             this.robotStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.robotStatus.Name = "robotStatus";
-            this.robotStatus.Size = new System.Drawing.Size(103, 17);
-            this.robotStatus.Text = "Status du robot";
+            this.robotStatus.Size = new System.Drawing.Size(109, 17);
+            this.robotStatus.Text = "Status du robot :";
             this.robotStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
             // menuStrip
@@ -206,6 +210,16 @@
             this.rectangleBox.TabStop = false;
             this.rectangleBox.Text = "Rectangle";
             // 
+            // emptyRectangleButton
+            // 
+            this.emptyRectangleButton.Location = new System.Drawing.Point(140, 39);
+            this.emptyRectangleButton.Name = "emptyRectangleButton";
+            this.emptyRectangleButton.Size = new System.Drawing.Size(75, 23);
+            this.emptyRectangleButton.TabIndex = 12;
+            this.emptyRectangleButton.Text = "Vider";
+            this.emptyRectangleButton.UseVisualStyleBackColor = true;
+            this.emptyRectangleButton.Click += new System.EventHandler(this.emptyRectangleButton_Click);
+            // 
             // yLabel
             // 
             this.yLabel.AutoSize = true;
@@ -298,6 +312,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.directionBox.BackColor = System.Drawing.SystemColors.ControlLight;
             this.directionBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.directionBox.Controls.Add(this.robotAngleTextBox);
+            this.directionBox.Controls.Add(this.robotAngleLabel);
             this.directionBox.Controls.Add(this.pauseButton);
             this.directionBox.Controls.Add(this.actualMovement);
             this.directionBox.Controls.Add(this.stopButton);
@@ -474,7 +490,7 @@
             // 
             // obstaclesMapTab
             // 
-            this.obstaclesMapTab.Controls.Add(this.obstacleMapPictureBox);
+            this.obstaclesMapTab.Controls.Add(this.obstacleMapPanel);
             this.obstaclesMapTab.Location = new System.Drawing.Point(4, 22);
             this.obstaclesMapTab.Name = "obstaclesMapTab";
             this.obstaclesMapTab.Padding = new System.Windows.Forms.Padding(3);
@@ -483,12 +499,23 @@
             this.obstaclesMapTab.Text = "Obstacles";
             this.obstaclesMapTab.UseVisualStyleBackColor = true;
             // 
+            // obstacleMapPanel
+            // 
+            this.obstacleMapPanel.AutoScroll = true;
+            this.obstacleMapPanel.Controls.Add(this.obstacleMapPictureBox);
+            this.obstacleMapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.obstacleMapPanel.Location = new System.Drawing.Point(3, 3);
+            this.obstacleMapPanel.Name = "obstacleMapPanel";
+            this.obstacleMapPanel.Size = new System.Drawing.Size(395, 368);
+            this.obstacleMapPanel.TabIndex = 1;
+            // 
             // obstacleMapPictureBox
             // 
             this.obstacleMapPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.obstacleMapPictureBox.Location = new System.Drawing.Point(3, 3);
+            this.obstacleMapPictureBox.Location = new System.Drawing.Point(0, 0);
             this.obstacleMapPictureBox.Name = "obstacleMapPictureBox";
             this.obstacleMapPictureBox.Size = new System.Drawing.Size(395, 368);
+            this.obstacleMapPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.obstacleMapPictureBox.TabIndex = 0;
             this.obstacleMapPictureBox.TabStop = false;
             // 
@@ -502,15 +529,23 @@
             this.saveMapDialog.Title = "Sauvegarder la map";
             this.saveMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMapDialog_FileOk);
             // 
-            // emptyRectangleButton
+            // robotAngleLabel
             // 
-            this.emptyRectangleButton.Location = new System.Drawing.Point(140, 39);
-            this.emptyRectangleButton.Name = "emptyRectangleButton";
-            this.emptyRectangleButton.Size = new System.Drawing.Size(75, 23);
-            this.emptyRectangleButton.TabIndex = 12;
-            this.emptyRectangleButton.Text = "Vider";
-            this.emptyRectangleButton.UseVisualStyleBackColor = true;
-            this.emptyRectangleButton.Click += new System.EventHandler(this.emptyRectangleButton_Click);
+            this.robotAngleLabel.AutoSize = true;
+            this.robotAngleLabel.Location = new System.Drawing.Point(7, 20);
+            this.robotAngleLabel.Name = "robotAngleLabel";
+            this.robotAngleLabel.Size = new System.Drawing.Size(43, 13);
+            this.robotAngleLabel.TabIndex = 8;
+            this.robotAngleLabel.Text = "Angle : ";
+            // 
+            // robotAngleTextBox
+            // 
+            this.robotAngleTextBox.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.robotAngleTextBox.Location = new System.Drawing.Point(47, 17);
+            this.robotAngleTextBox.Name = "robotAngleTextBox";
+            this.robotAngleTextBox.ReadOnly = true;
+            this.robotAngleTextBox.Size = new System.Drawing.Size(31, 20);
+            this.robotAngleTextBox.TabIndex = 9;
             // 
             // RobotMockApp
             // 
@@ -535,6 +570,7 @@
             this.rectangleBox.PerformLayout();
             this.mapBox.ResumeLayout(false);
             this.directionBox.ResumeLayout(false);
+            this.directionBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.actualMovement)).EndInit();
             this.speedBox.ResumeLayout(false);
             this.speedBox.PerformLayout();
@@ -542,6 +578,7 @@
             this.mapsPanel.ResumeLayout(false);
             this.robotMapTab.ResumeLayout(false);
             this.obstaclesMapTab.ResumeLayout(false);
+            this.obstacleMapPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.obstacleMapPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -589,6 +626,9 @@
         private System.Windows.Forms.TextBox yTextBox;
         private System.Windows.Forms.TextBox xTextBox;
         private System.Windows.Forms.Button emptyRectangleButton;
+        private System.Windows.Forms.Panel obstacleMapPanel;
+        private System.Windows.Forms.TextBox robotAngleTextBox;
+        private System.Windows.Forms.Label robotAngleLabel;
     }
 }
 

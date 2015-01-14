@@ -83,7 +83,7 @@ namespace RobotMock
         }
         /// <summary>
         /// Gets Rover's direction exprimed with angle.
-        /// 0 (or 360): up, 180: down, 90: left, 270: right
+        /// 0 (or 360): up, 180: down, 90: right, 270: left
         /// </summary>
         public int Direction
         {
@@ -209,8 +209,10 @@ namespace RobotMock
 
                 // Change direction angle
                 _direction += angle;
-                if (_direction >= 360)
+                if (_direction > 360)
                     _direction -= 360;
+                else if (_direction == 360)
+                    _direction = 0;
             }
             else
             {

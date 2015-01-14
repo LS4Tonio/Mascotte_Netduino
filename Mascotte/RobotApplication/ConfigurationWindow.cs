@@ -13,7 +13,7 @@ namespace RobotApplication
 {
     public partial class ConfigurationWindow : Form
     {
-        const string CONF_NAME = "netduino_simulator.conf";
+        const string CONF_NAME = "netduino_simulator.cfg";
 
         public ConfigurationWindow()
         {

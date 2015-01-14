@@ -28,11 +28,14 @@ namespace RobotApplication
             confWindow = new ConfigurationWindow();
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
+<<<<<<< HEAD
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
             robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
+=======
             connection = new ClientConnection();
             if (connection.IsConnected)
                 connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;
+>>>>>>> origin/Interface-Noyau
         }
 
         // Menu
