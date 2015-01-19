@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 //frankly eurgh non tested, sucks.
 //the idea was to use a bitmap.
-//black here is when the color IS BLACK or OUT OF RANGE. BLACK = OBSTACLE (no % chances here)
+//black here is when the color IS BLACK or OUT OF RANGE OF BITMAP. BLACK = OBSTACLE (no % chances here)
 
 //TODO:
 //a position. absolute. => plug onto the movements of the rover.
@@ -29,6 +29,12 @@ namespace RobotMock
         double _angle;
         double _speed;
         double _pixelRealDistanceRatio;
+
+        public Double PosX { get { return _posX; } set { _posX = value; } }
+        public Double PosY { get { return _posY; } set { _posY = value; } }
+        public Double Angle { get { return _angle; } set { _angle = value; } }
+
+
 
         public Environment(string bitmapPath, double pixelRealDistanceRatio, double startPositionX, double startPositionY, double startAngle)
         {
@@ -51,21 +57,18 @@ namespace RobotMock
 
         bool IsPixelBlack(int x, int y)
         {
-            try
-            {
-                Color color = _envMap.GetPixel(x, y);
-                if (color == Color.Black)
-                    return true;
-                else
-                    return false;
-            }
-            catch (IndexOutOfRangeException)
-            {
+
+            if( x > (_envMap.Pixels.GetLength( 0 )-1) || y > (_envMap.Pixels.GetLength( 1 )-1) )
                 return true;
-            }
+            
+            Color color = _envMap.GetPixel(x, y);
+            if (color == Color.Black)
+                return true;
+            else
+                return false;
         }
         //out of range is considered an obstacle.
-        public bool ObstacleInFront(out double x, out double y)
+        public bool ObstacleInFront(out double x, out double y, double angle2)
         {
             //calculate which grid squares are in front
             //y=_angle *x+ b 
@@ -77,7 +80,7 @@ namespace RobotMock
             double b1 = 0;
             double a2 = 0;
             double b2 = 0;
-            double angle = _angle % 2 * Math.PI;
+            double angle = angle2 % 2 * Math.PI;
             bool wayX = true;
             bool wayY = true;
             if (angle > Math.PI)
@@ -87,13 +90,13 @@ namespace RobotMock
             }
             if (angle < Math.PI / 2)
             {
-                a1 = Math.Tan(_angle);
+                a1 = Math.Tan(angle);
                 if (!wayY)
                     wayX = false;
             }
             else if (angle < Math.PI)
             {
-                a1 = -Math.Tan(_angle);
+                a1 = -Math.Tan(angle);
                 if (wayY)
                     wayX = false;
             }
@@ -167,12 +170,15 @@ namespace RobotMock
             }
 
             return isPoint1Black || isPoint2Black;
+
         }
-        public bool ObstacleDistance(out double dist)
+     
+
+        public bool ObstacleDistance(double sensorAngle, out double dist)
         {
             double x = 0;
             double y = 0;
-            bool Is = ObstacleInFront(out x, out y);
+            bool Is = ObstacleInFront(out x, out y, _angle+sensorAngle);
             dist = 0;
             if (!Is)
                 return false;

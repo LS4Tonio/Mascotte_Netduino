@@ -15,7 +15,7 @@ namespace RobotMock
         BitmapData bitmapData = null;
         byte[][] datasInMap;
 
-        public byte[] Pixels { get; set; }
+        public byte[] Pixels { get; private set; }
         public int Depth { get; private set; }//PixelFormatSize
         public int Width { get; private set; }
         public int Height { get; private set; }

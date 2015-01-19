@@ -14,15 +14,20 @@ namespace RobotServer
     public partial class RobotServerApp : Form
     {
         const int MAP_X_SIZE = 100;
+        private Server server;
         const int MAP_Y_SIZE = 100;
         Graphics g;
-        Server server;
 
         public RobotServerApp()
         {
             InitializeComponent();
             g = this.mapPanel.CreateGraphics();
             server = new Server();
+        }
+
+        private void RobotServerApp_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            server.Close();
             server.GeneralMap.PropertyChanged += new PropertyChangedEventHandler(GridChanged);
         }
         // Robot Map

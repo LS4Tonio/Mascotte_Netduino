@@ -13,11 +13,13 @@ namespace RobotMock
         const int MIN_DISTANCE = 10;
         const int MAX_DISTANCE = 80;
         const int WARNING_DISTANCE = 30;
+        Environment _env;
 
-        public InfraredSensor(char position)
+        public InfraredSensor(char position, Environment env)
         {
             _sensorPosition = position;
-            obstacleMap = CreateObstacleMap();
+            _env = env;
+            //obstacleMap = CreateObstacleMap();
         }
 
         /// <summary>
@@ -25,7 +27,16 @@ namespace RobotMock
         /// </summary>
         public double DistanceDetected
         {
-            get { return Read(); }
+            get { /*return Read();*/ 
+                double angle=0;
+                double dist=0;
+                if( _sensorPosition == 'L' )
+                    angle=Math.PI / 2;
+                if( _sensorPosition == 'R' )
+                    angle= 3 * Math.PI / 2;
+                _env.ObstacleDistance(angle,out dist);
+                return dist;
+            }
         }
         /// <summary>
         /// Gets if an obstacle is detected.

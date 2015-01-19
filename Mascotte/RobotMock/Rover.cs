@@ -4,6 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/* A FOUTRE QLQPART
+            if( _env != null )//bon ici on veut les valeurs sans le décalage.
+            {
+                _env.PosX = x;
+                _env.PosY = y;
+            }
+ */
 namespace RobotMock
 {
     public class Rover
@@ -19,9 +26,17 @@ namespace RobotMock
         private int _xPos;
         private int _yPos;
         private int _direction;
+        Environment _env;
+
+        public Rover( Environment env )
+            :this()
+        {
+            _env = env;            
+        }
+
 
         public Rover()
-        {
+        {            
             _leftForwardMotor = new Motor(true);
             _leftBackwardMotor = new Motor(false);
             _rightForwardMotor = new Motor(true);
@@ -44,6 +59,7 @@ namespace RobotMock
 
             _xPos = x;
             _yPos = y;
+
         }
 
         /// <summary>

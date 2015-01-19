@@ -47,7 +47,7 @@ namespace RobotApplication
             // Timer for connection checks
             timer = new System.Windows.Forms.Timer();
             timer.Tick += new EventHandler(ConnectionTimer);
-            timer.Interval = 500; // in miliseconds
+            timer.Interval = 2000; // in miliseconds
             timer.Start();
             isConnectionErrorShown = false;
         }
@@ -402,10 +402,6 @@ namespace RobotApplication
         }
 
         // Connection Events
-        private void RobotMockApp_Shown(object sender, EventArgs e)
-        {
-            CheckConnectionWithServer();
-        }
         private void ConnectionTimer(object sender, EventArgs e)
         {
             CheckConnectionWithServer();
