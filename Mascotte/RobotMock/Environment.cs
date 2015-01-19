@@ -34,8 +34,6 @@ namespace RobotMock
         public Double PosY { get { return _posY; } set { _posY = value; } }
         public Double Angle { get { return _angle; } set { _angle = value; } }
 
-
-
         public Environment(string bitmapPath, double pixelRealDistanceRatio, double startPositionX, double startPositionY, double startAngle)
         {
             _envMap = new EnvironmentMap();
@@ -54,8 +52,12 @@ namespace RobotMock
         /// </summary>
         public double SensorMaxRange { get; set; }
         public double Speed { get; set; }
+        public EnvironmentMap Environment
+        {
+            get { return _envMap; }
+        }
 
-        bool IsPixelBlack(int x, int y)
+        public bool IsPixelBlack(int x, int y)
         {
 
             if( x > (_envMap.Pixels.GetLength( 0 )-1) || y > (_envMap.Pixels.GetLength( 1 )-1) )
@@ -173,7 +175,6 @@ namespace RobotMock
 
         }
      
-
         public bool ObstacleDistance(double sensorAngle, out double dist)
         {
             double x = 0;

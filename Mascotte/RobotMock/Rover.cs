@@ -33,8 +33,6 @@ namespace RobotMock
         {
             _env = env;            
         }
-
-
         public Rover()
         {            
             _leftForwardMotor = new Motor(true);

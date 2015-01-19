@@ -37,7 +37,7 @@ namespace RobotApplication
             client = new ClientConnection();
 
             // Mock
-            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
+            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, 0);
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Robot map
@@ -122,6 +122,9 @@ namespace RobotApplication
 
             // Move map
             robot.MiniMap.MoveMap(robot.MiniMap.FindDirection(robot.Rover.Direction));
+
+            // Gets obstacles
+            GetObstacles();
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
         {

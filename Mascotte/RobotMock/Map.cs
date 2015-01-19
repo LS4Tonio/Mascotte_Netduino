@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -12,14 +13,24 @@ namespace RobotMock
     public class Map : INotifyPropertyChanged
     {
         byte[][] _map;
+        int _xPos;
+        int _yPos;
+        int _xSize;
+        int _ySize;
+        Environment env;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Map(int xSize, int ySize)
+        public Map(int xSize, int ySize, int xPos, int yPos, Environment env)
         {
-            _map = new byte[xSize][];
+            this.env = env;
+            this._xSize = xSize;
+            this._ySize = ySize;
+            _xPos = xPos;
+            _yPos = yPos;
+            _map = new byte[ySize][];
             for (int i = 0; i < xSize; i++)
-                _map[i] = new byte[ySize];
-            FillMap();
+                _map[i] = new byte[xSize];
+            //FillMap();
         }
 
         // Properties
@@ -30,6 +41,30 @@ namespace RobotMock
         {
             get { return _map; }
             set { _map = value; }
+        }
+        /// <summary>
+        /// Gets or sets map X position from the parent
+        /// </summary>
+        public int Xposition
+        {
+            get { return _xPos; }
+            set { _xPos = value; }
+        }
+        /// <summary>
+        /// Gets or sets map Y position from the parent
+        /// </summary>
+        public int Yposition
+        {
+            get { return _yPos; }
+            set { _yPos = value; }
+        }
+        public int xSize
+        {
+            get { return _xSize; }
+        }
+        public int ySize
+        {
+            get { return _ySize; }
         }
 
         // Methods
@@ -47,79 +82,146 @@ namespace RobotMock
             {
                 case 1:     // Up
                     {
-                        var length = MapArray.Length - 1;
-
-                        // Move datas
-                        for (int i = length; i > 0; i--)
+                        if (_xPos > 0)
                         {
-                            MapArray[i] = MapArray[i - 1];
+                            var length = MapArray.Length - 1;
+
+                            // Move datas
+                            for (int i = length; i > 0; i--)
+                            {
+                                MapArray[i] = MapArray[i - 1];
+                            }
+
+                            // Add new empty line
+                            MapArray[0] = new byte[length + 1];
+
+                            // Move x position
+                            _xPos--;
+
+                            // Move this grid on env
+                            env.PosX = _xPos;
+
+                            RaisePropertyChanged("MapArray");
                         }
-
-                        // Add new empty line
-                        MapArray[0] = new byte[length + 1];
-
-                        RaisePropertyChanged("MapArray");
                         return MapArray;
                     }
 
                 case 2:     // Down
                     {
-                        var length = MapArray.Length - 1;
-
-                        // Move datas
-                        for (int i = 0; i < length; i++)
+                        if (_xPos < env.Environment.Height - 1)
                         {
-                            MapArray[i] = MapArray[i + 1];
+                            var length = MapArray.Length - 1;
+
+                            // Move datas
+                            for (int i = 0; i < length; i++)
+                            {
+                                MapArray[i] = MapArray[i + 1];
+                            }
+
+                            // Add new empty line
+                            MapArray[length] = new byte[length + 1];
+
+                            // Move x position
+                            _xPos++;
+
+                            // Move this grid on env
+                            env.PosX = _xPos;
+
+                            RaisePropertyChanged("MapArray");
                         }
-
-                        // Add new empty line
-                        MapArray[length] = new byte[length + 1];
-
-                        RaisePropertyChanged("MapArray");
                         return MapArray;
                     }
 
                 case 3:     // Left
                     {
-                        for (int i = 0; i < MapArray.Length; i++)
+                        if (_yPos > 0)
                         {
-                            // Move datas
-                            for (int j = MapArray[i].Length - 1; j > 1; j--)
+                            for (int i = 0; i < MapArray.Length; i++)
                             {
-                                MapArray[i][j] = MapArray[i][j - 1];
+                                // Move datas
+                                for (int j = MapArray[i].Length - 1; j > 1; j--)
+                                {
+                                    MapArray[i][j] = MapArray[i][j - 1];
+                                }
+
+                                // Add empty column
+                                MapArray[i][0] = 0;
+
                             }
 
-                            // Add empty column
-                            MapArray[i][0] = 0;
+                            // Move x position
+                            _yPos--;
 
+                            // Move this grid on env
+                            env.PosY = _yPos;
+
+                            RaisePropertyChanged("MapArray");
                         }
-
-                        RaisePropertyChanged("MapArray");
                         return MapArray;
                     }
 
                 case 4:     // Right
                     {
-                        for (int i = 0; i < MapArray.Length; i++)
+                        if (_yPos < env.Environment.Width - 1)
                         {
-                            // Move datas
-                            for (int j = 0; j < MapArray[i].Length - 1; j++)
+                            for (int i = 0; i < MapArray.Length; i++)
                             {
-                                MapArray[i][j] = MapArray[i][j + 1];
+                                // Move datas
+                                for (int j = 0; j < MapArray[i].Length - 1; j++)
+                                {
+                                    MapArray[i][j] = MapArray[i][j + 1];
+                                }
+
+                                // Add empty column
+                                MapArray[i][MapArray[i].Length - 1] = 0;
+
+                                tmp[i] = MapArray[i][MapArray[i].Length - 1];
                             }
 
-                            // Add empty column
-                            MapArray[i][MapArray[i].Length - 1] = 0;
+                            // Move x position
+                            _yPos++;
 
-                            tmp[i] = MapArray[i][MapArray[i].Length - 1];
+                            // Move this grid on env
+                            env.PosY = _yPos;
+
+                            RaisePropertyChanged("MapArray");
                         }
-
-                        RaisePropertyChanged("MapArray");
                         return MapArray;
                     }
 
                 default:
                     throw new ArgumentException();
+            }
+        }
+
+        public byte[][] AddObstacle(int direction, int size)
+        {
+            int minimapSize = size;
+            switch (direction)
+            {
+                case 1:
+                    {
+                        RaisePropertyChanged("MapArray");
+                        return _map;
+                    }
+                case 2:
+                    {
+                        RaisePropertyChanged("MapArray");
+                        return _map;
+                    }
+                case 3:
+                    {
+                        RaisePropertyChanged("MapArray");
+                        return _map;
+                    }
+                case 4:
+                    {
+                        RaisePropertyChanged("MapArray");
+                        return _map;
+                    }
+                default:{
+                        return _map;
+                    }
             }
         }
         /// <summary>

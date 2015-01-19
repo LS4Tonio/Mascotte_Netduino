@@ -527,6 +527,7 @@
             // obstacleMapPictureBox
             // 
             this.obstacleMapPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.obstacleMapPictureBox.Image = global::RobotApplication.Properties.Resources.OpenSpace;
             this.obstacleMapPictureBox.Location = new System.Drawing.Point(0, 0);
             this.obstacleMapPictureBox.Name = "obstacleMapPictureBox";
             this.obstacleMapPictureBox.Size = new System.Drawing.Size(395, 368);

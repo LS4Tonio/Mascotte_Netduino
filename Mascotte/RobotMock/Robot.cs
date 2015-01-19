@@ -15,13 +15,14 @@ namespace RobotMock
         private Map _map;
         private Environment _env;
 
-        public Robot(int xMapSize, int yMapSize)
+        public Robot(int xMapSize, int yMapSize, int xPos, int yPos, int angle)
         {
-            _env = new Environment( @"C:\dossier_git\Mascotte_Netduino\Mascotte\RobotApplication\bin\Debug\test.bmp", (double)1, (double)0, (double)0, (double)0 );
+            //_env = new Environment(@"C:\dossier_git\Mascotte_Netduino\Mascotte\RobotApplication\bin\Debug\test.bmp", (double)1, (double)xPos, (double)yPos, (double)angle);
+            _env = new Environment(@"D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\RobotApplication\Resources\OpenSpace.bmp", (double)1, (double)xPos, (double)yPos, (double)angle);
             _wifi = new Wifi();
             _rover = new Rover(_env);
             _infraredSensors = new InfraredSensor[3] { new InfraredSensor('F', _env), new InfraredSensor('L', _env), new InfraredSensor('R', _env) };
-            _map = new Map(xMapSize, yMapSize);
+            _map = new Map(xMapSize, yMapSize, xPos, yPos, _env);
         }
 
         /// <summary>
@@ -54,7 +55,39 @@ namespace RobotMock
             get { return _map; }
             set { _map = value; }
         }
+        /// <summary>
+        /// Gets environment map
+        /// </summary>
+        public Environment Environment
+        {
+            get { return _env; }
+        }
 
+        public void GetObstacle()
+        {
+            int distance = 0;
+            int size = 0;
+
+            // Up / Down
+            if ((Rover.Direction > 315 && Rover.Direction <= 360) || (Rover.Direction >= 0 && Rover.Direction < 45) || (Rover.Direction > 135 && Rover.Direction < 225))
+            {
+                distance = MiniMap.ySize / 2;
+                size = MiniMap.ySize;
+            }
+            // Left / Right
+            if ((Rover.Direction > 315 && Rover.Direction <= 360) || (Rover.Direction >= 0 && Rover.Direction < 45) || (Rover.Direction > 135 && Rover.Direction < 225))
+            {
+                distance = MiniMap.xSize / 2;
+                size = MiniMap.xSize;
+            }
+
+            if (InfraredSensors[0].DistanceDetected < distance)
+            {
+                MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction), size);
+            }
+        }
+
+        // TO DO: Programmable function for robot automatic movement
         public void Main()
         {
             // Start pos: (0, 0)
