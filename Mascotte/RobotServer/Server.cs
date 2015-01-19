@@ -9,26 +9,29 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Net.Sockets;
 using System.Net;
+using System.Threading;
 
 namespace RobotServer
 {
     public class Server
     {
         GeneralMap _generalMap;
-        string path;
         TcpListener listener;
-        Socket soc;
-        Stream s;
         BinaryReader _binaryReader;
         BinaryWriter _binaryWriter;
+        Socket soc;
+        Stream s;
+        string path;
 
         public Server()
         {
             _generalMap = new GeneralMap();
             path = @"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.dat";
+
             byte[] localIP = new byte[4];
             localIP = LocalIPAddress();
-            listener = new TcpListener(new IPAddress(localIP), 8080);
+
+            listener = new TcpListener(new IPAddress(localIP), 3000);
             listener.Start();
         }
 
@@ -37,7 +40,7 @@ namespace RobotServer
             get { return _generalMap; }
             set { _generalMap = value; }
         }
-
+        
         public void Serialize()
         {
             //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
@@ -163,6 +166,10 @@ namespace RobotServer
                 }
             }
             return localIP;
+        }
+        public void Close()
+        {
+            listener.Stop();
         }
     }
 }

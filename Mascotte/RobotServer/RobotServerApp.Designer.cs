@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RobotServerApp));
             this.datasStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.connectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.applicationStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.quitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,6 @@
             this.contentTabControl = new System.Windows.Forms.TabControl();
             this.mapTab = new System.Windows.Forms.TabPage();
             this.cameraTab = new System.Windows.Forms.TabPage();
-            this.connectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.datasStatusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.controlPanel.SuspendLayout();
@@ -76,6 +76,14 @@
             this.datasStatusStrip.Size = new System.Drawing.Size(737, 22);
             this.datasStatusStrip.TabIndex = 0;
             this.datasStatusStrip.Text = "Status";
+            // 
+            // connectionStatus
+            // 
+            this.connectionStatus.Image = global::RobotServer.Properties.Resources.networkOff;
+            this.connectionStatus.Name = "connectionStatus";
+            this.connectionStatus.Size = new System.Drawing.Size(135, 17);
+            this.connectionStatus.Text = "Status de connexion :";
+            this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
             // menuStrip
             // 
@@ -334,14 +342,6 @@
             this.cameraTab.Text = "Caméra";
             this.cameraTab.UseVisualStyleBackColor = true;
             // 
-            // connectionStatus
-            // 
-            this.connectionStatus.Image = global::RobotServer.Properties.Resources.networkOff;
-            this.connectionStatus.Name = "connectionStatus";
-            this.connectionStatus.Size = new System.Drawing.Size(135, 17);
-            this.connectionStatus.Text = "Status de connexion :";
-            this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            // 
             // RobotServerApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -354,6 +354,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RobotServerApp";
             this.Text = "Netduino Control Server";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RobotServerApp_FormClosing);
             this.datasStatusStrip.ResumeLayout(false);
             this.datasStatusStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);

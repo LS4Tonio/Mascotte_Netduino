@@ -12,12 +12,17 @@ namespace RobotServer
 {
     public partial class RobotServerApp : Form
     {
-        Server server;
+        private Server server;
 
         public RobotServerApp()
         {
             InitializeComponent();
             server = new Server();
+        }
+
+        private void RobotServerApp_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            server.Close();
         }
     }
 }

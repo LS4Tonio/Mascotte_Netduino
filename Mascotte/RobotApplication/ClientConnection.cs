@@ -28,7 +28,7 @@ namespace RobotApplication
             string name = Dns.GetHostName();
             try
             {
-                client.Connect(name, 8080);
+                client.Connect(name, 3000);
                 message = "Connection open.\n";
                 Console.WriteLine(message);
                 return true;
@@ -47,10 +47,10 @@ namespace RobotApplication
         public bool CheckConnection(out string message)
         {
             message = "";
-            if (!client.Connected)
+            if (!client.Client.Connected)
                 return Connect(out message);
 
-            return client.Connected;
+            return client.Client.Connected;
         }
         /// <summary>
         /// Sending datas for action move
