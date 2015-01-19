@@ -16,7 +16,6 @@ namespace RobotServer
         const int MAP_X_SIZE = 100;
         const int MAP_Y_SIZE = 100;
         Graphics g;
-        Server server;
 
         public RobotServerApp()
         {
@@ -28,6 +27,11 @@ namespace RobotServer
         // Robot Map
         private void CreateRobotMap(Graphics g)
         {
+        }
+
+        private void RobotServerApp_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            server.Close();
             int width = this.mapPanel.Width / MAP_X_SIZE;
             int height = this.mapPanel.Height / MAP_Y_SIZE;
 

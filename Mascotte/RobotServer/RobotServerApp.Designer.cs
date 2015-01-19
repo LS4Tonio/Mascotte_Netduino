@@ -82,7 +82,7 @@
             // 
             this.connectionStatus.Image = global::RobotServer.Properties.Resources.networkOff;
             this.connectionStatus.Name = "connectionStatus";
-            this.connectionStatus.Size = new System.Drawing.Size(165, 20);
+            this.connectionStatus.Size = new System.Drawing.Size(135, 17);
             this.connectionStatus.Text = "Status de connexion :";
             this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
@@ -371,6 +371,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "RobotServerApp";
             this.Text = "Netduino Control Server";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RobotServerApp_FormClosing);
             this.datasStatusStrip.ResumeLayout(false);
             this.datasStatusStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);
