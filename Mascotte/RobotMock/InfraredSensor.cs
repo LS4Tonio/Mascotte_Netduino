@@ -34,6 +34,28 @@ namespace RobotMock
             }
         }
         /// <summary>
+        /// ONLY USE WHEN RATIO = 1
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="dist"></param>
+        /// <returns></returns>
+        public bool DetectedPoint(out int x, out int y, out double dist)
+        {
+                double angle=0;
+                double dist2=0;
+                int x2;
+                int y2;
+                bool detected=false;
+                if( _sensorPosition == 'L' )
+                    angle=Math.PI / 2;
+                if( _sensorPosition == 'R' )
+                    angle= 3 * Math.PI / 2;
+                detected=_env.Allinfo(angle, out x2, out y2, out dist2);
+                x=x2; y=y2; dist=dist2;
+                return detected;
+        }
+        /// <summary>
         /// Gets if an obstacle is detected.
         /// </summary>
         public bool IsObstacle

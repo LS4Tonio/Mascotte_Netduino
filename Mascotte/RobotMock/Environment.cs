@@ -60,7 +60,7 @@ namespace RobotMock
         public bool IsPixelBlack(int x, int y)
         {
 
-            if( x > (_envMap.Pixels.GetLength( 0 )-1) || y > (_envMap.Pixels.GetLength( 1 )-1) )
+            if( x > (_envMap.Width-1) || y > (_envMap.Height-1) )
                 return true;
             
             Color color = _envMap.GetPixel(x, y);
@@ -185,6 +185,30 @@ namespace RobotMock
                 return false;
 
             dist = Math.Sqrt((x - _posX) * (x - _posX) + (y - _posY) * (y - _posY));
+            return true;
+        }
+
+
+        /// <summary>
+        /// ONLY USE WHEN RATIO=1. directly takes bitmap coordinate values
+        /// </summary>
+        /// <param name="sensorAngle"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="dist"></param>
+        /// <returns></returns>
+        public bool Allinfo(double sensorAngle, out int x, out int y, out double dist)
+        {
+            double x2 = 0;
+            double y2 = 0;
+            bool Is = ObstacleInFront( out x2, out y2, _angle + sensorAngle );
+            x = (int) x2;
+            y = (int) y2;
+            dist = 0;
+            if( !Is )
+                return false;
+
+            dist = Math.Sqrt( (x2 - _posX) * (x2 - _posX) + (y2 - _posY) * (y2 - _posY) );
             return true;
         }
     }
