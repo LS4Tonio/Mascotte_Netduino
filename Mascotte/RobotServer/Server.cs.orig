@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 ﻿using System;
-=======
-﻿using ServerFront.GridMaker;
-using System;
->>>>>>> origin/AppMock
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,28 +11,32 @@ using System.Net;
 <<<<<<< HEAD
 using RobotServer.GridMaker;
 =======
->>>>>>> origin/AppMock
+using System.Threading;
+>>>>>>> AppMock
 
 namespace RobotServer
 {
     public class Server
     {
         GeneralMap _generalMap;
-        string path;
         TcpListener listener;
-        Socket soc;
-        Stream s;
         BinaryReader _binaryReader;
         BinaryWriter _binaryWriter;
+        Socket soc;
+        Stream s;
+        string path;
 
         public Server()
         {
             _generalMap = new GeneralMap();
             path = @"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.dat";
+
             byte[] localIP = new byte[4];
             localIP = LocalIPAddress();
-            listener = new TcpListener(new IPAddress(localIP), 8080);
+
+            listener = new TcpListener(new IPAddress(localIP), 3000);
             listener.Start();
+            InitializeConnection();
         }
 
         public GeneralMap GeneralMap
@@ -45,7 +44,7 @@ namespace RobotServer
             get { return _generalMap; }
             set { _generalMap = value; }
         }
-
+        
         public void Serialize()
         {
             //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
@@ -97,11 +96,14 @@ namespace RobotServer
                 {
                     case "MOVE":
                         GetGridAndMove(soc);
+                        _binaryWriter.Write(true);
                         break;
                     case "MAP":
                         GeneralMap.Minimap.DatasInMiniMap = SyncMap();
                         _generalMap.Synchronize();
                         _binaryWriter.Write(true);
+                        break;
+                    default:
                         break;
                 }
                 _binaryReader.Close();
@@ -136,22 +138,12 @@ namespace RobotServer
                     // DIRECTION | POSX | POSY |
                     byte[] informations = _binaryReader.ReadBytes(3); // read position with direction of movement
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/AppMock
                     // GET LENGTH FIRST
                     byte[] lineLen;
                     lineLen = _binaryReader.ReadBytes(4);
                     int dataLen = BitConverter.ToInt32(lineLen, 0);
 
-<<<<<<< HEAD
-
                     // GET CONTENT
-
-=======
-                    // GET CONTENT
->>>>>>> origin/AppMock
                     byte[] readMsgData = new byte[dataLen];
                     readMsgData = _binaryReader.ReadBytes(dataLen);
                     if (readMsgData != null)
@@ -181,6 +173,10 @@ namespace RobotServer
                 }
             }
             return localIP;
+        }
+        public void Close()
+        {
+            listener.Stop();
         }
     }
 }
