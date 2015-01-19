@@ -114,6 +114,31 @@ namespace RobotApplication
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
             // Move robot
+            if (robot.Rover.Direction == 0)
+            {
+                client.SendMove(0, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[ROBOTMAP_Y_SIZE - 1]);
+            }
+            else if (robot.Rover.Direction == 180)
+            {
+                client.SendMove(1, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[0]);
+            }
+            else if (robot.Rover.Direction == 90)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][0];
+                client.SendMove(2, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+
+            }
+            else if (robot.Rover.Direction == 270)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][ROBOTMAP_Y_SIZE - 1];
+                client.SendMove(3, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+            }
+            else
+                throw new ArgumentException("The direction is not between 0 & 270");
             robot.Rover.Move(true, this.speedBar.Value / 100);
 
             // Change status
@@ -126,6 +151,33 @@ namespace RobotApplication
         private void directionBackwardButton_Click(object sender, EventArgs e)
         {
             // Move robot
+            if (robot.Rover.Direction == 180)
+            {
+                client.SendMove(0, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[ROBOTMAP_Y_SIZE]);
+            }
+            else if (robot.Rover.Direction == 0)
+            {
+                client.SendMove(1, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[0]);
+            }
+            else if (robot.Rover.Direction == 270)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][0];
+                client.SendMove(2, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+
+            }
+            else if (robot.Rover.Direction == 90)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][ROBOTMAP_Y_SIZE];
+                client.SendMove(3, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+            }
+            else
+                throw new ArgumentException("The direction is not between 0 & 270");
+
+            robot.Rover.Move(true, this.speedBar.Value / 100);
             robot.Rover.Move(false, this.speedBar.Value / 100);
 
             // Change status

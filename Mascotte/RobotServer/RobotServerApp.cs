@@ -15,23 +15,21 @@ namespace RobotServer
     {
         const int MAP_X_SIZE = 100;
         const int MAP_Y_SIZE = 100;
-
+        Graphics g;
         Server server;
 
         public RobotServerApp()
         {
             InitializeComponent();
-            Graphics g = this.mapPanel.CreateGraphics();
+            g = this.mapPanel.CreateGraphics();
             server = new Server();
+            server.GeneralMap.PropertyChanged += new PropertyChangedEventHandler(GridChanged);
         }
         // Robot Map
         private void CreateRobotMap(Graphics g)
         {
             int width = this.mapPanel.Width / MAP_X_SIZE;
             int height = this.mapPanel.Height / MAP_Y_SIZE;
-            //int index = 0;
-            //Pen pen = new Pen(Color.White, 1);
-            //Rectangle[] rectangles = new Rectangle[MAP_X_SIZE * MAP_Y_SIZE];
 
             for (int i = 0; i < MAP_Y_SIZE; i++)
             {
@@ -39,8 +37,6 @@ namespace RobotServer
                 {
                     int x = j * width;
                     int y = i * height;
-                    //Rectangle rectangle = new Rectangle(x, y, width, height);
-                    //g.DrawRectangle(pen, rectangle);
 
                     byte mapValue = server.GeneralMap.GridContent[i][j];
                     if (mapValue > 0)
@@ -59,10 +55,10 @@ namespace RobotServer
             Brush brush;
             if (colorValue < 63)
                 brush = new SolidBrush(Color.FromArgb(colorValue, 0, 0, 0));
-            else if (colorValue >= 63 && colorValue < 127)
+            else if (colorValue >= 63 && colorValue < 127) 
                 brush = new SolidBrush(Color.FromArgb(255, 0, 0));
             else if (colorValue > 127)
-                brush = new SolidBrush(Color.FromArgb(0, 0, 255));
+                brush = new SolidBrush(Color.FromArgb(0, 0, 255)); // TODO : possibly not ok to verify 
             else
                 throw new ArgumentException();
 
@@ -78,6 +74,10 @@ namespace RobotServer
             {
                 CreateRobotMap(g);
             }
+        }
+        private void GridChanged(object sender, EventArgs e)
+        {
+            this.CreateRobotMap(g);
         }
     }
 }

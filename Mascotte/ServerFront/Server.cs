@@ -95,6 +95,8 @@ namespace ServerFront
                         _generalMap.Synchronize();
                         _binaryWriter.Write(true);
                         break;
+                    default :
+                        break;
                 }
                 _binaryReader.Close();
                 s.Close();

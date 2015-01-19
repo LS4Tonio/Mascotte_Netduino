@@ -19,7 +19,7 @@ namespace RobotMock
             _sensorPosition = position;
             obstacleMap = CreateObstacleMap();
         }
-        
+
         /// <summary>
         /// Gets distance between obstacle and sensor.
         /// </summary>
@@ -117,7 +117,7 @@ namespace RobotMock
                     if (j == 22 && (i < 3 || (i > 5 && i < 31)))
                         map[i][j] = 127;
                 }
-                
+
             }
 
             return map;

@@ -72,7 +72,7 @@ namespace RobotApplication
                 _binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
                 _binaryWriter.Write(oldLine, 0, oldLine.Length);
 
-                while (_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
+                while (!_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
             }
             catch (Exception e)
             {

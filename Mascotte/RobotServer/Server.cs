@@ -30,6 +30,7 @@ namespace RobotServer
             localIP = LocalIPAddress();
             listener = new TcpListener(new IPAddress(localIP), 8080);
             listener.Start();
+            InitializeConnection();
         }
 
         public GeneralMap GeneralMap
@@ -89,11 +90,14 @@ namespace RobotServer
                 {
                     case "MOVE":
                         GetGridAndMove(soc);
+                        _binaryWriter.Write(true);
                         break;
                     case "MAP":
                         GeneralMap.Minimap.DatasInMiniMap = SyncMap();
                         _generalMap.Synchronize();
                         _binaryWriter.Write(true);
+                        break;
+                    default:
                         break;
                 }
                 _binaryReader.Close();

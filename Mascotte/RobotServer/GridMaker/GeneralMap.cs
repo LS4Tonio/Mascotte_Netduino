@@ -45,7 +45,6 @@ namespace RobotServer.GridMaker
                     GridContent[i][j] = 0;
                 }
             }
-            actualMessage = null;
             _minimap = new MiniGrid(datas, this.GridContent);
 
 
