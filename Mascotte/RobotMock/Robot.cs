@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,7 +20,7 @@ namespace RobotMock
         public Robot(int xMapSize, int yMapSize, int xPos, int yPos, int angle)
         {
             //_env = new Environment(@"C:\dossier_git\Mascotte_Netduino\Mascotte\RobotApplication\bin\Debug\test.bmp", (double)1, (double)xPos, (double)yPos, (double)angle);
-            _env = new Environment(@"D:\LS4Tonio\IN'TECH_INFO\PI\Mascotte_Netduino\Mascotte\RobotApplication\Resources\OpenSpace.bmp", (double)1, (double)xPos, (double)yPos, (double)angle);
+            _env = new Environment(@"../../Resources/OpenSpace.bmp", (double)1, (double)xPos, (double)yPos, (double)angle);
             _wifi = new Wifi();
             _rover = new Rover(_env);
             _infraredSensors = new InfraredSensor[3] { new InfraredSensor('F', _env), new InfraredSensor('L', _env), new InfraredSensor('R', _env) };

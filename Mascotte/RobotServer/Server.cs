@@ -75,17 +75,17 @@ namespace RobotServer
         {
             return Task.Run(() => InitializeConnection());
         }
-        public void InitializeConnection()
+        private async Task InitializeConnection()
         {
             while (true)
             {
                 try
                 {
-                    Socket soc = listener.AcceptSocket();
+                    Socket soc = await listener.AcceptSocketAsync();
                     Stream s = new NetworkStream(soc);
                     BinaryReader binaryReader = new BinaryReader(s);
                     BinaryWriter binaryWriter = new BinaryWriter(s);
-                    string order;
+                    string order;   
                     order = binaryReader.ReadString();
                     switch (order)
                     {
