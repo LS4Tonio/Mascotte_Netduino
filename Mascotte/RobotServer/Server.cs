@@ -1,5 +1,4 @@
-﻿using ServerFront.GridMaker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +9,7 @@ using System.Xml.Serialization;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using RobotServer.GridMaker;
 
 namespace RobotServer
 {
@@ -29,6 +29,7 @@ namespace RobotServer
 
             listener = new TcpListener(new IPAddress(localIP), 3000);
             listener.Start();
+            CallInitialization();
         }
 
         public GeneralMap GeneralMap
@@ -39,10 +40,6 @@ namespace RobotServer
         
         public void Serialize()
         {
-            //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
-            //TextWriter tw = File.CreateText(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
-            //serializer.Serialize(tw, _generalMap);
-            //tw.Close(); 
             FileStream file;
             if (!(File.Exists(path)))
             {
@@ -58,10 +55,6 @@ namespace RobotServer
         }
         public void Deserialize()
         {
-            //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
-            //TextReader tr = new StreamReader(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
-            //_generalMap = (GeneralMap)serializer.Deserialize(tr);
-            //tr.Close();
             FileStream file;
             if (!(File.Exists(path)))
             {
@@ -74,31 +67,51 @@ namespace RobotServer
                 _generalMap = (GeneralMap)formatter.Deserialize(file);
             }
         }
+        private async void CallInitialization()
+        {
+             await InitializationAsync();
+        }
+        private Task InitializationAsync()
+        {
+            return Task.Run(() => InitializeConnection());
+        }
         public void InitializeConnection()
         {
-            //while (true)
-            //{
-                Socket soc = listener.AcceptSocket();
-                Stream s = new NetworkStream(soc);
-                BinaryReader binaryReader = new BinaryReader(s);
-                BinaryWriter binaryWriter = new BinaryWriter(s);
-                string order;
-                order = binaryReader.ReadString();
-                switch (order)
+            while (true)
+            {
+                try
                 {
-                    case "MOVE":
-                        GetGridAndMove(soc);
-                        break;
-                    case "MAP":
-                        GeneralMap.Minimap.DatasInMiniMap = SyncMap(binaryReader);
-                        _generalMap.Synchronize();
-                        binaryWriter.Write(true);
-                        break;
+                    soc = listener.AcceptSocket();
+                    s = new NetworkStream(soc);
+                    _binaryReader = new BinaryReader(s);
+                    _binaryWriter = new BinaryWriter(s);
+                    string order;
+                    order = _binaryReader.ReadString();
+                    switch (order)
+                    {
+                        case "MOVE":
+                            GetGridAndMove(soc);
+                            _binaryWriter.Write(true);
+                            break;
+                        case "MAP":
+                            GeneralMap.Minimap.DatasInMiniMap = SyncMap();
+                            _generalMap.Synchronize();
+                            _binaryWriter.Write(true);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                binaryReader.Close();
-                s.Close();
-                soc.Close();
-            //}
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+                finally
+                {
+                    _binaryReader.Close();
+                    s.Close();
+                    soc.Close();
+                }
         }
         public byte[][] SyncMap(BinaryReader br)
         {

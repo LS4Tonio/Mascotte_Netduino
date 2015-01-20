@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,27 +16,40 @@ namespace RobotApplication
 {
     public partial class RobotMockApp : Form
     {
-        ConfigurationWindow confWindow;
-        Robot robot;
-        Graphics robotMapGraphic;
-        ClientConnection connection;
-        const int ROBOTMAP_X_SIZE = 8;
-        const int ROBOTMAP_Y_SIZE = 8;
+        private ConfigurationWindow confWindow;
+        private ErrorWindow errorWindow;
+        private Robot robot;
+        private Graphics robotMapGraphic;
+        private ClientConnection client;
+        private System.Windows.Forms.Timer timer;
+        private bool isConnectionErrorShown;
+        const int ROBOTMAP_X_SIZE = 9;
+        const int ROBOTMAP_Y_SIZE = 9;
 
         public RobotMockApp()
         {
+            // Window components
             InitializeComponent();
             confWindow = new ConfigurationWindow();
-            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE);
-            robotMapGraphic = this.robotMapPanel.CreateGraphics();
-<<<<<<< HEAD
+            errorWindow = new ErrorWindow();
+
+            // Server
+            client = new ClientConnection();
+
+            // Mock
+            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, 0);
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+
+            // Robot map
+            robotMapGraphic = this.robotMapPanel.CreateGraphics();
             robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
-=======
-            connection = new ClientConnection();
-            if (connection.IsConnected)
-                connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOn;
->>>>>>> origin/Interface-Noyau
+
+            // Timer for connection checks
+            timer = new System.Windows.Forms.Timer();
+            timer.Tick += new EventHandler(ConnectionTimer);
+            timer.Interval = 2000; // in miliseconds
+            timer.Start();
+            isConnectionErrorShown = false;
         }
 
         // Menu
@@ -99,19 +113,87 @@ namespace RobotApplication
         // Direction
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
+            int speedValue = this.speedBar.Value / 100;
+            int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+            int xPos = (int)robot.MiniMap.Xposition;
+            int yPos = (int)robot.MiniMap.Yposition;
+            var runningImage = global::RobotApplication.Properties.Resources.running;
+
             // Move robot
+<<<<<<< HEAD
+            robot.Rover.Move(true, speedValue);
+            // Move map
+            byte[] datas = robot.MiniMap.MoveMap(direction);
+            // Gets obstacles
+            robot.GetObstacle();
+            // Send movement
+            client.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
+=======
+            if (robot.Rover.Direction == 0)
+            {
+                client.SendMove(0, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[ROBOTMAP_Y_SIZE - 1]);
+            }
+            else if (robot.Rover.Direction == 180)
+            {
+                client.SendMove(1, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[0]);
+            }
+            else if (robot.Rover.Direction == 90)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][0];
+                client.SendMove(2, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+
+            }
+            else if (robot.Rover.Direction == 270)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][ROBOTMAP_Y_SIZE - 1];
+                client.SendMove(3, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+            }
+            else
+                throw new ArgumentException("The direction is not between 0 & 270");
             robot.Rover.Move(true, this.speedBar.Value / 100);
+>>>>>>> origin/Linking
 
             // Change status
-            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
-                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
-
-            // Move map
-            robot.MiniMap.MoveMap(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            if (this.robotStatus.Image != runningImage)
+                this.robotStatus.Image = runningImage;
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
+            int speedValue = this.speedBar.Value / 100;
+=======
             // Move robot
+            if (robot.Rover.Direction == 180)
+            {
+                client.SendMove(0, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[ROBOTMAP_Y_SIZE]);
+            }
+            else if (robot.Rover.Direction == 0)
+            {
+                client.SendMove(1, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])robot.MiniMap.MapArray[0]);
+            }
+            else if (robot.Rover.Direction == 270)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][0];
+                client.SendMove(2, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+
+            }
+            else if (robot.Rover.Direction == 90)
+            {
+                var tmp = new byte[ROBOTMAP_Y_SIZE];
+                for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
+                    tmp[i] = robot.MiniMap.MapArray[i][ROBOTMAP_Y_SIZE];
+                client.SendMove(3, (byte)robot.Rover.XPos, (byte)robot.Rover.YPos, (byte[])tmp);
+            }
+            else
+                throw new ArgumentException("The direction is not between 0 & 270");
+
+            robot.Rover.Move(true, this.speedBar.Value / 100);
             robot.Rover.Move(false, this.speedBar.Value / 100);
 
             // Change status
@@ -119,13 +201,30 @@ namespace RobotApplication
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
 
             // Move map
+>>>>>>> origin/Linking
             int direction = robot.Rover.Direction;
             direction += 180;
             if (direction > 360)
                 direction -= 360;
             if (direction < 0)
                 direction += 360;
-            robot.MiniMap.MoveMap(robot.MiniMap.FindDirection(direction));
+            direction = robot.MiniMap.FindDirection(direction);
+            int xPos = (int)robot.MiniMap.Xposition;
+            int yPos = (int)robot.MiniMap.Yposition;
+            var runningImage = global::RobotApplication.Properties.Resources.running;
+
+            // Move robot
+            robot.Rover.Move(false, speedValue);
+            // Move map
+            byte[] datas = robot.MiniMap.MoveMap(direction);
+            // Gets obstacles
+            robot.GetObstacle();
+            // Send movement
+            client.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
+
+            // Change status
+            if (this.robotStatus.Image != runningImage)
+                this.robotStatus.Image = runningImage;
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
@@ -147,7 +246,7 @@ namespace RobotApplication
             // Change status
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
-            
+
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
         }
@@ -281,6 +380,7 @@ namespace RobotApplication
             int.TryParse(this.xTextBox.Text, out x);
             int.TryParse(this.yTextBox.Text, out y);
 
+            robot.MiniMap.MapArray[x][y] = 255;
             FillRectangle(x, y, robotMapGraphic);
         }
         private void emptyRectangleButton_Click(object sender, EventArgs e)
@@ -291,6 +391,7 @@ namespace RobotApplication
             int.TryParse(this.xTextBox.Text, out x);
             int.TryParse(this.yTextBox.Text, out y);
 
+            robot.MiniMap.MapArray[x][y] = 0;
             EmptyRectangle(x, y, robotMapGraphic);
         }
 
@@ -306,6 +407,37 @@ namespace RobotApplication
         private void MiniMap_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateMap(robotMapGraphic, robot.MiniMap);
+        }
+
+        // Server
+        private void CheckConnectionWithServer()
+        {
+            var networkOff = global::RobotApplication.Properties.Resources.networkOff;
+            var networkOn = global::RobotApplication.Properties.Resources.networkOn;
+            string message = "";
+
+            if (client.CheckConnection(out message))
+            {
+                this.connectionStatus.Text = @"Connecté";
+                this.connectionStatus.Image = networkOn;
+                isConnectionErrorShown = false;
+            }
+            else
+            {
+                this.connectionStatus.Text = @"Déconnecté";
+                this.connectionStatus.Image = networkOff;
+                if (!isConnectionErrorShown)
+                {
+                    isConnectionErrorShown = true;
+                    errorWindow.SetErrorMessage("Erreur de connexion", "Aucune connexion", message);
+                }
+            }
+        }
+
+        // Connection Events
+        private void ConnectionTimer(object sender, EventArgs e)
+        {
+            CheckConnectionWithServer();
         }
     }
 }

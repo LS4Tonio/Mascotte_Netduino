@@ -13,22 +13,20 @@ namespace RobotServer
 {
     public partial class RobotServerApp : Form
     {
+<<<<<<< HEAD
         const int MAP_X_SIZE = 100;
-        private Server server;
         const int MAP_Y_SIZE = 100;
         Graphics g;
+        Server server;
+=======
+        private Server server;
+>>>>>>> AppMock
 
         public RobotServerApp()
         {
             InitializeComponent();
             g = this.mapPanel.CreateGraphics();
             server = new Server();
-            server.InitializeConnection();
-        }
-
-        private void RobotServerApp_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            server.Close();
             server.GeneralMap.PropertyChanged += new PropertyChangedEventHandler(GridChanged);
         }
         // Robot Map
@@ -84,6 +82,11 @@ namespace RobotServer
         private void GridChanged(object sender, EventArgs e)
         {
             this.CreateRobotMap(g);
+        }
+
+        private void RobotServerApp_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            server.Close();
         }
     }
 }

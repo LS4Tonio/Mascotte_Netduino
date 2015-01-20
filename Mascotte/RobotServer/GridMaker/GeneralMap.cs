@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ServerFront.GridMaker
+namespace RobotServer.GridMaker
 {
     [Serializable]
     public class GeneralMap
@@ -45,10 +45,27 @@ namespace ServerFront.GridMaker
                     GridContent[i][j] = 0;
                 }
             }
-
             _minimap = new MiniGrid(datas, this.GridContent);
+
+
+            RandonessIsCool();
+
         }
 
+        private void RandonessIsCool()
+        {
+            var r = new Random(14012015);
+            for (int i = 0; i < this.GridContent.Length; i++)
+            {
+                for (int j = 0; j < this.GridContent[i].Length; j++)
+                {
+                    var nb = r.Next(0, 120);
+                    var nb2 = r.Next(1, 2);
+                    this.GridContent[i][j] = (byte)(nb * nb2);
+        }
+
+            }
+        }
         /// <summary>
         /// Gets or set map content
         /// </summary>
@@ -61,6 +78,7 @@ namespace ServerFront.GridMaker
                 RaisePropertyChanged();
             }
         }
+        public string ActualMessage { get; set; }
         /// <summary>
         /// Gets minimap
         /// </summary>
@@ -153,7 +171,8 @@ namespace ServerFront.GridMaker
         /// <param name="p"></param>
         private void ThrowMessage(string p)
         {
-            //TO DO
+            ActualMessage = p;
+            RaisePropertyChanged();
         }
 
 

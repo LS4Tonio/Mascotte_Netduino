@@ -71,10 +71,10 @@
             // 
             this.datasStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectionStatus});
-            this.datasStatusStrip.Location = new System.Drawing.Point(0, 494);
+            this.datasStatusStrip.Location = new System.Drawing.Point(0, 610);
             this.datasStatusStrip.Name = "datasStatusStrip";
             this.datasStatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.datasStatusStrip.Size = new System.Drawing.Size(737, 22);
+            this.datasStatusStrip.Size = new System.Drawing.Size(983, 25);
             this.datasStatusStrip.TabIndex = 0;
             this.datasStatusStrip.Text = "Status";
             // 
@@ -82,7 +82,11 @@
             // 
             this.connectionStatus.Image = global::RobotServer.Properties.Resources.networkOff;
             this.connectionStatus.Name = "connectionStatus";
+<<<<<<< HEAD
+            this.connectionStatus.Size = new System.Drawing.Size(165, 20);
+=======
             this.connectionStatus.Size = new System.Drawing.Size(135, 17);
+>>>>>>> AppMock
             this.connectionStatus.Text = "Status de connexion :";
             this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 

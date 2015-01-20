@@ -7,7 +7,11 @@ using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+<<<<<<< HEAD
+namespace RobotServer.GridMaker
+=======
 namespace ServerFront.GridMaker
+>>>>>>> origin/AppMock
 {
     [Serializable]
     public class GeneralMap
@@ -22,7 +26,10 @@ namespace ServerFront.GridMaker
         [NonSerialized]
         MiniGrid _minimap;
         byte[][] _gridContent;
+<<<<<<< HEAD
         string actualMessage;
+=======
+>>>>>>> origin/AppMock
         int _actualPosX;
         int _actualPosY;
         protected const int GENERAL_MAP_SIZE = 200;
@@ -46,10 +53,35 @@ namespace ServerFront.GridMaker
                     GridContent[i][j] = 0;
                 }
             }
+<<<<<<< HEAD
             actualMessage = null;
+            _minimap = new MiniGrid(datas, this.GridContent);
+
+
+            RandonessIsCool();
+
+        }
+
+        private void RandonessIsCool()
+        {
+            var r = new Random(14012015);
+            for (int i = 0; i < this.GridContent.Length; i++)
+            {
+                for (int j = 0; j < this.GridContent[i].Length; j++)
+                {
+                    var nb = r.Next(0, 120);
+                    var nb2 = r.Next(1, 2);
+                    this.GridContent[i][j] = (byte)(nb * nb2);
+                }
+
+            }
+        }
+=======
+
             _minimap = new MiniGrid(datas, this.GridContent);
         }
 
+>>>>>>> origin/AppMock
         /// <summary>
         /// Gets or set map content
         /// </summary>
@@ -62,7 +94,10 @@ namespace ServerFront.GridMaker
                 RaisePropertyChanged();
             }
         }
+<<<<<<< HEAD
         public string ActualMessage { get; set; }
+=======
+>>>>>>> origin/AppMock
         /// <summary>
         /// Gets minimap
         /// </summary>
@@ -155,8 +190,12 @@ namespace ServerFront.GridMaker
         /// <param name="p"></param>
         private void ThrowMessage(string p)
         {
+<<<<<<< HEAD
             ActualMessage = p;
             RaisePropertyChanged();
+=======
+            //TO DO
+>>>>>>> origin/AppMock
         }
 
 

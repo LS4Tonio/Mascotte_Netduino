@@ -7,42 +7,51 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RobotMock
+namespace RobotApplication
 {
-    public class Wifi
+    public class ClientConnection
     {
-        public byte[][] GetMap()
-        {
-            return null;
-        }
         TcpClient client;
-        bool isConnected;
-        public Wifi()
+
+        public ClientConnection()
+        {
+            client = new TcpClient();
+            string message = "";
+            Connect(out message);
+        }
+
+        /// <summary>
+        /// Try to connect to the server.
+        /// </summary>
+        public bool Connect(out string message)
         {
             string name = Dns.GetHostName();
             try
             {
-                IPAddress[] addrs = Dns.GetHostEntry(name).AddressList;
-                foreach (IPAddress addr in addrs)
-                    Console.WriteLine("{0}/{1}", name, addr);
-                isConnected = true;
+                client.Connect(name, 3000);
+                message = "Connection open.\n";
+                Console.WriteLine(message);
+                return true;
             }
-            catch (Exception e)
+            catch (SocketException e)
             {
-                isConnected = false;
-                Console.WriteLine(e.Message);
+                message = "Connection failed:\n" + e.Message;
+                Console.WriteLine(message);
+                return false;
             }
-
-            client = new TcpClient(name, 8080);
-
         }
-
-        public bool IsConnected
+        /// <summary>
+        /// Check if connection still active with server.
+        /// </summary>
+        /// <returns>False is not connected.</returns>
+        public bool CheckConnection(out string message)
         {
-            get { return isConnected; }
-            set { isConnected = value; }
-        }
+            message = "";
+            if (!client.Client.Connected)
+                return Connect(out message);
 
+            return client.Client.Connected;
+        }
         /// <summary>
         /// Sending datas for action move
         /// </summary>
@@ -54,24 +63,26 @@ namespace RobotMock
         {
             try
             {
-
                 Stream s = client.GetStream();
-                BinaryReader _binaryReader = new BinaryReader(s);
-                BinaryWriter _binaryWriter = new BinaryWriter(s);
+                BinaryReader binaryReader = new BinaryReader(s);
+                BinaryWriter binaryWriter = new BinaryWriter(s);
 
-                _binaryWriter.Write("MOVE"); // Instrution to realize
-                _binaryWriter.Write(new byte[3] { direction, posX, posY }); // Informations about the move
-                _binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
-                _binaryWriter.Write(oldLine, 0, oldLine.Length);
+                binaryWriter.Write("MOVE"); // Instrution to realize
+                binaryWriter.Write(new byte[3] { direction, posX, posY }); // Informations about the move
+                binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
+                binaryWriter.Write(oldLine, 0, oldLine.Length);
 
-                while (_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
+<<<<<<< HEAD
+                while (binaryReader.ReadBoolean()) { } // Wait for Validation by the server
+=======
+                while (!_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
+>>>>>>> origin/Linking
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
         }
-
         /// <summary>
         /// Sending data for map synchronization
         /// </summary>
@@ -80,17 +91,19 @@ namespace RobotMock
         {
             try
             {
-
                 Stream s = client.GetStream();
                 BinaryReader _binaryReader = new BinaryReader(s);
                 BinaryWriter _binaryWriter = new BinaryWriter(s);
+
                 _binaryWriter.Write("MAP");
                 _binaryWriter.Write(BitConverter.GetBytes((Int32)map.Length)); // Sending length of the table with 4 bytes
+
                 for (int i = 0; i < map.Length; i++)
                 {
                     _binaryWriter.Write(BitConverter.GetBytes((Int32)map[i].Length)); // Sending length of the table with 4 bytes
                     _binaryWriter.Write(map[i], 0, map[i].Length);
                 }
+
                 while (_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
             }
             catch (Exception e)

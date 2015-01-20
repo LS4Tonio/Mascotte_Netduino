@@ -13,6 +13,7 @@ namespace RobotMock
     {
         Bitmap source = null;
         BitmapData bitmapData = null;
+        byte[][] datasInMap;
 
         public byte[] Pixels { get; private set; }
         public int Depth { get; private set; }//PixelFormatSize
@@ -21,8 +22,11 @@ namespace RobotMock
 
         public void Initialize(string bitmapPath)
         {
+            
             source = Bitmap.FromFile(bitmapPath) as Bitmap;//peut péter des exceptions hein ^^.
-
+            
+            // Converts bitmap into bidimensionnal byte array
+            datasInMap = ConvertBitmapIntoByte(source);
             //Image a =  Bitmap.FromFile(bitmapPath);
             //a.RawFormat
             if (source != null)
@@ -109,6 +113,25 @@ namespace RobotMock
                 clr = Color.FromArgb(c, c, c);
             }
             return clr;
+        }
+        /// <summary>
+        /// Converts Bitmap Image into bidimensionnal byte array
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public byte[][] ConvertBitmapIntoByte(Bitmap image)
+        {
+            ImageConverter converter = new ImageConverter();
+            byte[] bytesInLine = (byte[])converter.ConvertTo(image, typeof(byte[]));
+            byte[][] result = new byte[Height][];
+            for (int i = 0; i < Height; i++)
+            {
+                for (int j = 0; j < Width; j++)
+                {
+                    result[i][j] = bytesInLine[i * Width + Height];
+                }
+            }
+            return result;
         }
     }
 }
