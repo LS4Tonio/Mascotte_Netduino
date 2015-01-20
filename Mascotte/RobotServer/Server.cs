@@ -17,10 +17,6 @@ namespace RobotServer
     {
         GeneralMap _generalMap;
         TcpListener listener;
-        BinaryReader _binaryReader;
-        BinaryWriter _binaryWriter;
-        Socket soc;
-        Stream s;
         string path;
 
         public Server()
@@ -82,40 +78,40 @@ namespace RobotServer
         {
             //while (true)
             //{
-                soc = listener.AcceptSocket();
-                s = new NetworkStream(soc);
-                _binaryReader = new BinaryReader(s);
-                _binaryWriter = new BinaryWriter(s);
+                Socket soc = listener.AcceptSocket();
+                Stream s = new NetworkStream(soc);
+                BinaryReader binaryReader = new BinaryReader(s);
+                BinaryWriter binaryWriter = new BinaryWriter(s);
                 string order;
-                order = _binaryReader.ReadString();
+                order = binaryReader.ReadString();
                 switch (order)
                 {
                     case "MOVE":
                         GetGridAndMove(soc);
                         break;
                     case "MAP":
-                        GeneralMap.Minimap.DatasInMiniMap = SyncMap();
+                        GeneralMap.Minimap.DatasInMiniMap = SyncMap(binaryReader);
                         _generalMap.Synchronize();
-                        _binaryWriter.Write(true);
+                        binaryWriter.Write(true);
                         break;
                 }
-                _binaryReader.Close();
+                binaryReader.Close();
                 s.Close();
                 soc.Close();
             //}
         }
-        public byte[][] SyncMap()
+        public byte[][] SyncMap(BinaryReader br)
         {
             byte[] tableLen;
-            tableLen = _binaryReader.ReadBytes(4);
+            tableLen = br.ReadBytes(4);
             int dataLen = BitConverter.ToInt32(tableLen, 0);
             byte[][] tmpMap = new byte[dataLen][];
             for (int i = 0; i < dataLen; i++)
             {
-                byte[] lineLen = _binaryReader.ReadBytes(4);
+                byte[] lineLen = br.ReadBytes(4);
                 int _dataLen = BitConverter.ToInt32(lineLen, 0);
                 tmpMap[i] = new byte[_dataLen];
-                tmpMap[i] = _binaryReader.ReadBytes(_dataLen);
+                tmpMap[i] = br.ReadBytes(_dataLen);
             }
             return tmpMap;
         }
@@ -124,24 +120,26 @@ namespace RobotServer
             try
             {
                 Stream s = new NetworkStream(soc);
+                BinaryReader br = new BinaryReader(s);
+                BinaryWriter bw = new BinaryWriter(s);
                 Console.WriteLine(@"Some works to do");
                 while (true)
                 {
                     //GET POSITIONs AND DIRECTION IN ONE BYTE ARRAY
                     // DIRECTION | POSX | POSY |
-                    byte[] informations = _binaryReader.ReadBytes(3); // read position with direction of movement
+                    byte[] informations = br.ReadBytes(3); // read position with direction of movement
 
                     // GET LENGTH FIRST
                     byte[] lineLen;
-                    lineLen = _binaryReader.ReadBytes(4);
+                    lineLen = br.ReadBytes(4);
                     int dataLen = BitConverter.ToInt32(lineLen, 0);
 
                     // GET CONTENT
                     byte[] readMsgData = new byte[dataLen];
-                    readMsgData = _binaryReader.ReadBytes(dataLen);
+                    readMsgData = br.ReadBytes(dataLen);
                     if (readMsgData != null)
                     {
-                        _binaryWriter.Write(true);
+                        bw.Write(true);
                         _generalMap.MoveGrid(informations[0], readMsgData);
                         break;
                     }

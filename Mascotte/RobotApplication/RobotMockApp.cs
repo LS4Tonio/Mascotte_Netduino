@@ -113,39 +113,51 @@ namespace RobotApplication
         // Direction
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
+            int speedValue = this.speedBar.Value / 100;
+            int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+            int xPos = (int)robot.MiniMap.Xposition;
+            int yPos = (int)robot.MiniMap.Yposition;
+            var runningImage = global::RobotApplication.Properties.Resources.running;
+
             // Move robot
-            robot.Rover.Move(true, this.speedBar.Value / 100);
-
-            // Change status
-            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
-                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
-
+            robot.Rover.Move(true, speedValue);
             // Move map
-            robot.MiniMap.MoveMap(robot.MiniMap.FindDirection(robot.Rover.Direction));
-
+            byte[] datas = robot.MiniMap.MoveMap(direction);
             // Gets obstacles
             robot.GetObstacle();
+            // Send movement
+            client.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
+
+            // Change status
+            if (this.robotStatus.Image != runningImage)
+                this.robotStatus.Image = runningImage;
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
         {
-            // Move robot
-            robot.Rover.Move(false, this.speedBar.Value / 100);
-
-            // Change status
-            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
-                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
-
-            // Move map
+            int speedValue = this.speedBar.Value / 100;
             int direction = robot.Rover.Direction;
             direction += 180;
             if (direction > 360)
                 direction -= 360;
             if (direction < 0)
                 direction += 360;
-            robot.MiniMap.MoveMap(robot.MiniMap.FindDirection(direction));
+            direction = robot.MiniMap.FindDirection(direction);
+            int xPos = (int)robot.MiniMap.Xposition;
+            int yPos = (int)robot.MiniMap.Yposition;
+            var runningImage = global::RobotApplication.Properties.Resources.running;
 
+            // Move robot
+            robot.Rover.Move(false, speedValue);
+            // Move map
+            byte[] datas = robot.MiniMap.MoveMap(direction);
             // Gets obstacles
             robot.GetObstacle();
+            // Send movement
+            client.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
+
+            // Change status
+            if (this.robotStatus.Image != runningImage)
+                this.robotStatus.Image = runningImage;
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {

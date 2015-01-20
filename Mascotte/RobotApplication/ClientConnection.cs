@@ -64,15 +64,15 @@ namespace RobotApplication
             try
             {
                 Stream s = client.GetStream();
-                BinaryReader _binaryReader = new BinaryReader(s);
-                BinaryWriter _binaryWriter = new BinaryWriter(s);
+                BinaryReader binaryReader = new BinaryReader(s);
+                BinaryWriter binaryWriter = new BinaryWriter(s);
 
-                _binaryWriter.Write("MOVE"); // Instrution to realize
-                _binaryWriter.Write(new byte[3] { direction, posX, posY }); // Informations about the move
-                _binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
-                _binaryWriter.Write(oldLine, 0, oldLine.Length);
+                binaryWriter.Write("MOVE"); // Instrution to realize
+                binaryWriter.Write(new byte[3] { direction, posX, posY }); // Informations about the move
+                binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
+                binaryWriter.Write(oldLine, 0, oldLine.Length);
 
-                while (_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
+                while (binaryReader.ReadBoolean()) { } // Wait for Validation by the server
             }
             catch (Exception e)
             {

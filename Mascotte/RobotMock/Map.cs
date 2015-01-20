@@ -74,121 +74,114 @@ namespace RobotMock
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public byte[][] MoveMap(int direction)
+        public byte[] MoveMap(int direction)
         {
-            byte[] tmp = new byte[MapArray[0].Length];
-
             switch (direction)
             {
-                case 1:     // Up
+                case 1: // Up
                     {
+                        int length = MapArray.Length - 1;
+                        byte[] oldLine = new byte[MapArray[length].Length];
+
                         if (_xPos > 0)
                         {
-                            var length = MapArray.Length - 1;
-
+                            // Save old line
+                            oldLine = MapArray[length];
                             // Move datas
                             for (int i = length; i > 0; i--)
                             {
                                 MapArray[i] = MapArray[i - 1];
                             }
-
                             // Add new empty line
                             MapArray[0] = new byte[length + 1];
-
                             // Move x position
                             _xPos--;
-
                             // Move this grid on env
                             env.PosX = _xPos;
-
+                            // Throw event
                             RaisePropertyChanged("MapArray");
                         }
-                        return MapArray;
+                        return oldLine;
                     }
-
-                case 2:     // Down
+                case 2: // Down
                     {
+                        int length = MapArray.Length - 1;
+                        byte[] oldLine = new byte[MapArray[0].Length];
+
                         if (_xPos < env.EnvironmentMap.Height - 1)
                         {
-                            var length = MapArray.Length - 1;
-
+                            // Save old line
+                            oldLine = MapArray[0];
                             // Move datas
                             for (int i = 0; i < length; i++)
                             {
                                 MapArray[i] = MapArray[i + 1];
                             }
-
                             // Add new empty line
                             MapArray[length] = new byte[length + 1];
-
                             // Move x position
                             _xPos++;
-
                             // Move this grid on env
                             env.PosX = _xPos;
-
+                            // Throw envent
                             RaisePropertyChanged("MapArray");
                         }
-                        return MapArray;
+                        return oldLine;
                     }
-
-                case 3:     // Left
+                case 3: // Left
                     {
+                        byte[] oldColumn = new byte[MapArray.Length];
+
                         if (_yPos > 0)
                         {
                             for (int i = 0; i < MapArray.Length; i++)
                             {
+                                // Save old column
+                                oldColumn[i] = MapArray[i][MapArray[i].Length - 1];
                                 // Move datas
                                 for (int j = MapArray[i].Length - 1; j > 1; j--)
                                 {
                                     MapArray[i][j] = MapArray[i][j - 1];
                                 }
-
                                 // Add empty column
                                 MapArray[i][0] = 0;
-
                             }
-
                             // Move x position
                             _yPos--;
-
                             // Move this grid on env
                             env.PosY = _yPos;
-
+                            // Throw event
                             RaisePropertyChanged("MapArray");
                         }
-                        return MapArray;
+                        return oldColumn;
                     }
-
-                case 4:     // Right
+                case 4: // Right
                     {
+                        byte[] oldColumn = new byte[MapArray.Length];
+
                         if (_yPos < env.EnvironmentMap.Width - 1)
                         {
                             for (int i = 0; i < MapArray.Length; i++)
                             {
+                                // Save old column
+                                oldColumn[i] = MapArray[i][0];
                                 // Move datas
                                 for (int j = 0; j < MapArray[i].Length - 1; j++)
                                 {
                                     MapArray[i][j] = MapArray[i][j + 1];
                                 }
-
                                 // Add empty column
                                 MapArray[i][MapArray[i].Length - 1] = 0;
-
-                                tmp[i] = MapArray[i][MapArray[i].Length - 1];
                             }
-
                             // Move x position
                             _yPos++;
-
                             // Move this grid on env
                             env.PosY = _yPos;
-
+                            // Throw event
                             RaisePropertyChanged("MapArray");
                         }
-                        return MapArray;
+                        return oldColumn;
                     }
-
                 default:
                     throw new ArgumentException();
             }
