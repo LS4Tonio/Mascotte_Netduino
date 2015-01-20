@@ -11,38 +11,47 @@ namespace RobotMock
 {
     public class Wifi
     {
-        public byte[][] GetMap()
-        {
-            return null;
-        }
         TcpClient client;
-        bool isConnected;
+
         public Wifi()
+        {
+            client = new TcpClient();
+            string message = "";
+            Connect(out message);
+        }
+
+        /// <summary>
+        /// Try to connect to the server.
+        /// </summary>
+        public bool Connect(out string message)
         {
             string name = Dns.GetHostName();
             try
             {
-                IPAddress[] addrs = Dns.GetHostEntry(name).AddressList;
-                foreach (IPAddress addr in addrs)
-                    Console.WriteLine("{0}/{1}", name, addr);
-                isConnected = true;
+                client.Connect(name, 3000);
+                message = "Connection open.\n";
+                Console.WriteLine(message);
+                return true;
             }
-            catch (Exception e)
+            catch (SocketException e)
             {
-                isConnected = false;
-                Console.WriteLine(e.Message);
+                message = "Connection failed:\n" + e.Message;
+                Console.WriteLine(message);
+                return false;
             }
-
-            client = new TcpClient(name, 8080);
-
         }
-
-        public bool IsConnected
+        /// <summary>
+        /// Check if connection still active with server.
+        /// </summary>
+        /// <returns>False is not connected.</returns>
+        public bool CheckConnection(out string message)
         {
-            get { return isConnected; }
-            set { isConnected = value; }
-        }
+            message = "";
+            if (!client.Client.Connected)
+                return Connect(out message);
 
+            return client.Client.Connected;
+        }
         /// <summary>
         /// Sending datas for action move
         /// </summary>
@@ -71,7 +80,6 @@ namespace RobotMock
                 Console.WriteLine(e.Message);
             }
         }
-
         /// <summary>
         /// Sending data for map synchronization
         /// </summary>

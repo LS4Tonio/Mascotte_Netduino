@@ -20,7 +20,6 @@ namespace RobotApplication
         private ErrorWindow errorWindow;
         private Robot robot;
         private Graphics robotMapGraphic;
-        private ClientConnection client;
         private System.Windows.Forms.Timer timer;
         private bool isConnectionErrorShown;
         const int ROBOTMAP_X_SIZE = 9;
@@ -32,9 +31,6 @@ namespace RobotApplication
             InitializeComponent();
             confWindow = new ConfigurationWindow();
             errorWindow = new ErrorWindow();
-
-            // Server
-            client = new ClientConnection();
 
             // Mock
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, 0);
@@ -126,7 +122,7 @@ namespace RobotApplication
             // Gets obstacles
             robot.GetObstacle();
             // Send movement
-            client.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
+            robot.Wifi.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
 
             // Change status
             if (this.robotStatus.Image != runningImage)
@@ -153,7 +149,7 @@ namespace RobotApplication
             // Gets obstacles
             robot.GetObstacle();
             // Send movement
-            client.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
+            robot.Wifi.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
 
             // Change status
             if (this.robotStatus.Image != runningImage)
@@ -349,7 +345,7 @@ namespace RobotApplication
             var networkOn = global::RobotApplication.Properties.Resources.networkOn;
             string message = "";
 
-            if (client.CheckConnection(out message))
+            if (robot.Wifi.CheckConnection(out message))
             {
                 this.connectionStatus.Text = @"Connecté";
                 this.connectionStatus.Image = networkOn;
