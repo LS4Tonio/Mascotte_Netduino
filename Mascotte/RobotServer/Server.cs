@@ -37,7 +37,7 @@ namespace RobotServer
             get { return _generalMap; }
             set { _generalMap = value; }
         }
-        
+
         public void Serialize()
         {
             FileStream file;
@@ -69,7 +69,7 @@ namespace RobotServer
         }
         private async void CallInitialization()
         {
-             await InitializationAsync();
+            await InitializationAsync();
         }
         private Task InitializationAsync()
         {
@@ -81,37 +81,35 @@ namespace RobotServer
             {
                 try
                 {
-                    soc = listener.AcceptSocket();
-                    s = new NetworkStream(soc);
-                    _binaryReader = new BinaryReader(s);
-                    _binaryWriter = new BinaryWriter(s);
+                    Socket soc = listener.AcceptSocket();
+                    Stream s = new NetworkStream(soc);
+                    BinaryReader binaryReader = new BinaryReader(s);
+                    BinaryWriter binaryWriter = new BinaryWriter(s);
                     string order;
-                    order = _binaryReader.ReadString();
+                    order = binaryReader.ReadString();
                     switch (order)
                     {
                         case "MOVE":
                             GetGridAndMove(soc);
-                            _binaryWriter.Write(true);
+                            binaryWriter.Write(true);
                             break;
                         case "MAP":
-                            GeneralMap.Minimap.DatasInMiniMap = SyncMap();
+                            GeneralMap.Minimap.DatasInMiniMap = SyncMap(binaryReader);
                             _generalMap.Synchronize();
-                            _binaryWriter.Write(true);
+                            binaryWriter.Write(true);
                             break;
                         default:
                             break;
                     }
+                    binaryReader.Close();
+                    s.Close();
+                    soc.Close();
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                 }
-                finally
-                {
-                    _binaryReader.Close();
-                    s.Close();
-                    soc.Close();
-                }
+            }
         }
         public byte[][] SyncMap(BinaryReader br)
         {

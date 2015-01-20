@@ -12,7 +12,6 @@ namespace RobotMock
         const int MIN_DISTANCE = 10;
         const int MAX_DISTANCE = 80;
         const int WARNING_DISTANCE = 30;
-        bool isObstacle;
         Environment _env;
 
         public InfraredSensor(char position, Environment env)
