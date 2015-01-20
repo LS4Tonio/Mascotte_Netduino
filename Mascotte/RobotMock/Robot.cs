@@ -17,7 +17,7 @@ namespace RobotMock
 
         public Robot(int xMapSize, int yMapSize)
         {
-            _env = new Environment( @"C:\dossier_git\Mascotte_Netduino\Mascotte\RobotApplication\bin\Debug\test.bmp", (double)1, (double)0, (double)0, (double)0 );
+            _env = new Environment( @"C:\Users\Steph\Documents\INTECH\Mascotte_Netduino\Mascotte\RobotApplication\Resources\OpenSpace.bmp", (double)1, (double)0, (double)0, (double)0 );
             _wifi = new Wifi();
             _rover = new Rover(_env);
             _infraredSensors = new InfraredSensor[3] { new InfraredSensor('F', _env), new InfraredSensor('L', _env), new InfraredSensor('R', _env) };

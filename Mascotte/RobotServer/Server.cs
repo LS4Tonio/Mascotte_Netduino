@@ -33,7 +33,7 @@ namespace RobotServer
 
             listener = new TcpListener(new IPAddress(localIP), 3000);
             listener.Start();
-            InitializeConnection();
+            CallInitialization();
         }
 
         public GeneralMap GeneralMap
@@ -44,10 +44,6 @@ namespace RobotServer
         
         public void Serialize()
         {
-            //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
-            //TextWriter tw = File.CreateText(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
-            //serializer.Serialize(tw, _generalMap);
-            //tw.Close(); 
             FileStream file;
             if (!(File.Exists(path)))
             {
@@ -63,10 +59,6 @@ namespace RobotServer
         }
         public void Deserialize()
         {
-            //XmlSerializer serializer = new XmlSerializer(typeof(GeneralMap));
-            //TextReader tr = new StreamReader(@"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.txt");
-            //_generalMap = (GeneralMap)serializer.Deserialize(tr);
-            //tr.Close();
             FileStream file;
             if (!(File.Exists(path)))
             {
@@ -79,33 +71,51 @@ namespace RobotServer
                 _generalMap = (GeneralMap)formatter.Deserialize(file);
             }
         }
+        private async void CallInitialization()
+        {
+             await InitializationAsync();
+        }
+        private Task InitializationAsync()
+        {
+            return Task.Run(() => InitializeConnection());
+        }
         public void InitializeConnection()
         {
             while (true)
             {
-                soc = listener.AcceptSocket();
-                s = new NetworkStream(soc);
-                _binaryReader = new BinaryReader(s);
-                _binaryWriter = new BinaryWriter(s);
-                string order;
-                order = _binaryReader.ReadString();
-                switch (order)
+                try
                 {
-                    case "MOVE":
-                        GetGridAndMove(soc);
-                        _binaryWriter.Write(true);
-                        break;
-                    case "MAP":
-                        GeneralMap.Minimap.DatasInMiniMap = SyncMap();
-                        _generalMap.Synchronize();
-                        _binaryWriter.Write(true);
-                        break;
-                    default:
-                        break;
+                    soc = listener.AcceptSocket();
+                    s = new NetworkStream(soc);
+                    _binaryReader = new BinaryReader(s);
+                    _binaryWriter = new BinaryWriter(s);
+                    string order;
+                    order = _binaryReader.ReadString();
+                    switch (order)
+                    {
+                        case "MOVE":
+                            GetGridAndMove(soc);
+                            _binaryWriter.Write(true);
+                            break;
+                        case "MAP":
+                            GeneralMap.Minimap.DatasInMiniMap = SyncMap();
+                            _generalMap.Synchronize();
+                            _binaryWriter.Write(true);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                _binaryReader.Close();
-                s.Close();
-                soc.Close();
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+                finally
+                {
+                    _binaryReader.Close();
+                    s.Close();
+                    soc.Close();
+                }
             }
         }
         public byte[][] SyncMap()
