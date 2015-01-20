@@ -80,8 +80,8 @@ namespace RobotServer
         }
         public void InitializeConnection()
         {
-            while (true)
-            {
+            //while (true)
+            //{
                 soc = listener.AcceptSocket();
                 s = new NetworkStream(soc);
                 _binaryReader = new BinaryReader(s);
@@ -102,7 +102,7 @@ namespace RobotServer
                 _binaryReader.Close();
                 s.Close();
                 soc.Close();
-            }
+            //}
         }
         public byte[][] SyncMap()
         {

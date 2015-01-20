@@ -65,25 +65,28 @@ namespace RobotMock
 
         public void GetObstacle()
         {
-            int distance = 0;
+            double robotDistance = 0;
             int size = 0;
 
             // Up / Down
             if ((Rover.Direction > 315 && Rover.Direction <= 360) || (Rover.Direction >= 0 && Rover.Direction < 45) || (Rover.Direction > 135 && Rover.Direction < 225))
             {
-                distance = MiniMap.ySize / 2;
+                robotDistance = MiniMap.ySize / 2;
                 size = MiniMap.ySize;
             }
             // Left / Right
             if ((Rover.Direction > 315 && Rover.Direction <= 360) || (Rover.Direction >= 0 && Rover.Direction < 45) || (Rover.Direction > 135 && Rover.Direction < 225))
             {
-                distance = MiniMap.xSize / 2;
+                robotDistance = MiniMap.xSize / 2;
                 size = MiniMap.xSize;
             }
 
-            if (InfraredSensors[0].DistanceDetected < distance)
+            int x = 0;
+            int y = 0;
+            double dist = 0;
+            if (InfraredSensors[0].DetectedPoint(out x, out y, out robotDistance) && dist < robotDistance)
             {
-                MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction), size);
+                MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction) ,x, y);
             }
         }
 

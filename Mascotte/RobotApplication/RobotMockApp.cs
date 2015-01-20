@@ -23,8 +23,8 @@ namespace RobotApplication
         private ClientConnection client;
         private System.Windows.Forms.Timer timer;
         private bool isConnectionErrorShown;
-        const int ROBOTMAP_X_SIZE = 8;
-        const int ROBOTMAP_Y_SIZE = 8;
+        const int ROBOTMAP_X_SIZE = 9;
+        const int ROBOTMAP_Y_SIZE = 9;
 
         public RobotMockApp()
         {
@@ -124,7 +124,7 @@ namespace RobotApplication
             robot.MiniMap.MoveMap(robot.MiniMap.FindDirection(robot.Rover.Direction));
 
             // Gets obstacles
-            GetObstacles();
+            robot.GetObstacle();
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
         {
@@ -143,6 +143,9 @@ namespace RobotApplication
             if (direction < 0)
                 direction += 360;
             robot.MiniMap.MoveMap(robot.MiniMap.FindDirection(direction));
+
+            // Gets obstacles
+            robot.GetObstacle();
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {

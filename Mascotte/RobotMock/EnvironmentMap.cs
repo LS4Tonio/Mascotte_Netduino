@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RobotMock
 {
-    class EnvironmentMap
+    public class EnvironmentMap
     {
         Bitmap source = null;
         BitmapData bitmapData = null;

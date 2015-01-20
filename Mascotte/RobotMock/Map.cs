@@ -108,7 +108,7 @@ namespace RobotMock
 
                 case 2:     // Down
                     {
-                        if (_xPos < env.Environment.Height - 1)
+                        if (_xPos < env.EnvironmentMap.Height - 1)
                         {
                             var length = MapArray.Length - 1;
 
@@ -162,7 +162,7 @@ namespace RobotMock
 
                 case 4:     // Right
                     {
-                        if (_yPos < env.Environment.Width - 1)
+                        if (_yPos < env.EnvironmentMap.Width - 1)
                         {
                             for (int i = 0; i < MapArray.Length; i++)
                             {
@@ -193,29 +193,39 @@ namespace RobotMock
                     throw new ArgumentException();
             }
         }
-
-        public byte[][] AddObstacle(int direction, int size)
+        /// <summary>
+        /// Move map in choosen direction.
+        /// Only 4 possible directions: Up, Right, Down, Left.
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public byte[][] AddObstacle(int direction, int x, int y)
         {
-            int minimapSize = size;
             switch (direction)
             {
-                case 1:
+                case 1: // Up
                     {
+                        _map[0][4] = 255;
                         RaisePropertyChanged("MapArray");
                         return _map;
                     }
-                case 2:
+                case 2: // Down
                     {
+                        _map[_map.Length - 1][4] = 255;
                         RaisePropertyChanged("MapArray");
                         return _map;
                     }
-                case 3:
+                case 3: // Left
                     {
+                        _map[4][0] = 255;
                         RaisePropertyChanged("MapArray");
                         return _map;
                     }
-                case 4:
+                case 4: // Right
                     {
+                        _map[4][_map[4].Length - 1] = 255;
                         RaisePropertyChanged("MapArray");
                         return _map;
                     }

@@ -18,6 +18,7 @@ namespace RobotServer
         {
             InitializeComponent();
             server = new Server();
+            server.InitializeConnection();
         }
 
         private void RobotServerApp_FormClosing(object sender, FormClosingEventArgs e)

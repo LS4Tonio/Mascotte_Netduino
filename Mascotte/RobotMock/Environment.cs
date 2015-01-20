@@ -43,7 +43,7 @@ namespace RobotMock
             _angle = startAngle;
             _speed = 0;
             _pixelRealDistanceRatio = pixelRealDistanceRatio;
-            SensorMaxRange = 100;//valeur au pif
+            SensorMaxRange = 20000;//valeur au pif
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace RobotMock
         /// </summary>
         public double SensorMaxRange { get; set; }
         public double Speed { get; set; }
-        public EnvironmentMap Environment
+        public EnvironmentMap EnvironmentMap
         {
             get { return _envMap; }
         }
