@@ -105,10 +105,12 @@ namespace RobotServer
         }
         private async Task Read(TcpClient client)
         {
+            int i = 0;
             try
             {
                 while (true)
                 {
+                    Console.WriteLine("Read: " + i.ToString());
                     // Get stream
                     NetworkStream s = client.GetStream();
                     //Stream s = new NetworkStream(soc);
@@ -135,6 +137,7 @@ namespace RobotServer
                         default:
                             break;
                     }
+                    i++;
                 }
             }
             catch (Exception e)
