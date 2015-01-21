@@ -29,13 +29,13 @@ namespace RobotMock
             try
             {
                 client.Connect(name, 3000);
-                message = "Connection open.\n";
+                message = "Connexion effectuée.\n";
                 Console.WriteLine(message);
                 return true;
             }
             catch (SocketException e)
             {
-                message = "Connection failed:\n" + e.Message;
+                message = "Erreur de connexion.\n" + e.Message;
                 Console.WriteLine(message);
                 return false;
             }
@@ -52,6 +52,7 @@ namespace RobotMock
 
             return client.Client.Connected;
         }
+
         /// <summary>
         /// Sending datas for action move
         /// </summary>
@@ -63,17 +64,17 @@ namespace RobotMock
         {
             try
             {
+                NetworkStream s = client.GetStream();
+                BinaryReader binaryReader = new BinaryReader(s);
+                BinaryWriter binaryWriter = new BinaryWriter(s);
 
-                Stream s = client.GetStream();
-                BinaryReader _binaryReader = new BinaryReader(s);
-                BinaryWriter _binaryWriter = new BinaryWriter(s);
+                binaryWriter.Write("MOVE"); // Instrution to realize
+                binaryWriter.Write(new byte[3] { direction, posX, posY }); // Informations about the move
+                binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
+                binaryWriter.Write(oldLine, 0, oldLine.Length);
+                binaryWriter.Flush();
 
-                _binaryWriter.Write("MOVE"); // Instrution to realize
-                _binaryWriter.Write(new byte[3] { direction, posX, posY }); // Informations about the move
-                _binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
-                _binaryWriter.Write(oldLine, 0, oldLine.Length);
-
-                while (_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
+                s.Flush();
             }
             catch (Exception e)
             {

@@ -38,6 +38,165 @@ namespace RobotServer
             set { _generalMap = value; }
         }
 
+        private byte[] LocalIPAddress()
+        {
+            IPHostEntry host;
+            byte[] localIP = null;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.GetAddressBytes();
+                    break;
+                }
+            }
+            return localIP;
+        }
+        public bool IsClientConnected()
+        {
+            if (listener.Server.Connected)
+                return true;
+            else
+                return false;
+        }
+        public void Close()
+        {
+            listener.Stop();
+        }
+
+        // Connect Async
+        private async void CallInitialization()
+        {
+            await InitializationAsync();
+        }
+        private Task InitializationAsync()
+        {
+            return Task.Run(() => InitializeConnection());
+        }
+        private async Task InitializeConnection()
+        {
+            try
+            {
+                while (true)
+                {
+                    // Get client if there is one
+                    TcpClient client = await listener.AcceptTcpClientAsync();
+                    Console.WriteLine("Client connected!");
+                    //Socket soc = await listener.AcceptSocketAsync();
+
+                    CallReadAsync(client);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+        
+        // Read Async
+        private async void CallReadAsync(TcpClient client)
+        {
+            await InitializationReadAsync(client);
+        }
+        private Task InitializationReadAsync(TcpClient client)
+        {
+            return Task.Run(() => Read(client));
+        }
+        private async Task Read(TcpClient client)
+        {
+            try
+            {
+                while (true)
+                {
+                    // Get stream
+                    NetworkStream s = client.GetStream();
+                    //Stream s = new NetworkStream(soc);
+
+                    // Create binaries writer et reader
+                    BinaryReader binaryReader = new BinaryReader(s);
+                    BinaryWriter binaryWriter = new BinaryWriter(s);
+
+                    switch (binaryReader.ReadString())
+                    {
+                        case "MOVE":
+                            {
+                                GetGridAndMove(binaryReader, binaryWriter);
+                                binaryWriter.Write(true);
+                                break;
+                            }
+                        case "MAP":
+                            {
+                                GeneralMap.Minimap.DatasInMiniMap = SyncMap(binaryReader);
+                                _generalMap.Synchronize();
+                                binaryWriter.Write(true);
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        // Movement
+        private void GetGridAndMove(BinaryReader br, BinaryWriter bw)
+        {
+            try
+            {
+                while (true)
+                {
+                    //NetworkStream s = new NetworkStream(soc);
+                    //BinaryReader br = new BinaryReader(s);
+                    //BinaryWriter bw = new BinaryWriter(s);
+                    Console.WriteLine(@"Some works to do");
+
+                    // Get positions and direction int on byte array
+                    // Direction | PosX | PosY |
+                    byte[] informations = br.ReadBytes(3); // read position with direction of movement
+
+                    // Get length first
+                    byte[] lineLen;
+                    lineLen = br.ReadBytes(4);
+                    int dataLen = BitConverter.ToInt32(lineLen, 0);
+
+                    // Get datas
+                    byte[] readMsgData = new byte[dataLen];
+                    readMsgData = br.ReadBytes(dataLen);
+                    if (readMsgData != null)
+                    {
+                        bw.Write(true);
+                        _generalMap.MoveGrid(informations[0], readMsgData);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        // Map
+        private byte[][] SyncMap(BinaryReader br)
+        {
+            byte[] tableLen;
+            tableLen = br.ReadBytes(4);
+            int dataLen = BitConverter.ToInt32(tableLen, 0);
+            byte[][] tmpMap = new byte[dataLen][];
+            for (int i = 0; i < dataLen; i++)
+            {
+                byte[] lineLen = br.ReadBytes(4);
+                int _dataLen = BitConverter.ToInt32(lineLen, 0);
+                tmpMap[i] = new byte[_dataLen];
+                tmpMap[i] = br.ReadBytes(_dataLen);
+            }
+            return tmpMap;
+        }
         public void Serialize()
         {
             FileStream file;
@@ -66,119 +225,6 @@ namespace RobotServer
                 var formatter = new BinaryFormatter();
                 _generalMap = (GeneralMap)formatter.Deserialize(file);
             }
-        }
-        private async void CallInitialization()
-        {
-            await InitializationAsync();
-        }
-        private Task InitializationAsync()
-        {
-            return Task.Run(() => InitializeConnection());
-        }
-        private async Task InitializeConnection()
-        {
-            while (true)
-            {
-                try
-                {
-                    Socket soc = await listener.AcceptSocketAsync();
-                    Stream s = new NetworkStream(soc);
-                    BinaryReader binaryReader = new BinaryReader(s);
-                    BinaryWriter binaryWriter = new BinaryWriter(s);
-                    string order;   
-                    order = binaryReader.ReadString();
-                    switch (order)
-                    {
-                        case "MOVE":
-                            GetGridAndMove(soc);
-                            binaryWriter.Write(true);
-                            break;
-                        case "MAP":
-                            GeneralMap.Minimap.DatasInMiniMap = SyncMap(binaryReader);
-                            _generalMap.Synchronize();
-                            binaryWriter.Write(true);
-                            break;
-                        default:
-                            break;
-                    }
-                    binaryReader.Close();
-                    s.Close();
-                    soc.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-            }
-        }
-        public byte[][] SyncMap(BinaryReader br)
-        {
-            byte[] tableLen;
-            tableLen = br.ReadBytes(4);
-            int dataLen = BitConverter.ToInt32(tableLen, 0);
-            byte[][] tmpMap = new byte[dataLen][];
-            for (int i = 0; i < dataLen; i++)
-            {
-                byte[] lineLen = br.ReadBytes(4);
-                int _dataLen = BitConverter.ToInt32(lineLen, 0);
-                tmpMap[i] = new byte[_dataLen];
-                tmpMap[i] = br.ReadBytes(_dataLen);
-            }
-            return tmpMap;
-        }
-        public void GetGridAndMove(Socket soc)
-        {
-            try
-            {
-                Stream s = new NetworkStream(soc);
-                BinaryReader br = new BinaryReader(s);
-                BinaryWriter bw = new BinaryWriter(s);
-                Console.WriteLine(@"Some works to do");
-                while (true)
-                {
-                    //GET POSITIONs AND DIRECTION IN ONE BYTE ARRAY
-                    // DIRECTION | POSX | POSY |
-                    byte[] informations = br.ReadBytes(3); // read position with direction of movement
-
-                    // GET LENGTH FIRST
-                    byte[] lineLen;
-                    lineLen = br.ReadBytes(4);
-                    int dataLen = BitConverter.ToInt32(lineLen, 0);
-
-                    // GET CONTENT
-                    byte[] readMsgData = new byte[dataLen];
-                    readMsgData = br.ReadBytes(dataLen);
-                    if (readMsgData != null)
-                    {
-                        bw.Write(true);
-                        _generalMap.MoveGrid(informations[0], readMsgData);
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-        public byte[] LocalIPAddress()
-        {
-            IPHostEntry host;
-            byte[] localIP = null;
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.GetAddressBytes();
-                    break;
-                }
-            }
-            return localIP;
-        }
-        public void Close()
-        {
-            listener.Stop();
         }
     }
 }

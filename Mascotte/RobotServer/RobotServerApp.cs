@@ -13,24 +13,33 @@ namespace RobotServer
 {
     public partial class RobotServerApp : Form
     {
-        const int MAP_X_SIZE = 100;
+        private const int MAP_X_SIZE = 100;
+        private const int MAP_Y_SIZE = 100;
         private Server server;
-        const int MAP_Y_SIZE = 100;
-        Graphics g;
+        private Graphics g;
+        private System.Windows.Forms.Timer timer;
 
         public RobotServerApp()
         {
             InitializeComponent();
             g = this.mapPanel.CreateGraphics();
             server = new Server();
+            server.GeneralMap.PropertyChanged += new PropertyChangedEventHandler(GridChanged);
+
+            // Timer for connection checks
+            timer = new System.Windows.Forms.Timer();
+            timer.Tick += new EventHandler(ConnectionTimer);
+            timer.Interval = 2000; // in miliseconds
+            //timer.Start();
         }
 
+        // Application closing event
         private void RobotServerApp_FormClosing(object sender, FormClosingEventArgs e)
         {
             server.Close();
-            server.GeneralMap.PropertyChanged += new PropertyChangedEventHandler(GridChanged);
         }
-        // Robot Map
+        
+        // Map
         private void CreateRobotMap(Graphics g)
         {
             int width = this.mapPanel.Width / MAP_X_SIZE;
@@ -71,7 +80,7 @@ namespace RobotServer
             g.FillRectangle(brush, xPos, yPos, width, height);
             brush.Dispose();
         }
-
+        // Map events
         private void mapPanel_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -83,6 +92,30 @@ namespace RobotServer
         private void GridChanged(object sender, EventArgs e)
         {
             this.CreateRobotMap(g);
+        }
+
+        // Connection check
+        private void CheckConnectionWithClient()
+        {
+            var networkOff = global::RobotServer.Properties.Resources.networkOff;
+            var networkOn = global::RobotServer.Properties.Resources.networkOn;
+
+            if (server.IsClientConnected())
+            {
+                if (this.connectionStatus.Image != networkOn)
+                    this.connectionStatus.Image = networkOn;
+                this.connectionStatus.Text = @"Connecté";
+            }
+            else
+            {
+                if (this.connectionStatus.Image != networkOff)
+                    this.connectionStatus.Image = networkOff;
+                this.connectionStatus.Text = @"Déconnecté";
+            }
+        }
+        private void ConnectionTimer(object sender, EventArgs e)
+        {
+            CheckConnectionWithClient();
         }
     }
 }
