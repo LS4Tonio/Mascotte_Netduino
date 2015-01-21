@@ -48,7 +48,7 @@ namespace RobotServer.GridMaker
             _minimap = new MiniGrid(datas, this.GridContent);
 
 
-            RandonessIsCool();
+            //RandonessIsCool();
 
         }
 
