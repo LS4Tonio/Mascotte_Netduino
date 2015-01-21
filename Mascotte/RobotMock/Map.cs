@@ -82,7 +82,7 @@ namespace RobotMock
                     {
                         int length = MapArray.Length - 1;
                         byte[] oldLine = new byte[MapArray[length].Length];
-
+                        
                         if (_xPos > 0)
                         {
                             // Save old line

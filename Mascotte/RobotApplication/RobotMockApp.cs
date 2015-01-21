@@ -117,10 +117,11 @@ namespace RobotApplication
 
             // Move robot
             robot.Rover.Move(true, speedValue);
-            // Move map
-            byte[] datas = robot.MiniMap.MoveMap(direction);
             // Gets obstacles
             robot.GetObstacle();
+            // Move map
+            byte[] datas = robot.MiniMap.MoveMap(direction);
+
             // Send movement
             robot.Wifi.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
 
