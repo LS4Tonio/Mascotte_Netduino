@@ -37,7 +37,6 @@
             this.carteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sauvegarderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chargerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mapPanel = new System.Windows.Forms.Panel();
             this.controlPanel = new System.Windows.Forms.Panel();
             this.controlBox = new System.Windows.Forms.GroupBox();
             this.speedBar = new System.Windows.Forms.TrackBar();
@@ -53,9 +52,11 @@
             this.directionDownButton = new System.Windows.Forms.Button();
             this.directionTurnLeftButton = new System.Windows.Forms.Button();
             this.directionTopButton = new System.Windows.Forms.Button();
-            this.contentTabControl = new System.Windows.Forms.TabControl();
+            this.loadMapDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveMapDialog = new System.Windows.Forms.SaveFileDialog();
             this.mapTab = new System.Windows.Forms.TabPage();
-            this.cameraTab = new System.Windows.Forms.TabPage();
+            this.mapPanel = new System.Windows.Forms.Panel();
+            this.contentTabControl = new System.Windows.Forms.TabControl();
             this.datasStatusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.controlPanel.SuspendLayout();
@@ -63,8 +64,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
             this.speedBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.actualMovement)).BeginInit();
-            this.contentTabControl.SuspendLayout();
             this.mapTab.SuspendLayout();
+            this.contentTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // datasStatusStrip
@@ -107,8 +108,9 @@
             // quitterToolStripMenuItem
             // 
             this.quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
-            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.quitterToolStripMenuItem.Text = "Quitter";
+            this.quitterToolStripMenuItem.Click += new System.EventHandler(this.quitterToolStripMenuItem_Click);
             // 
             // carteToolStripMenuItem
             // 
@@ -122,24 +124,16 @@
             // sauvegarderToolStripMenuItem
             // 
             this.sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
-            this.sauvegarderToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.sauvegarderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.sauvegarderToolStripMenuItem.Text = "Sauvegarder";
+            this.sauvegarderToolStripMenuItem.Click += new System.EventHandler(this.sauvegarderToolStripMenuItem_Click);
             // 
             // chargerToolStripMenuItem
             // 
             this.chargerToolStripMenuItem.Name = "chargerToolStripMenuItem";
-            this.chargerToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.chargerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.chargerToolStripMenuItem.Text = "Charger";
-            // 
-            // mapPanel
-            // 
-            this.mapPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.mapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapPanel.Location = new System.Drawing.Point(3, 3);
-            this.mapPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.mapPanel.Name = "mapPanel";
-            this.mapPanel.Size = new System.Drawing.Size(470, 438);
-            this.mapPanel.TabIndex = 2;
+            this.chargerToolStripMenuItem.Click += new System.EventHandler(this.chargerToolStripMenuItem_Click);
             // 
             // controlPanel
             // 
@@ -147,7 +141,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.controlPanel.Controls.Add(this.controlBox);
             this.controlPanel.Location = new System.Drawing.Point(486, 45);
-            this.controlPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controlPanel.Margin = new System.Windows.Forms.Padding(2);
             this.controlPanel.Name = "controlPanel";
             this.controlPanel.Size = new System.Drawing.Size(247, 446);
             this.controlPanel.TabIndex = 3;
@@ -187,7 +181,7 @@
             this.speedBar.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this.speedBar.LargeChange = 10;
             this.speedBar.Location = new System.Drawing.Point(14, 196);
-            this.speedBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.speedBar.Margin = new System.Windows.Forms.Padding(2);
             this.speedBar.Maximum = 100;
             this.speedBar.Name = "speedBar";
             this.speedBar.Size = new System.Drawing.Size(181, 33);
@@ -204,9 +198,9 @@
             this.speedBox.Controls.Add(this.speedTextBox);
             this.speedBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.speedBox.Location = new System.Drawing.Point(5, 184);
-            this.speedBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.speedBox.Margin = new System.Windows.Forms.Padding(2);
             this.speedBox.Name = "speedBox";
-            this.speedBox.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.speedBox.Padding = new System.Windows.Forms.Padding(2);
             this.speedBox.Size = new System.Drawing.Size(231, 49);
             this.speedBox.TabIndex = 6;
             this.speedBox.TabStop = false;
@@ -217,7 +211,7 @@
             this.speedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.speedTextBox.Location = new System.Drawing.Point(191, 19);
-            this.speedTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.speedTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.speedTextBox.Name = "speedTextBox";
             this.speedTextBox.Size = new System.Drawing.Size(33, 20);
             this.speedTextBox.TabIndex = 1;
@@ -314,39 +308,42 @@
             this.directionTopButton.TabIndex = 0;
             this.directionTopButton.UseVisualStyleBackColor = true;
             // 
-            // contentTabControl
+            // loadMapDialog
             // 
-            this.contentTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.contentTabControl.Controls.Add(this.mapTab);
-            this.contentTabControl.Controls.Add(this.cameraTab);
-            this.contentTabControl.Location = new System.Drawing.Point(0, 24);
-            this.contentTabControl.Name = "contentTabControl";
-            this.contentTabControl.SelectedIndex = 0;
-            this.contentTabControl.Size = new System.Drawing.Size(484, 470);
-            this.contentTabControl.TabIndex = 4;
+            this.loadMapDialog.FileName = "openFileDialog1";
             // 
             // mapTab
             // 
             this.mapTab.Controls.Add(this.mapPanel);
             this.mapTab.Location = new System.Drawing.Point(4, 22);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.mapTab.Padding = new System.Windows.Forms.Padding(3);
             this.mapTab.Size = new System.Drawing.Size(476, 444);
             this.mapTab.TabIndex = 0;
             this.mapTab.Text = "Carte";
             this.mapTab.UseVisualStyleBackColor = true;
             // 
-            // cameraTab
+            // mapPanel
             // 
-            this.cameraTab.Location = new System.Drawing.Point(4, 22);
-            this.cameraTab.Name = "cameraTab";
-            this.cameraTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.cameraTab.Size = new System.Drawing.Size(476, 444);
-            this.cameraTab.TabIndex = 1;
-            this.cameraTab.Text = "Caméra";
-            this.cameraTab.UseVisualStyleBackColor = true;
+            this.mapPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.mapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mapPanel.Location = new System.Drawing.Point(3, 3);
+            this.mapPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.mapPanel.Name = "mapPanel";
+            this.mapPanel.Size = new System.Drawing.Size(470, 438);
+            this.mapPanel.TabIndex = 2;
+            // 
+            // contentTabControl
+            // 
+            this.contentTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.contentTabControl.Controls.Add(this.mapTab);
+            this.contentTabControl.Location = new System.Drawing.Point(0, 24);
+            this.contentTabControl.Name = "contentTabControl";
+            this.contentTabControl.SelectedIndex = 0;
+            this.contentTabControl.Size = new System.Drawing.Size(484, 470);
+            this.contentTabControl.TabIndex = 4;
             // 
             // RobotServerApp
             // 
@@ -372,8 +369,8 @@
             this.speedBox.ResumeLayout(false);
             this.speedBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.actualMovement)).EndInit();
-            this.contentTabControl.ResumeLayout(false);
             this.mapTab.ResumeLayout(false);
+            this.contentTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -384,7 +381,6 @@
         private System.Windows.Forms.StatusStrip datasStatusStrip;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem applicationStripMenu;
-        private System.Windows.Forms.Panel mapPanel;
         private System.Windows.Forms.Panel controlPanel;
         private System.Windows.Forms.ToolStripMenuItem quitterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem carteToolStripMenuItem;
@@ -404,10 +400,12 @@
         private System.Windows.Forms.GroupBox speedBox;
         private System.Windows.Forms.TrackBar speedBar;
         private System.Windows.Forms.TextBox speedTextBox;
-        private System.Windows.Forms.TabControl contentTabControl;
-        private System.Windows.Forms.TabPage mapTab;
-        private System.Windows.Forms.TabPage cameraTab;
         private System.Windows.Forms.ToolStripStatusLabel connectionStatus;
+        private System.Windows.Forms.OpenFileDialog loadMapDialog;
+        private System.Windows.Forms.SaveFileDialog saveMapDialog;
+        private System.Windows.Forms.TabPage mapTab;
+        private System.Windows.Forms.Panel mapPanel;
+        private System.Windows.Forms.TabControl contentTabControl;
     }
 }
 

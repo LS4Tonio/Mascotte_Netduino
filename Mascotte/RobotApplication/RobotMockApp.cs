@@ -20,7 +20,6 @@ namespace RobotApplication
         private ErrorWindow errorWindow;
         private Robot robot;
         private Graphics robotMapGraphic;
-        private System.Windows.Forms.Timer timer;
         private bool isConnectionErrorShown;
         const int ROBOTMAP_X_SIZE = 9;
         const int ROBOTMAP_Y_SIZE = 9;
@@ -36,16 +35,16 @@ namespace RobotApplication
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, 0);
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
+            // Display direction arrow
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+
             // Robot map
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
             robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
 
             // Timer for connection checks
-            timer = new System.Windows.Forms.Timer();
-            timer.Tick += new EventHandler(ConnectionTimer);
-            timer.Interval = 2000; // in miliseconds
-            timer.Start();
             isConnectionErrorShown = false;
+            CallCheckConnectionAsync();
         }
 
         // Menu
@@ -166,6 +165,9 @@ namespace RobotApplication
 
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+
+            // Change image
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
         }
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
@@ -178,6 +180,46 @@ namespace RobotApplication
 
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+
+            // Change image
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+        }
+        private void DisplayDirection(int direction)
+        {
+            var up = global::RobotApplication.Properties.Resources.arrowUp;
+            var left = global::RobotApplication.Properties.Resources.arrowLeft;
+            var down = global::RobotApplication.Properties.Resources.arrowDown;
+            var right = global::RobotApplication.Properties.Resources.arrowRight;
+            var stop = global::RobotApplication.Properties.Resources.stopped;
+
+            switch (direction)
+            {
+                case 1:
+                    {
+                        this.actualDirection.Image = up;
+                        break;
+                    }
+                case 2:
+                    {
+                        this.actualDirection.Image = down;
+                        break;
+                    }
+                case 3:
+                    {
+                        this.actualDirection.Image = left;
+                        break;
+                    }
+                case 4:
+                    {
+                        this.actualDirection.Image = right;
+                        break;
+                    }
+                default:
+                    {
+                        this.actualDirection.Image = stop;
+                        break;
+                    }
+            }
         }
 
         // Movement
@@ -338,35 +380,41 @@ namespace RobotApplication
             UpdateMap(robotMapGraphic, robot.MiniMap);
         }
 
-        // Server
-        private void CheckConnectionWithServer()
+        // Check connection
+        private async void CallCheckConnectionAsync()
+        {
+            await InitializationCheckConnection();
+        }
+        private Task InitializationCheckConnection()
+        {
+            return Task.Run(() => CheckConnection());
+        }
+        private async Task CheckConnection()
         {
             var networkOff = global::RobotApplication.Properties.Resources.networkOff;
             var networkOn = global::RobotApplication.Properties.Resources.networkOn;
-            string message = "";
 
-            if (robot.Wifi.CheckConnection(out message))
+            while (true)
             {
-                this.connectionStatus.Text = @"Connecté";
-                this.connectionStatus.Image = networkOn;
-                isConnectionErrorShown = false;
-            }
-            else
-            {
-                this.connectionStatus.Text = @"Déconnecté";
-                this.connectionStatus.Image = networkOff;
-                if (!isConnectionErrorShown)
+                string message = "";
+                if (robot.Wifi.CheckConnection(out message))
                 {
-                    isConnectionErrorShown = true;
-                    errorWindow.SetErrorMessage("Erreur de connexion", "Aucune connexion", message);
+                    this.connectionStatus.Text = @"Connecté";
+                    this.connectionStatus.Image = networkOn;
+                    isConnectionErrorShown = false;
                 }
+                else
+                {
+                    this.connectionStatus.Text = @"Déconnecté";
+                    this.connectionStatus.Image = networkOff;
+                    if (!isConnectionErrorShown)
+                    {
+                        isConnectionErrorShown = true;
+                        errorWindow.SetErrorMessage("Erreur de connexion", "Aucune connexion", message);
+                    }
+                }
+                Thread.Sleep(10);
             }
-        }
-
-        // Connection Events
-        private void ConnectionTimer(object sender, EventArgs e)
-        {
-            CheckConnectionWithServer();
         }
     }
 }

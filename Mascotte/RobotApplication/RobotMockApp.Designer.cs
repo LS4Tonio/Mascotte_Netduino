@@ -53,7 +53,7 @@
             this.robotAngleTextBox = new System.Windows.Forms.TextBox();
             this.robotAngleLabel = new System.Windows.Forms.Label();
             this.pauseButton = new System.Windows.Forms.Button();
-            this.actualMovement = new System.Windows.Forms.PictureBox();
+            this.actualDirection = new System.Windows.Forms.PictureBox();
             this.stopButton = new System.Windows.Forms.Button();
             this.startButton = new System.Windows.Forms.Button();
             this.directionTurnRightButton = new System.Windows.Forms.Button();
@@ -77,7 +77,7 @@
             this.rectangleBox.SuspendLayout();
             this.mapBox.SuspendLayout();
             this.directionBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.actualMovement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.actualDirection)).BeginInit();
             this.speedBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
             this.mapsPanel.SuspendLayout();
@@ -312,7 +312,7 @@
             this.directionBox.Controls.Add(this.robotAngleTextBox);
             this.directionBox.Controls.Add(this.robotAngleLabel);
             this.directionBox.Controls.Add(this.pauseButton);
-            this.directionBox.Controls.Add(this.actualMovement);
+            this.directionBox.Controls.Add(this.actualDirection);
             this.directionBox.Controls.Add(this.stopButton);
             this.directionBox.Controls.Add(this.startButton);
             this.directionBox.Controls.Add(this.directionTurnRightButton);
@@ -355,13 +355,14 @@
             this.pauseButton.UseVisualStyleBackColor = true;
             this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
             // 
-            // actualMovement
+            // actualDirection
             // 
-            this.actualMovement.Location = new System.Drawing.Point(95, 59);
-            this.actualMovement.Name = "actualMovement";
-            this.actualMovement.Size = new System.Drawing.Size(30, 30);
-            this.actualMovement.TabIndex = 7;
-            this.actualMovement.TabStop = false;
+            this.actualDirection.Location = new System.Drawing.Point(95, 59);
+            this.actualDirection.Name = "actualDirection";
+            this.actualDirection.Size = new System.Drawing.Size(30, 30);
+            this.actualDirection.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.actualDirection.TabIndex = 7;
+            this.actualDirection.TabStop = false;
             // 
             // stopButton
             // 
@@ -443,11 +444,12 @@
             // 
             // speedBar
             // 
-            this.speedBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.speedBar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.speedBar.AutoSize = false;
             this.speedBar.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.speedBar.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.speedBar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.speedBar.LargeChange = 10;
             this.speedBar.Location = new System.Drawing.Point(6, 19);
             this.speedBar.Maximum = 100;
@@ -569,7 +571,7 @@
             this.mapBox.ResumeLayout(false);
             this.directionBox.ResumeLayout(false);
             this.directionBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.actualMovement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.actualDirection)).EndInit();
             this.speedBox.ResumeLayout(false);
             this.speedBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).EndInit();
@@ -601,7 +603,7 @@
         private System.Windows.Forms.Button forceSendButton;
         private System.Windows.Forms.Button forceGetMapButton;
         private System.Windows.Forms.GroupBox directionBox;
-        private System.Windows.Forms.PictureBox actualMovement;
+        private System.Windows.Forms.PictureBox actualDirection;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button directionTurnRightButton;
