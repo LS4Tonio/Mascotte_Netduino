@@ -20,6 +20,11 @@ namespace RobotMock
         Environment env;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public int XSize { get { return _xSize; } }
+        public int YSize { get { return _ySize; } }
+        public int XPos { get { return _xPos; } }
+        public int YPos { get { return _yPos; } }
+
         public Map(int xSize, int ySize, int xPos, int yPos, Environment env)
         {
             this.env = env;
@@ -196,7 +201,11 @@ namespace RobotMock
         /// <returns></returns>
         public byte[][] AddObstacle(int direction, int x, int y)
         {
-            switch (direction)
+            _map[x/*-_xPos-_xSize/2)*/][y/*-(_yPos-_ySize/2)*/] = 255;//NOT
+            RaisePropertyChanged( "MapArray" );
+            return _map;
+
+            /*switch (direction)
             {
                 case 1: // Up
                     {
@@ -225,7 +234,7 @@ namespace RobotMock
                 default:{
                         return _map;
                     }
-            }
+            }*/
         }
         /// <summary>
         /// Return int for the direction with the given angle.

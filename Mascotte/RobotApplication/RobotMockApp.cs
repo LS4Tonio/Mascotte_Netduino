@@ -22,8 +22,8 @@ namespace RobotApplication
         private Graphics robotMapGraphic;
         private System.Windows.Forms.Timer timer;
         private bool isConnectionErrorShown;
-        const int ROBOTMAP_X_SIZE = 9;
-        const int ROBOTMAP_Y_SIZE = 9;
+        const int ROBOTMAP_X_SIZE = 31;
+        const int ROBOTMAP_Y_SIZE = 31;
 
         public RobotMockApp()
         {
