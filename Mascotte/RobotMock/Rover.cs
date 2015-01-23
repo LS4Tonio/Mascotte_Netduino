@@ -103,6 +103,15 @@ namespace RobotMock
         {
             get { return _direction; }
         }
+        /// <summary>
+        /// Gets or sets speed of the robot.
+        /// Between 0 and 1;
+        /// </summary>
+        public double Speed
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Change speed of one motors side.

@@ -88,7 +88,7 @@ namespace RobotMock
             double dist = 0;
             if (InfraredSensors[0].DetectedPoint(out x, out y, out robotDistance) && dist < robotDistance)
             {
-                MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction) ,x, y);
+                MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction), x, y);
             }
         }
 
