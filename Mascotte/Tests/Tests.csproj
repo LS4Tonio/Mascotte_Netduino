@@ -51,10 +51,6 @@
     <Compile Include="ServerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mascotte\Mascotte.csproj">
-      <Project>{dd201426-361b-4f5b-950f-4b17aa44c996}</Project>
-      <Name>Mascotte</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RobotMock\RobotMock.csproj">
       <Project>{2528d388-6a7d-4a98-aaae-6a449c9a4c22}</Project>
       <Name>RobotMock</Name>

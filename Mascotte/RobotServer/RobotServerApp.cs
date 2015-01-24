@@ -126,5 +126,31 @@ namespace RobotServer
         {
             CheckConnectionWithClient();
         }
+
+        // Menus
+        private void quitterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        private void sauvegarderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.saveMapDialog.ShowDialog();
+        }
+        private void chargerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.loadMapDialog.ShowDialog();
+        }
+        
+        // Load/Save dialog
+        private void loadMapDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            //TO DO: Set loaded map in obstacle grid
+            string file = this.loadMapDialog.FileName;
+        }
+        private void saveMapDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            //TO DO: Create file of actual map anf change version number
+        }
+
     }
 }

@@ -24,9 +24,11 @@ namespace RobotServer
             _generalMap = new GeneralMap();
             path = @"D:\INTECH\Mascotte_Netduino\Mascotte\Mascotte\toto.dat";
 
+            // Server IP
             byte[] localIP = new byte[4];
             localIP = LocalIPAddress();
 
+            // Listener
             listener = new TcpListener(new IPAddress(localIP), 3000);
             listener.Start();
             CallInitialization();
@@ -93,7 +95,7 @@ namespace RobotServer
                 Console.WriteLine(e.ToString());
             }
         }
-        
+
         // Read Async
         private async void CallReadAsync(TcpClient client)
         {

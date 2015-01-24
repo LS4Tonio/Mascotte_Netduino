@@ -50,7 +50,7 @@ namespace RobotMock
             if (!client.Client.Connected)
                 return Connect(out message);
 
-            return client.Client.Connected;
+            return client.Connected;
         }
 
         /// <summary>
