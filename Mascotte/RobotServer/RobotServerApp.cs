@@ -92,6 +92,15 @@ namespace RobotServer
         private void GridChanged(object sender, EventArgs e)
         {
             this.CreateRobotMap(g);
+            Brush b;
+            int width = this.mapPanel.Width / MAP_X_SIZE;
+            int height = this.mapPanel.Height / MAP_Y_SIZE;
+
+            b = new SolidBrush(Color.White);
+            g.FillRectangle(b,server.GeneralMap.ActualPosX + 3, server.GeneralMap.ActualPosY + 3, width, height);
+            b.Dispose();
+            b = new SolidBrush(Color.FromArgb(255,255,0));
+            g.FillRectangle(b, server.GeneralMap.ActualPosX + 4, server.GeneralMap.ActualPosY + 4, width, height);
         }
 
         // Connection check

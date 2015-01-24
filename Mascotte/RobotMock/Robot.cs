@@ -17,7 +17,7 @@ namespace RobotMock
         private Map _map;
         private Environment _env;
 
-        public Robot(int xMapSize, int yMapSize, int xPos, int yPos, int angle)
+        public Robot(int xMapSize, int yMapSize, int xPos, int yPos, double angle)
         {
             //_env = new Environment(@"C:\dossier_git\Mascotte_Netduino\Mascotte\RobotApplication\bin\Debug\test.bmp", (double)1, (double)xPos, (double)yPos, (double)angle);
             _env = new Environment(@"../../Resources/OpenSpace.bmp", (double)1, (double)xPos, (double)yPos, (double)angle);

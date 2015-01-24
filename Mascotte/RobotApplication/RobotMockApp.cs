@@ -33,7 +33,7 @@ namespace RobotApplication
             errorWindow = new ErrorWindow();
 
             // Mock
-            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, 0);
+            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, Math.PI/2);
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Robot map
@@ -111,17 +111,17 @@ namespace RobotApplication
         {
             int speedValue = this.speedBar.Value / 100;
             int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
-            int xPos = (int)robot.MiniMap.Xposition;
-            int yPos = (int)robot.MiniMap.Yposition;
+           
             var runningImage = global::RobotApplication.Properties.Resources.running;
 
-            // Move robot
+            // Move robot   
             robot.Rover.Move(true, speedValue);
             // Gets obstacles
             robot.GetObstacle();
             // Move map
             byte[] datas = robot.MiniMap.MoveMap(direction);
-
+            int xPos = (int)robot.MiniMap.Yposition;
+            int yPos = (int)robot.MiniMap.Xposition;
             // Send movement
             robot.Wifi.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
 

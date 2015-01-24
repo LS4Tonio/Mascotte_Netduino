@@ -174,6 +174,8 @@ namespace RobotServer
                     {
                         bw.Write(true);
                         _generalMap.MoveGrid(informations[0], readMsgData);
+                        _generalMap.ActualPosX = informations[1];
+                        _generalMap.ActualPosY = informations[2];
                         break;
                     }
                 }
