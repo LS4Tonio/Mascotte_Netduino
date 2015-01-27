@@ -21,8 +21,10 @@ namespace RobotApplication
         private Robot robot;
         private Graphics robotMapGraphic;
         private bool isConnectionErrorShown;
+        private bool isRunning;
         const int ROBOTMAP_X_SIZE = 31;
         const int ROBOTMAP_Y_SIZE = 31;
+        const int PAUSE_TIME_MAX = 1000; // Pause time in ms
 
         public RobotMockApp()
         {
@@ -34,9 +36,13 @@ namespace RobotApplication
             // Mock
             robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, 0);
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+            isRunning = false;
 
             // Display direction arrow
             DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
+
+            // Display speed
+            speedTextBox.Text = speedBar.Value.ToString();
 
             // Robot map
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
@@ -88,6 +94,7 @@ namespace RobotApplication
         private void speedBar_Scroll(object sender, EventArgs e)
         {
             this.speedTextBox.Text = this.speedBar.Value.ToString();
+            robot.Rover.Speed = speedBar.Value / 100;
         }
         private void speedTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -103,33 +110,23 @@ namespace RobotApplication
 
             this.speedBar.Value = speedValue;
             this.speedTextBox.Text = speedValue.ToString();
+            robot.Rover.Speed = speedBar.Value / 100;
         }
 
         // Direction
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
-            int speedValue = this.speedBar.Value / 100;
+            double speedValue = robot.Rover.Speed;
             directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
             int xPos = (int)robot.MiniMap.Xposition;
             int yPos = (int)robot.MiniMap.Yposition;
-            var runningImage = global::RobotApplication.Properties.Resources.running;
 
-            // Move robot
-            robot.Rover.Move(true, speedValue);
-            // Gets obstacles
-            robot.GetObstacle();
-            // Move map
-            byte[] datas = robot.MiniMap.MoveMap(direction);
-            // Send movement
-            robot.Wifi.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
-
-            // Change status
-            if (this.robotStatus.Image != runningImage)
-                this.robotStatus.Image = runningImage;
+            // Move
+            MoveRobot(true, speedValue, direction, xPos, yPos);
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
         {/*
-            int speedValue = this.speedBar.Value / 100;
+            double speedValue = robot.Rover.Speed;
             int direction = robot.Rover.Direction;
             direction += 180;
             if (direction > 360)
@@ -139,29 +136,14 @@ namespace RobotApplication
             direction = robot.MiniMap.FindDirection(direction);
             int xPos = (int)robot.MiniMap.Xposition;
             int yPos = (int)robot.MiniMap.Yposition;
-            var runningImage = global::RobotApplication.Properties.Resources.running;
 
-            // Move robot
-            robot.Rover.Move(false, speedValue);
-            // Gets obstacles
-            robot.GetObstacle();
-            // Move map
-            byte[] datas = robot.MiniMap.MoveMap(direction);
-            // Send movement
-            robot.Wifi.SendMove((byte)direction, (byte)xPos, (byte)yPos, datas);
-
-            // Change status
-            if (this.robotStatus.Image != runningImage)
-                this.robotStatus.Image = runningImage;*/
+            // Move
+            MoveRobot(false, speedValue, direction, xPos, yPos);*/
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
             // Change robot angle
-            robot.Rover.Turn(false, this.speedBar.Value / 100, 90);
-
-            // Change status
-            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
-                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
+            robot.Rover.Turn(false, robot.Rover.Speed, 90);
 
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
@@ -172,11 +154,7 @@ namespace RobotApplication
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
             // Change robot angle
-            robot.Rover.Turn(true, this.speedBar.Value / 100, 90);
-
-            // Change status
-            if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
-                this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
+            robot.Rover.Turn(true, robot.Rover.Speed, 90);
 
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
@@ -225,22 +203,66 @@ namespace RobotApplication
         // Movement
         private void startButton_Click(object sender, EventArgs e)
         {
-            //TO DO: Start robot movement
+            // Change image status
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
+
+            // Move
+            if (!isRunning)
+            {
+                isRunning = true;
+                CallMovementAsync();
+            }
         }
         private void stopButton_Click(object sender, EventArgs e)
         {
-            //TO DO: Stop robot movement
+            // Change image status
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
+
+            // Stop robot
+            if (isRunning)
+                isRunning = false;
         }
         private void pauseButton_Click(object sender, EventArgs e)
         {
-            //TO DO: Stop robot movement, but when robot restart finish 
-            //what it was doing before pause
+            // Change image status
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
-                this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
+                this.robotStatus.Image = global::RobotApplication.Properties.Resources.pause;
+        }
+        private void MoveRobot(bool isForward, double speed, int direction, int x, int y)
+        {
+            // Move rover
+            robot.Rover.Move(isForward, speed);
+            // Move map
+            byte[] datas = robot.MiniMap.MoveMap(direction);
+            // Get obstacles
+            robot.GetObstacle();
+            // Send movement
+            robot.Wifi.SendMove((byte)direction, (byte)x, (byte)y, datas);
+        }
+        private async void CallMovementAsync()
+        {
+            await InitializationMovement();
+        }
+        private Task InitializationMovement()
+        {
+            return Task.Run(() => Movement());
+        }
+        private async Task Movement()
+        {
+            while (isRunning)
+            {
+                double speed = robot.Rover.Speed;
+                int pauseTime = (PAUSE_TIME_MAX + 10) - ((int)speed * 1000);
+                int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+                int xPos = (int)robot.MiniMap.Xposition;
+                int yPos = (int)robot.MiniMap.Yposition;
+
+                MoveRobot(true, speed, direction, xPos, yPos);
+
+                Thread.Sleep(pauseTime);
+            }
         }
 
         // Robot Map

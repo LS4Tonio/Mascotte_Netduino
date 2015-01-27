@@ -347,6 +347,7 @@
             // 
             // pauseButton
             // 
+            this.pauseButton.Enabled = false;
             this.pauseButton.Image = global::RobotApplication.Properties.Resources.pause;
             this.pauseButton.Location = new System.Drawing.Point(95, 138);
             this.pauseButton.Name = "pauseButton";
@@ -458,6 +459,7 @@
             this.speedBar.SmallChange = 5;
             this.speedBar.TabIndex = 0;
             this.speedBar.TickFrequency = 10;
+            this.speedBar.Value = 50;
             this.speedBar.Scroll += new System.EventHandler(this.speedBar_Scroll);
             // 
             // speedTextBox
