@@ -63,7 +63,7 @@ namespace RobotMock
             if( x > (_envMap.Width-1) || y > (_envMap.Height-1) )
                 return true;
             
-            Color color = _envMap.GetPixel(x, y);
+            Color color = _envMap.GetPixel(x,_envMap.Height-1 - y);
             if (color == Color.Black)
                 return true;
             else
@@ -118,7 +118,7 @@ namespace RobotMock
             double distanceSquare2 = -1;
             bool isPoint2Black = false;
 
-            while (!isPoint1Black && tmpPosX1 < SensorMaxRange)
+            while (!isPoint1Black && tmpPosX1 < SensorMaxRange && a1!=0)
             {
                 if (wayX)
                     tmpPosX1 += _pixelRealDistanceRatio;
@@ -129,7 +129,7 @@ namespace RobotMock
                 //check grid.
                 isPoint1Black = IsPixelBlack((int)Math.Truncate(tmpPosX1 / _pixelRealDistanceRatio), (int)Math.Truncate(tmpPosY1 / _pixelRealDistanceRatio));
             }
-            while (!isPoint2Black && tmpPosY2 < SensorMaxRange)
+            while (!isPoint2Black && tmpPosY2 < SensorMaxRange && a2!=0)
             {
                 if (wayY)
                     tmpPosY2 += _pixelRealDistanceRatio;

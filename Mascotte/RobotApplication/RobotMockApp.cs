@@ -36,7 +36,7 @@ namespace RobotApplication
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Display direction arrow
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
 
             // Robot map
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
@@ -109,7 +109,7 @@ namespace RobotApplication
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
             int speedValue = this.speedBar.Value / 100;
-            int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+            directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
             int xPos = (int)robot.MiniMap.Xposition;
             int yPos = (int)robot.MiniMap.Yposition;
             var runningImage = global::RobotApplication.Properties.Resources.running;
@@ -128,7 +128,7 @@ namespace RobotApplication
                 this.robotStatus.Image = runningImage;
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
-        {
+        {/*
             int speedValue = this.speedBar.Value / 100;
             int direction = robot.Rover.Direction;
             direction += 180;
@@ -152,7 +152,7 @@ namespace RobotApplication
 
             // Change status
             if (this.robotStatus.Image != runningImage)
-                this.robotStatus.Image = runningImage;
+                this.robotStatus.Image = runningImage;*/
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
@@ -167,7 +167,7 @@ namespace RobotApplication
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
         }
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
@@ -182,7 +182,7 @@ namespace RobotApplication
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
         }
         private void DisplayDirection(int direction)
         {
