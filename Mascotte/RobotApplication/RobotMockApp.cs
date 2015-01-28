@@ -40,7 +40,7 @@ namespace RobotApplication
             isRunning = false;
 
             // Display direction arrow
-            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
 
             // Display speed
             speedTextBox.Text = speedBar.Value.ToString();
@@ -156,7 +156,7 @@ namespace RobotApplication
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Change image
-            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
         }
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
@@ -167,9 +167,9 @@ namespace RobotApplication
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Change image
-            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
         }
-        private void DisplayDirection(int direction)
+        private void DisplayDirection(directions direction)
         {
             var up = global::RobotApplication.Properties.Resources.arrowUp;
             var left = global::RobotApplication.Properties.Resources.arrowLeft;
@@ -179,22 +179,22 @@ namespace RobotApplication
 
             switch (direction)
             {
-                case 1:
+                case directions.TOP:
                     {
                         this.actualDirection.Image = up;
                         break;
                     }
-                case 2:
+                case directions.BOTTOM:
                     {
                         this.actualDirection.Image = down;
                         break;
                     }
-                case 3:
+                case directions.LEFT:
                     {
                         this.actualDirection.Image = left;
                         break;
                     }
-                case 4:
+                case directions.RIGHT:
                     {
                         this.actualDirection.Image = right;
                         break;
