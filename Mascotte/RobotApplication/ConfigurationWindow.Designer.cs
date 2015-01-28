@@ -48,13 +48,26 @@
             this.exportConfFileButton = new System.Windows.Forms.Button();
             this.importConfFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.exportConfFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.colorBox = new System.Windows.Forms.GroupBox();
+            this.robotColorLabel = new System.Windows.Forms.Label();
+            this.colorPickerDialog = new System.Windows.Forms.ColorDialog();
+            this.changeRobotColorButton = new System.Windows.Forms.Button();
+            this.robotColorPictureBox = new System.Windows.Forms.PictureBox();
+            this.defaultRobotColorButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.obstaclesColorPictureBox = new System.Windows.Forms.PictureBox();
+            this.changeObstacleColorButton = new System.Windows.Forms.Button();
+            this.defaultObstacleColorButton = new System.Windows.Forms.Button();
             this.serverBox.SuspendLayout();
+            this.colorBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.robotColorPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.obstaclesColorPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(216, 101);
+            this.saveButton.Location = new System.Drawing.Point(216, 181);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 0;
@@ -65,7 +78,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(297, 101);
+            this.cancelButton.Location = new System.Drawing.Point(297, 181);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 1;
@@ -223,7 +236,7 @@
             // importConfFileButton
             // 
             this.importConfFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.importConfFileButton.Location = new System.Drawing.Point(12, 101);
+            this.importConfFileButton.Location = new System.Drawing.Point(12, 181);
             this.importConfFileButton.Name = "importConfFileButton";
             this.importConfFileButton.Size = new System.Drawing.Size(75, 23);
             this.importConfFileButton.TabIndex = 3;
@@ -234,7 +247,7 @@
             // exportConfFileButton
             // 
             this.exportConfFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.exportConfFileButton.Location = new System.Drawing.Point(93, 101);
+            this.exportConfFileButton.Location = new System.Drawing.Point(93, 181);
             this.exportConfFileButton.Name = "exportConfFileButton";
             this.exportConfFileButton.Size = new System.Drawing.Size(75, 23);
             this.exportConfFileButton.TabIndex = 4;
@@ -252,11 +265,107 @@
             this.exportConfFileDialog.Title = "Exporter la configuration";
             this.exportConfFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.exportConfFileDialog_FileOk);
             // 
+            // colorBox
+            // 
+            this.colorBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.colorBox.Controls.Add(this.defaultObstacleColorButton);
+            this.colorBox.Controls.Add(this.changeObstacleColorButton);
+            this.colorBox.Controls.Add(this.obstaclesColorPictureBox);
+            this.colorBox.Controls.Add(this.label4);
+            this.colorBox.Controls.Add(this.defaultRobotColorButton);
+            this.colorBox.Controls.Add(this.robotColorPictureBox);
+            this.colorBox.Controls.Add(this.changeRobotColorButton);
+            this.colorBox.Controls.Add(this.robotColorLabel);
+            this.colorBox.Location = new System.Drawing.Point(12, 92);
+            this.colorBox.Name = "colorBox";
+            this.colorBox.Size = new System.Drawing.Size(360, 74);
+            this.colorBox.TabIndex = 13;
+            this.colorBox.TabStop = false;
+            this.colorBox.Text = "Couleurs";
+            // 
+            // robotColorLabel
+            // 
+            this.robotColorLabel.AutoSize = true;
+            this.robotColorLabel.Location = new System.Drawing.Point(6, 21);
+            this.robotColorLabel.Name = "robotColorLabel";
+            this.robotColorLabel.Size = new System.Drawing.Size(91, 13);
+            this.robotColorLabel.TabIndex = 2;
+            this.robotColorLabel.Text = "Couleur du robot :";
+            // 
+            // changeRobotColorButton
+            // 
+            this.changeRobotColorButton.Location = new System.Drawing.Point(164, 16);
+            this.changeRobotColorButton.Name = "changeRobotColorButton";
+            this.changeRobotColorButton.Size = new System.Drawing.Size(75, 23);
+            this.changeRobotColorButton.TabIndex = 3;
+            this.changeRobotColorButton.Text = "Changer";
+            this.changeRobotColorButton.UseVisualStyleBackColor = true;
+            this.changeRobotColorButton.Click += new System.EventHandler(this.changeRobotColorButton_Click);
+            // 
+            // robotColorPictureBox
+            // 
+            this.robotColorPictureBox.BackColor = System.Drawing.Color.Red;
+            this.robotColorPictureBox.Location = new System.Drawing.Point(129, 19);
+            this.robotColorPictureBox.Name = "robotColorPictureBox";
+            this.robotColorPictureBox.Size = new System.Drawing.Size(20, 20);
+            this.robotColorPictureBox.TabIndex = 4;
+            this.robotColorPictureBox.TabStop = false;
+            // 
+            // defaultRobotColorButton
+            // 
+            this.defaultRobotColorButton.Location = new System.Drawing.Point(249, 16);
+            this.defaultRobotColorButton.Name = "defaultRobotColorButton";
+            this.defaultRobotColorButton.Size = new System.Drawing.Size(75, 23);
+            this.defaultRobotColorButton.TabIndex = 5;
+            this.defaultRobotColorButton.Text = "Défaut";
+            this.defaultRobotColorButton.UseVisualStyleBackColor = true;
+            this.defaultRobotColorButton.Click += new System.EventHandler(this.defaultRobotColorButton_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 46);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(117, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Couleur des obstacles :";
+            // 
+            // obstaclesColorPictureBox
+            // 
+            this.obstaclesColorPictureBox.BackColor = System.Drawing.Color.Black;
+            this.obstaclesColorPictureBox.Location = new System.Drawing.Point(129, 44);
+            this.obstaclesColorPictureBox.Name = "obstaclesColorPictureBox";
+            this.obstaclesColorPictureBox.Size = new System.Drawing.Size(20, 20);
+            this.obstaclesColorPictureBox.TabIndex = 7;
+            this.obstaclesColorPictureBox.TabStop = false;
+            // 
+            // changeObstacleColorButton
+            // 
+            this.changeObstacleColorButton.Location = new System.Drawing.Point(164, 41);
+            this.changeObstacleColorButton.Name = "changeObstacleColorButton";
+            this.changeObstacleColorButton.Size = new System.Drawing.Size(75, 23);
+            this.changeObstacleColorButton.TabIndex = 8;
+            this.changeObstacleColorButton.Text = "Changer";
+            this.changeObstacleColorButton.UseVisualStyleBackColor = true;
+            this.changeObstacleColorButton.Click += new System.EventHandler(this.changeObstacleColorButton_Click);
+            // 
+            // defaultObstacleColorButton
+            // 
+            this.defaultObstacleColorButton.Location = new System.Drawing.Point(249, 41);
+            this.defaultObstacleColorButton.Name = "defaultObstacleColorButton";
+            this.defaultObstacleColorButton.Size = new System.Drawing.Size(75, 23);
+            this.defaultObstacleColorButton.TabIndex = 9;
+            this.defaultObstacleColorButton.Text = "Défaut";
+            this.defaultObstacleColorButton.UseVisualStyleBackColor = true;
+            this.defaultObstacleColorButton.Click += new System.EventHandler(this.defaultObstacleColorButton_Click);
+            // 
             // ConfigurationWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 136);
+            this.ClientSize = new System.Drawing.Size(384, 216);
+            this.Controls.Add(this.colorBox);
             this.Controls.Add(this.serverBox);
             this.Controls.Add(this.exportConfFileButton);
             this.Controls.Add(this.importConfFileButton);
@@ -268,6 +377,10 @@
             this.Text = "Configuration";
             this.serverBox.ResumeLayout(false);
             this.serverBox.PerformLayout();
+            this.colorBox.ResumeLayout(false);
+            this.colorBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.robotColorPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.obstaclesColorPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -294,5 +407,15 @@
         private System.Windows.Forms.Button exportConfFileButton;
         private System.Windows.Forms.OpenFileDialog importConfFileDialog;
         private System.Windows.Forms.SaveFileDialog exportConfFileDialog;
+        private System.Windows.Forms.GroupBox colorBox;
+        private System.Windows.Forms.Button defaultObstacleColorButton;
+        private System.Windows.Forms.Button changeObstacleColorButton;
+        private System.Windows.Forms.PictureBox obstaclesColorPictureBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button defaultRobotColorButton;
+        private System.Windows.Forms.PictureBox robotColorPictureBox;
+        private System.Windows.Forms.Button changeRobotColorButton;
+        private System.Windows.Forms.Label robotColorLabel;
+        private System.Windows.Forms.ColorDialog colorPickerDialog;
     }
 }

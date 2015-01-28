@@ -340,19 +340,19 @@ namespace RobotApplication
 
                     byte mapValue = robot.MiniMap.MapArray[i][j];
                     if (mapValue > 0)
-                        FillRectangle(j, i, g);
+                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
 
                     index++;
                 }
             }
         }
-        private void FillRectangle(int x, int y, Graphics g)
+        private void FillRectangle(int x, int y, Graphics g, Color c)
         {
             int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x;
             int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y;
             int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE;
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
-            Brush brush = new SolidBrush(Color.Black);
+            Brush brush = new SolidBrush(c);
 
             g.FillRectangle(brush, xPos, yPos, width, height);
             brush.Dispose();
@@ -379,7 +379,7 @@ namespace RobotApplication
                 for (int j = 0; j < yLength; j++)
                 {
                     if (m.MapArray[i][j] > 0)
-                        FillRectangle(j, i, g);
+                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
                     else
                         EmptyRectangle(j, i, g);
                 }
@@ -426,7 +426,7 @@ namespace RobotApplication
             int.TryParse(this.yTextBox.Text, out y);
 
             robot.MiniMap.MapArray[x][y] = 255;
-            FillRectangle(x, y, robotMapGraphic);
+            FillRectangle(x, y, robotMapGraphic, confWindow.obstacleChoosenColor);
         }
         private void emptyRectangleButton_Click(object sender, EventArgs e)
         {

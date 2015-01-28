@@ -14,11 +14,20 @@ namespace RobotApplication
     public partial class ConfigurationWindow : Form
     {
         const string CONF_NAME = "netduino_simulator.cfg";
+        private Color robotDefaultColor = Color.Red;
+        private Color obstacleDefaultColor = Color.Black;
+        public Color robotChoosenColor;
+        public Color obstacleChoosenColor;
 
         public ConfigurationWindow()
         {
             InitializeComponent();
             ReadConfiguration(CONF_NAME);
+
+            this.robotColorPictureBox.ForeColor = robotDefaultColor;
+            this.obstaclesColorPictureBox.ForeColor = obstacleDefaultColor;
+            robotChoosenColor = robotDefaultColor;
+            obstacleChoosenColor = obstacleDefaultColor;
         }
 
         // Radio events
@@ -57,6 +66,48 @@ namespace RobotApplication
         private void exportConfFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             //TO DO: Write conf in file
+        }
+
+        // Colors
+        private void changeRobotColorButton_Click(object sender, EventArgs e)
+        {
+            // Set selected color if it was selected
+            if (robotChoosenColor != robotDefaultColor)
+                this.colorPickerDialog.Color = robotChoosenColor;
+            else
+                this.colorPickerDialog.Color = robotDefaultColor;
+
+            // Show dialog
+            this.colorPickerDialog.ShowDialog();
+
+            // Apply changes when changed
+            if (this.colorPickerDialog.ShowDialog() == DialogResult.OK)
+                this.robotColorPictureBox.ForeColor = this.colorPickerDialog.Color;
+        }
+        private void defaultRobotColorButton_Click(object sender, EventArgs e)
+        {
+            this.colorPickerDialog.Color = robotDefaultColor;
+            robotChoosenColor = robotDefaultColor;
+        }
+        private void changeObstacleColorButton_Click(object sender, EventArgs e)
+        {
+            // Set selected color if it was selected
+            if (obstacleChoosenColor != obstacleDefaultColor)
+                this.colorPickerDialog.Color = obstacleChoosenColor;
+            else
+                this.colorPickerDialog.Color = obstacleDefaultColor;
+
+            // Show dialog
+            this.colorPickerDialog.ShowDialog();
+
+            // Apply changes when changed
+            if(this.colorPickerDialog.ShowDialog() == DialogResult.OK)
+                this.obstaclesColorPictureBox.ForeColor = this.colorPickerDialog.Color;
+        }
+        private void defaultObstacleColorButton_Click(object sender, EventArgs e)
+        {
+            this.colorPickerDialog.Color = obstacleDefaultColor;
+            obstacleChoosenColor = obstacleDefaultColor;
         }
 
         // Some methods
