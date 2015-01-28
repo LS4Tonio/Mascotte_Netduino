@@ -230,7 +230,7 @@ namespace RobotApplication
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.pause;
         }
-        private void MoveRobot(bool isForward, double speed, int direction, int x, int y)
+        private void MoveRobot(bool isForward, double speed, directions direction, int x, int y)
         {
             // Move rover
             robot.Rover.Move(isForward, speed);
@@ -255,7 +255,7 @@ namespace RobotApplication
             {
                 double speed = robot.Rover.Speed;
                 int pauseTime = (PAUSE_TIME_MAX + 10) - ((int)speed * 1000);
-                int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+                directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
                 int xPos = (int)robot.MiniMap.Xposition;
                 int yPos = (int)robot.MiniMap.Yposition;
 

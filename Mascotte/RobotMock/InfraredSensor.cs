@@ -23,7 +23,7 @@ namespace RobotMock
         /// <summary>
         /// Gets distance between obstacle and sensor.
         /// </summary>
-        public double DistanceDetected
+        /*public double DistanceDetected
         {
             get
             {
@@ -31,18 +31,18 @@ namespace RobotMock
                 Read(out dist);
                 return dist;
             }
-        }
+        }*/
         /// <summary>
         /// Gets if an obstacle is detected.
         /// </summary>
-        public bool IsObstacle
+        /*public bool IsObstacle
         {
             get
             {
                 double dist = 0;
                 return Read(out dist); 
             }
-        }
+        }*/
         /// <summary>
         /// Gets position of the sensor.
         /// L = left side, R = right side, F = front side.
@@ -58,7 +58,7 @@ namespace RobotMock
         /// If distance to obstalce > MAX_DISTANCE returns MAX_DISTANCE
         /// </summary>
         /// <returns></returns>
-        private bool Read(out double distance)
+        /*private bool Read(out double distance)
         {
             double angle = 0;
             distance = 0;
@@ -69,7 +69,7 @@ namespace RobotMock
                 angle = 3 * Math.PI / 2;
 
             return _env.ObstacleDistance(angle, out distance);
-        }
+        }*/
         /// <summary>
         /// ONLY USE WHEN RATIO = 1
         /// </summary>
@@ -77,7 +77,7 @@ namespace RobotMock
         /// <param name="y"></param>
         /// <param name="dist"></param>
         /// <returns></returns>
-        public bool DetectedPoint(out int x, out int y, out double dist)
+        /*public bool DetectedPoint(out int x, out int y, out double dist)
         {
                 double angle=0;
                 double dist2=0;
@@ -91,7 +91,48 @@ namespace RobotMock
                 detected=_env.Allinfo(angle, out x2, out y2, out dist2);
                 x=x2; y=y2; dist=dist2;
                 return detected;
-        }
+        }*/
 
+
+        internal bool DetectedPoint( directions direction, int p1, int p2, out int x, out int y, out double robotDistance )
+        {
+            directions sensorDirection = direction;
+            bool detected=false;
+            int x2=0;
+            int y2=0;
+            double dist2=0;
+            switch( direction )
+            {
+                case directions.RIGHT:
+                    if( _sensorPosition == 'L' )
+                        sensorDirection = directions.TOP;
+                    if( _sensorPosition == 'R' )
+                        sensorDirection = directions.BOTTOM;
+                    break;
+                case directions.TOP:
+                    if( _sensorPosition == 'L' )
+                        sensorDirection = directions.LEFT;
+                    if( _sensorPosition == 'R' )
+                        sensorDirection = directions.RIGHT;
+                    break;
+                case directions.LEFT:
+                    if( _sensorPosition == 'L' )
+                        sensorDirection = directions.BOTTOM;
+                    if( _sensorPosition == 'R' )
+                        sensorDirection = directions.TOP;
+                    break;
+                case directions.BOTTOM:
+                    if( _sensorPosition == 'L' )
+                        sensorDirection = directions.RIGHT;
+                    if( _sensorPosition == 'R' )
+                        sensorDirection = directions.LEFT;
+                    break;
+            }
+            detected = _env.Allinfo( p1, p2, sensorDirection, out x2, out y2, out dist2 );
+            /*if( dist2 > MAX_DISTANCE )
+                detected = false;*/
+            x = x2; y = y2; robotDistance = dist2;
+            return detected;
+        }
     }
 }

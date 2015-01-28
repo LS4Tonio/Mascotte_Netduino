@@ -104,6 +104,7 @@ namespace RobotMock
                             }
                             MapArray[i][_xSize - 1] = 0;
                         }
+                        _xPos++;
                         RaisePropertyChanged( "MapArray" );
                         return oldLine;
                 case directions.LEFT://ERROR
@@ -118,6 +119,7 @@ namespace RobotMock
                             }
                             MapArray[i][0] = 0;
                         }
+                        _xPos--;
                         RaisePropertyChanged( "MapArray" );
                         return oldLine2;
                 case directions.TOP://ERROR
@@ -130,6 +132,7 @@ namespace RobotMock
                         }
                         MapArray[0] = new byte[_xSize];
                         RaisePropertyChanged( "MapArray" );
+                        _yPos++;
                         return oldLine3;
                 case directions.BOTTOM:
                         byte[] oldLine4 = new byte[_xSize];
@@ -141,6 +144,7 @@ namespace RobotMock
                         }
                         MapArray[_ySize - 1] = new byte[_xSize];
                         RaisePropertyChanged( "MapArray" );
+                        _yPos--;
                         return oldLine4;
                 case directions.NONE:
                     return null;
@@ -270,7 +274,8 @@ namespace RobotMock
         {
             //be careful x and y are inverted....
             _map[ x - XPos+ _xSize/2][(_ySize-1) - (y - YPos + _ySize/2) /*-(_yPos-_ySize/2)*/] = 255;//NOT
-            _map[_xSize / 2][_ySize/2] = 190;
+            _map[_xSize / 2][_ySize/2] = 255;
+            _map[2][2] = 255;
             RaisePropertyChanged( "MapArray" );
             return _map;
 

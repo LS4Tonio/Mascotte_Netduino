@@ -69,113 +69,166 @@ namespace RobotMock
             else
                 return false;
         }
-        //out of range is considered an obstacle.
-        public bool ObstacleInFront(out double x, out double y, double angle2)
+        public bool ObstacleInFront( int posX, int posY, out int x, out int y, directions angle )
         {
-            //calculate which grid squares are in front
-            //y=_angle *x+ b 
-            //double b =_posY - _angle * _posX; //or not.
-            // anyhow calculate x&y for each x+1 and each y+1. stop when an obstacle is found. 
-            //get the closest between each of them.
-
-            double a1 = 0;
-            double b1 = 0;
-            double a2 = 0;
-            double b2 = 0;
-            double angle = angle2 % 2 * Math.PI;
-            bool wayX = true;
-            bool wayY = true;
-            if (angle > Math.PI)
+            bool IsObstacle=false;
+            int i=0;
+            x = 0;
+            y = 0;
+            switch( angle )
             {
-                wayY = false;
-                angle = angle - Math.PI;
+                case directions.RIGHT:
+                    i=posX;
+                    while( !IsObstacle && i < SensorMaxRange )
+                    {
+                        IsObstacle = IsPixelBlack( i, posY );
+                        i++;
+                    }
+                    x = i - 1;
+                    y = posY;
+                    break;
+                case directions.LEFT:
+                    i=posX;
+                    while( !IsObstacle && i < SensorMaxRange )
+                    {
+                        IsObstacle = IsPixelBlack( i, posY );
+                        i--;
+                    }
+                    x = i + 1;
+                    y = posY;
+                    break;
+                case directions.TOP:
+                    i = posX;
+                    while( !IsObstacle && i < SensorMaxRange )
+                    {
+                        IsObstacle = IsPixelBlack( posX, i );
+                        i++;
+                    }
+                    x =posX;
+                    y = i - 1;
+                    break;
+                case directions.BOTTOM:
+                    i = posX;
+                    while( !IsObstacle && i < SensorMaxRange )
+                    {
+                        IsObstacle = IsPixelBlack( posX, i );
+                        i--;
+                    }
+                    x = posX;
+                    y = i + 1;
+                    break;
             }
-            if (angle < Math.PI / 2)
-            {
-                a1 = Math.Tan(angle);
-                if (!wayY)
-                    wayX = false;
-            }
-            else if (angle < Math.PI)
-            {
-                a1 = -Math.Tan(angle);
-                if (wayY)
-                    wayX = false;
-            }
-
-            b1 = _posY - a1 * _posX;
-            if (a1 != 0)
-                a2 = 1 / a1;
-            b2 = _posX - a2 * _posY;
-            //x= a2y + b2
-            //y= a1x + b1
-            double tmpPosX1 = _posX;
-            double tmpPosY1 = _posY;
-            double distanceSquare1 = -1;
-            bool isPoint1Black = false;
-            double tmpPosX2 = _posX;
-            double tmpPosY2 = _posY;
-            double distanceSquare2 = -1;
-            bool isPoint2Black = false;
-
-            while (!isPoint1Black && tmpPosX1 < SensorMaxRange && a1!=0)
-            {
-                if (wayX)
-                    tmpPosX1 += _pixelRealDistanceRatio;
-                else
-                    tmpPosX1 -= _pixelRealDistanceRatio;
-                //y=a1x+b1 
-                tmpPosY1 = a1 * tmpPosX1 + b1;
-                //check grid.
-                isPoint1Black = IsPixelBlack((int)Math.Truncate(tmpPosX1 / _pixelRealDistanceRatio), (int)Math.Truncate(tmpPosY1 / _pixelRealDistanceRatio));
-            }
-            while (!isPoint2Black && tmpPosY2 < SensorMaxRange && a2!=0)
-            {
-                if (wayY)
-                    tmpPosY2 += _pixelRealDistanceRatio;
-                else
-                    tmpPosY2 -= _pixelRealDistanceRatio;
-                //x=a2x + b2
-                tmpPosX2 = a2 * tmpPosY2 + b2;
-                //check grid.
-                isPoint2Black = IsPixelBlack((int)Math.Truncate(tmpPosX1 / _pixelRealDistanceRatio), (int)Math.Truncate(tmpPosY1 / _pixelRealDistanceRatio));
-            }
-            if (isPoint2Black && isPoint1Black)
-            {
-                distanceSquare1 = (tmpPosX1 - _posX) * (tmpPosX1 - _posX) + (tmpPosY1 - _posY) * (tmpPosY1 - _posY);
-                distanceSquare2 = (tmpPosX2 - _posX) * (tmpPosX2 - _posX) + (tmpPosY2 - _posY) * (tmpPosY2 - _posY);
-                if (distanceSquare1 < distanceSquare2)
-                {
-                    x = tmpPosX1;
-                    y = tmpPosY1;
-                }
-                else
-                {
-                    x = tmpPosX2;
-                    y = tmpPosY2;
-                }
-            }
-            else if (isPoint1Black)
-            {
-                x = tmpPosX1;
-                y = tmpPosX2;
-            }
-            else if (isPoint2Black)
-            {
-                x = tmpPosX2;
-                y = tmpPosY2;
-            }
-            else
-            {
-                x = 0;
-                y = 0;
-            }
-
-            return isPoint1Black || isPoint2Black;
-
+            return IsObstacle;
         }
+
+
+        //out of range is considered an obstacle.
+        //public bool ObstacleInFront(out double x, out double y, double angle2)
+        //{
+        //    //calculate which grid squares are in front
+        //    //y=_angle *x+ b 
+        //    //double b =_posY - _angle * _posX; //or not.
+        //    // anyhow calculate x&y for each x+1 and each y+1. stop when an obstacle is found. 
+        //    //get the closest between each of them.
+
+        //    double a1 = 0;
+        //    double b1 = 0;
+        //    double a2 = 0;
+        //    double b2 = 0;
+        //    double angle = angle2 % 2 * Math.PI;
+        //    bool wayX = true;
+        //    bool wayY = true;
+        //    if (angle > Math.PI)
+        //    {
+        //        wayY = false;
+        //        angle = angle - Math.PI;
+        //    }
+        //    if (angle < Math.PI / 2)
+        //    {
+        //        a1 = Math.Tan(angle);
+        //        if (!wayY)
+        //            wayX = false;
+        //    }
+        //    else if (angle < Math.PI)
+        //    {
+        //        a1 = -Math.Tan(angle);
+        //        if (wayY)
+        //            wayX = false;
+        //    }
+
+        //    b1 = _posY - a1 * _posX;
+        //    if (a1 != 0)
+        //        a2 = 1 / a1;
+        //    b2 = _posX - a2 * _posY;
+        //    //x= a2y + b2
+        //    //y= a1x + b1
+        //    double tmpPosX1 = _posX;
+        //    double tmpPosY1 = _posY;
+        //    double distanceSquare1 = -1;
+        //    bool isPoint1Black = false;
+        //    double tmpPosX2 = _posX;
+        //    double tmpPosY2 = _posY;
+        //    double distanceSquare2 = -1;
+        //    bool isPoint2Black = false;
+
+        //    while (!isPoint1Black && tmpPosX1 < SensorMaxRange /*&& a1!=0*/)
+        //    {
+        //        if (wayX)
+        //            tmpPosX1 += _pixelRealDistanceRatio;
+        //        else
+        //            tmpPosX1 -= _pixelRealDistanceRatio;
+        //        //y=a1x+b1 
+        //        tmpPosY1 = a1 * tmpPosX1 + b1;
+        //        //check grid.
+        //        isPoint1Black = IsPixelBlack((int)Math.Truncate(tmpPosX1 / _pixelRealDistanceRatio), (int)Math.Truncate(tmpPosY1 / _pixelRealDistanceRatio));
+        //    }
+        //    while (!isPoint2Black && tmpPosY2 < SensorMaxRange /*&& a2!=0*/)
+        //    {
+        //        if (wayY)
+        //            tmpPosY2 += _pixelRealDistanceRatio;
+        //        else
+        //            tmpPosY2 -= _pixelRealDistanceRatio;
+        //        //x=a2x + b2
+        //        tmpPosX2 = a2 * tmpPosY2 + b2;
+        //        //check grid.
+        //        isPoint2Black = IsPixelBlack((int)Math.Truncate(tmpPosX1 / _pixelRealDistanceRatio), (int)Math.Truncate(tmpPosY1 / _pixelRealDistanceRatio));
+        //    }
+        //    if (isPoint2Black && isPoint1Black)
+        //    {
+        //        distanceSquare1 = (tmpPosX1 - _posX) * (tmpPosX1 - _posX) + (tmpPosY1 - _posY) * (tmpPosY1 - _posY);
+        //        distanceSquare2 = (tmpPosX2 - _posX) * (tmpPosX2 - _posX) + (tmpPosY2 - _posY) * (tmpPosY2 - _posY);
+        //        if (distanceSquare1 < distanceSquare2)
+        //        {
+        //            x = tmpPosX1;
+        //            y = tmpPosY1;
+        //        }
+        //        else
+        //        {
+        //            x = tmpPosX2;
+        //            y = tmpPosY2;
+        //        }
+        //    }
+        //    else if (isPoint1Black)
+        //    {
+        //        x = tmpPosX1;
+        //        y = tmpPosX2;
+        //    }
+        //    else if (isPoint2Black)
+        //    {
+        //        x = tmpPosX2;
+        //        y = tmpPosY2;
+        //    }
+        //    else
+        //    {
+        //        x = 0;
+        //        y = 0;
+        //    }
+
+        //    return isPoint1Black || isPoint2Black;
+
+        //}
      
-        public bool ObstacleDistance(double sensorAngle, out double dist)
+        /*public bool ObstacleDistance(double sensorAngle, out double dist)
         {
             double x = 0;
             double y = 0;
@@ -186,7 +239,7 @@ namespace RobotMock
 
             dist = Math.Sqrt((x - _posX) * (x - _posX) + (y - _posY) * (y - _posY));
             return true;
-        }
+        }*/
 
 
         /// <summary>
@@ -197,13 +250,13 @@ namespace RobotMock
         /// <param name="y"></param>
         /// <param name="dist"></param>
         /// <returns></returns>
-        public bool Allinfo(double sensorAngle, out int x, out int y, out double dist)
+        public bool Allinfo(int posX,int posY, directions direction, out int x, out int y, out double dist)
         {
-            double x2 = 0;
-            double y2 = 0;
-            bool Is = ObstacleInFront( out x2, out y2, _angle + sensorAngle );
-            x = (int) x2;
-            y = (int) y2;
+            int x2 = 0;
+            int y2 = 0;
+            bool Is = ObstacleInFront(posX, posY, out x2, out y2, direction);
+            x = x2;
+            y = y2;
             dist = 0;
             if( !Is )
                 return false;
