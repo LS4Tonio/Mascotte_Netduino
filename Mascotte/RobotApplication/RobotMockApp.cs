@@ -321,6 +321,7 @@ namespace RobotApplication
                 Console.WriteLine(e);
             }
         }
+        
         // Robot Map
         private void CreateRobotMap(Graphics g)
         {
@@ -357,6 +358,10 @@ namespace RobotApplication
             g.FillRectangle(brush, xPos, yPos, width, height);
             brush.Dispose();
         }
+        private void ColorRobotPosition(Graphics g)
+        {
+            FillRectangle(ROBOTMAP_X_SIZE/2, ROBOTMAP_Y_SIZE/2, g, confWindow.robotChoosenColor);
+        }
         private void EmptyRectangle(int x, int y, Graphics g)
         {
             int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x + 1;
@@ -384,6 +389,8 @@ namespace RobotApplication
                         EmptyRectangle(j, i, g);
                 }
             }
+
+            ColorRobotPosition(g);
         }
         private void robotMapPanel_Paint(object sender, PaintEventArgs e)
         {
