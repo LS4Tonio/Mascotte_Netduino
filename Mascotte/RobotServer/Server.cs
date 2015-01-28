@@ -233,9 +233,9 @@ namespace RobotServer
         }
         public void SendMove(int moveCode)
         {
-            // Create binaries writer et reader
+            // Create binaries writer
             BinaryWriter binaryWriter = new BinaryWriter(s);
-            binaryWriter.Write(moveCode);
+            binaryWriter.Write((byte)moveCode);
         }
     }
 }

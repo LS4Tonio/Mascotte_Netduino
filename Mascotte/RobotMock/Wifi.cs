@@ -12,14 +12,44 @@ namespace RobotMock
     public class Wifi
     {
         TcpClient client;
+        TcpListener listener;
 
         public Wifi()
         {
             client = new TcpClient();
             string message = "";
             Connect(out message);
-        }
+            byte[] localIP = new byte[4];
+            localIP = LocalIPAddress();
 
+            // Listener
+            listener = new TcpListener(new IPAddress(localIP), 3000);
+            CallInitialization();
+        }
+        private async void CallInitialization()
+        {
+            await InitializationAsync();
+        }
+        private Task InitializationAsync()
+        {
+            return Task.Run(() => InitializeConnection());
+        }
+        private async Task InitializeConnection()
+        {
+            try
+            {
+                while (true)
+                {
+                    // Get client if there is one
+                    client = await listener.AcceptTcpClientAsync();
+                    Console.WriteLine("Client connected!");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
         /// <summary>
         /// Try to connect to the server.
         /// </summary>
@@ -113,7 +143,24 @@ namespace RobotMock
             NetworkStream s = client.GetStream();
             BinaryReader br = new BinaryReader(s);
             byte value = br.ReadByte();
+            s.Flush();
             return value;
         }
+        private byte[] LocalIPAddress()
+        {
+            IPHostEntry host;
+            byte[] localIP = null;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.GetAddressBytes();
+                    break;
+                }
+            }
+            return localIP;
+        }
+
     }
 }

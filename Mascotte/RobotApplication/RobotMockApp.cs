@@ -57,7 +57,7 @@ namespace RobotApplication
             CallCheckConnectionAsync();
 
             //Check information for movement
-            //CallMovementOrderAsync();
+            CallMovementOrderAsync();
         }
 
         // Menu
@@ -311,6 +311,9 @@ namespace RobotApplication
                         case 4: //RIGHT
                             robot.Rover.Turn(true, 0.5, 90);
                             DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+                            break;
+                        default :
+                            Console.WriteLine("nothing");
                             break;
                     }
 
