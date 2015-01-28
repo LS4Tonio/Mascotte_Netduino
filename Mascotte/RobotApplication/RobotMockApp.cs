@@ -23,8 +23,8 @@ namespace RobotApplication
         private Graphics obstacleMapGraphic;
         private bool isConnectionErrorShown;
         private bool isRunning;
-        const int ROBOTMAP_X_SIZE = 31;
-        const int ROBOTMAP_Y_SIZE = 31;
+        const int ROBOTMAP_X_SIZE = 71;
+        const int ROBOTMAP_Y_SIZE = 71;
         const int PAUSE_TIME_MAX = 1000; // Pause time in ms
 
         public RobotMockApp()
@@ -324,6 +324,7 @@ namespace RobotApplication
                 Console.WriteLine(e);
             }
         }
+        
         // Robot Map
         private void CreateRobotMap(Graphics g)
         {
@@ -343,22 +344,26 @@ namespace RobotApplication
 
                     byte mapValue = robot.MiniMap.MapArray[i][j];
                     if (mapValue > 0)
-                        FillRectangle(j, i, g);
+                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
 
                     index++;
                 }
             }
         }
-        private void FillRectangle(int x, int y, Graphics g)
+        private void FillRectangle(int x, int y, Graphics g, Color c)
         {
             int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x;
             int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y;
             int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE;
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
-            Brush brush = new SolidBrush(Color.Black);
+            Brush brush = new SolidBrush(c);
 
             g.FillRectangle(brush, xPos, yPos, width, height);
             brush.Dispose();
+        }
+        private void ColorRobotPosition(Graphics g)
+        {
+            FillRectangle(ROBOTMAP_X_SIZE/2, ROBOTMAP_Y_SIZE/2, g, confWindow.robotChoosenColor);
         }
         private void EmptyRectangle(int x, int y, Graphics g)
         {
@@ -382,11 +387,13 @@ namespace RobotApplication
                 for (int j = 0; j < yLength; j++)
                 {
                     if (m.MapArray[i][j] > 0)
-                        FillRectangle(j, i, g);
+                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
                     else
                         EmptyRectangle(j, i, g);
                 }
             }
+
+            ColorRobotPosition(g);
         }
         private void robotMapPanel_Paint(object sender, PaintEventArgs e)
         {
@@ -429,7 +436,7 @@ namespace RobotApplication
             int.TryParse(this.yTextBox.Text, out y);
 
             robot.MiniMap.MapArray[x][y] = 255;
-            FillRectangle(x, y, robotMapGraphic);
+            FillRectangle(x, y, robotMapGraphic, confWindow.obstacleChoosenColor);
         }
         private void emptyRectangleButton_Click(object sender, EventArgs e)
         {
@@ -501,19 +508,38 @@ namespace RobotApplication
         }
         private void PaintOnObstacleMap(Graphics g)
         {
+            Pen pen = new Pen(Color.Red, 1);
             int imageWidth = this.obstacleMapPictureBox.Image.Width;
             int imageHeight = this.obstacleMapPictureBox.Image.Height;
             int pictureBoxWidth = this.obstacleMapPictureBox.Width;
             int pictureBoxHeight = this.obstacleMapPictureBox.Height;
-            float widthPercent = pictureBoxWidth * 100 / imageWidth;
-            float heightPercent = pictureBoxHeight * 100 / imageHeight;
+
+            float widthPercent = 1;
+            float heightPercent = 1;
             float mapX = robot.MiniMap.Xposition;
-            float mapy = robot.MiniMap.Yposition;
+            float mapY = robot.MiniMap.Yposition;
+
+            // Find proper size for the red rectange according the shown map
+            if (imageWidth > pictureBoxWidth)
+                widthPercent = (float)(imageWidth - pictureBoxWidth) / imageWidth;
+            else if (pictureBoxWidth > imageWidth && this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
+                widthPercent = (float)(pictureBoxWidth - imageWidth) / pictureBoxWidth + 1;
+            if (imageHeight > pictureBoxHeight)
+                heightPercent = (float)(imageHeight - pictureBoxHeight) / imageHeight;
+            else if (pictureBoxHeight > imageHeight && this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
+                widthPercent = (float)(pictureBoxHeight - imageHeight) / pictureBoxHeight + 1;
             float robotWidth = ROBOTMAP_X_SIZE * widthPercent;
             float robotHeight = ROBOTMAP_Y_SIZE * heightPercent;
-            Pen pen = new Pen(Color.Red, 1);
 
-            g.DrawRectangle(pen, mapX, mapy, robotWidth, robotHeight);
+            // Place the red rectangle on the proper X/Y pos
+            if (this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
+            {
+                mapX = robot.MiniMap.Xposition * widthPercent;
+                mapY = robot.MiniMap.Yposition * heightPercent;
+            }
+
+            // Drawn rectangle
+            g.DrawRectangle(pen, mapX, mapY, robotWidth, robotHeight);
         }
         private void CleanObstacleMap()
         {
