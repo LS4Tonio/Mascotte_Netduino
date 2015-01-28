@@ -107,5 +107,13 @@ namespace RobotMock
                 Console.WriteLine(e.Message);
             }
         }
+
+        public byte getOrders()
+        {
+            NetworkStream s = client.GetStream();
+            BinaryReader br = new BinaryReader(s);
+            byte value = br.ReadByte();
+            return value;
+        }
     }
 }

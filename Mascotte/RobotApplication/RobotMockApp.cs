@@ -34,7 +34,7 @@ namespace RobotApplication
             errorWindow = new ErrorWindow();
 
             // Mock
-            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, Math.PI/2);
+            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, Math.PI / 2);
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
             isRunning = false;
 
@@ -51,6 +51,9 @@ namespace RobotApplication
             // Timer for connection checks
             isConnectionErrorShown = false;
             CallCheckConnectionAsync();
+
+            //Check information for movement
+            //CallMovementOrderAsync();
         }
 
         // Menu
@@ -118,7 +121,7 @@ namespace RobotApplication
         {
             double speedValue = robot.Rover.Speed;
             int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
-           
+
             int xPos = (int)robot.MiniMap.Yposition;
             int yPos = (int)robot.MiniMap.Xposition;
 
@@ -212,7 +215,7 @@ namespace RobotApplication
             if (!isRunning)
             {
                 isRunning = true;
-                CallMovementAsync();
+                CallMovementOrderAsync();
             }
         }
         private void stopButton_Click(object sender, EventArgs e)
@@ -266,6 +269,52 @@ namespace RobotApplication
             }
         }
 
+        //Movement order receiving 
+        private async void CallMovementOrderAsync()
+        {
+            await InitializationReceivingMovement();
+        }
+        private Task InitializationReceivingMovement()
+        {
+            return Task.Run(() => CheckInformations());
+        }
+        private async Task CheckInformations()
+        {
+            try
+            {
+                while (true)
+                {
+                    switch ((int)robot.Wifi.getOrders())
+                    {
+                        case 1: //UP
+                            MoveRobot(true, robot.Rover.Speed,
+                                     robot.MiniMap.FindDirection(robot.Rover.Direction),
+                                     (int)robot.MiniMap.Yposition,
+                                     (int)robot.MiniMap.Xposition);
+                            break;
+                        case 2: // DOWN
+                            MoveRobot(false, robot.Rover.Speed,
+                                        robot.MiniMap.FindDirection(robot.Rover.Direction),
+                                        (int)robot.MiniMap.Yposition,
+                                        (int)robot.MiniMap.Xposition);
+                            break;
+                        case 3: // LEFT
+                            robot.Rover.Turn(false, 0.5, 90);
+                            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+                            break;
+                        case 4: //RIGHT
+                            robot.Rover.Turn(true, 0.5, 90);
+                            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+                            break;
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         // Robot Map
         private void CreateRobotMap(Graphics g)
         {
@@ -303,7 +352,7 @@ namespace RobotApplication
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
             Brush brush = new SolidBrush(Color.Black);
 
-            g.FillRectangle(brush, xPos, yPos, width, height);
+            g.FillRectangle(brush, x, y, width, height);
             brush.Dispose();
         }
         private void EmptyRectangle(int x, int y, Graphics g)
@@ -314,7 +363,7 @@ namespace RobotApplication
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE - 1;
             Brush brush = new SolidBrush(Color.White);
 
-            g.FillRectangle(brush, xPos, yPos, width, height);
+            g.FillRectangle(brush, x, y, width, height);
             brush.Dispose();
         }
         private void UpdateMap(Graphics g, Map m)
