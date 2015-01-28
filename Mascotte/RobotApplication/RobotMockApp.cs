@@ -20,6 +20,7 @@ namespace RobotApplication
         private ErrorWindow errorWindow;
         private Robot robot;
         private Graphics robotMapGraphic;
+        private Graphics obstacleMapGraphic;
         private bool isConnectionErrorShown;
         private bool isRunning;
         const int ROBOTMAP_X_SIZE = 31;
@@ -48,7 +49,10 @@ namespace RobotApplication
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
             robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
 
-            // Timer for connection checks
+            // Obstacle map
+            obstacleMapGraphic = this.obstacleMapPictureBox.CreateGraphics();
+
+            // Launch connection checks
             isConnectionErrorShown = false;
             CallCheckConnectionAsync();
         }
@@ -143,7 +147,7 @@ namespace RobotApplication
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
             // Change robot angle
-            robot.Rover.Turn(false, robot.Rover.Speed, 90);
+            robot.Rover.Turn(true, robot.Rover.Speed, 90);
 
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
@@ -154,7 +158,7 @@ namespace RobotApplication
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
             // Change robot angle
-            robot.Rover.Turn(true, robot.Rover.Speed, 90);
+            robot.Rover.Turn(false, robot.Rover.Speed, 90);
 
             // Display new angle
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
@@ -236,6 +240,8 @@ namespace RobotApplication
             robot.Rover.Move(isForward, speed);
             // Move map
             byte[] datas = robot.MiniMap.MoveMap(direction);
+            // Drawn moved map
+            UpdatePaintOnObstacleMap();
             // Get obstacles
             robot.GetObstacle();
             // Send movement
@@ -272,7 +278,6 @@ namespace RobotApplication
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
             int index = 0;
             Pen pen = new Pen(Color.Black, 1);
-            Rectangle[] rectangles = new Rectangle[ROBOTMAP_X_SIZE * ROBOTMAP_Y_SIZE];
 
             for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
             {
@@ -282,7 +287,6 @@ namespace RobotApplication
                     int y = i * height;
                     Rectangle rectangle = new Rectangle(x, y, width, height);
                     g.DrawRectangle(pen, rectangle);
-                    //rectangles[index] = rectangle;
 
                     byte mapValue = robot.MiniMap.MapArray[i][j];
                     if (mapValue > 0)
@@ -291,8 +295,6 @@ namespace RobotApplication
                     index++;
                 }
             }
-
-            //g.DrawRectangles(pen, rectangles);
         }
         private void FillRectangle(int x, int y, Graphics g)
         {
@@ -437,6 +439,38 @@ namespace RobotApplication
                 }
                 Thread.Sleep(10);
             }
+        }
+
+        // Obstacle Map
+        private void UpdatePaintOnObstacleMap()
+        {
+            CleanObstacleMap();
+        }
+        private void PaintOnObstacleMap(Graphics g)
+        {
+            int imageWidth = this.obstacleMapPictureBox.Image.Width;
+            int imageHeight = this.obstacleMapPictureBox.Image.Height;
+            int pictureBoxWidth = this.obstacleMapPictureBox.Width;
+            int pictureBoxHeight = this.obstacleMapPictureBox.Height;
+            float widthPercent = pictureBoxWidth * 100 / imageWidth;
+            float heightPercent = pictureBoxHeight * 100 / imageHeight;
+            float mapX = robot.MiniMap.Xposition;
+            float mapy = robot.MiniMap.Yposition;
+            float robotWidth = ROBOTMAP_X_SIZE * widthPercent;
+            float robotHeight = ROBOTMAP_Y_SIZE * heightPercent;
+            Pen pen = new Pen(Color.Red, 1);
+
+            g.DrawRectangle(pen, mapX, mapy, robotWidth, robotHeight);
+        }
+        private void CleanObstacleMap()
+        {
+            this.obstacleMapPictureBox.Invalidate();
+        }
+        private void obstacleMapPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            obstacleMapGraphic = e.Graphics;
+            PaintOnObstacleMap(obstacleMapGraphic);
         }
     }
 }
