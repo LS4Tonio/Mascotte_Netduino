@@ -86,10 +86,22 @@ namespace RobotMock
             int x = 0;
             int y = 0;
             double dist = 0;
+             
+            //MiniMap.AddObstacle( MiniMap.FindDirection( Rover.Direction ), x, y );//TEST, à enlever
             if (InfraredSensors[0].DetectedPoint(MiniMap.FindDirection(Rover.Direction), _map.XPos, _map.YPos, out x, out y, out robotDistance) /*&& dist < robotDistance*/)
             {
-                if( x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 )
+                if( x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 &&  x - _map.XPos < _map.XSize / 2 && y- _map.YPos < _map.YSize/2 )
                     MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction) ,x,y);
+            }
+            if( InfraredSensors[1].DetectedPoint( MiniMap.FindDirection( Rover.Direction ), _map.XPos, _map.YPos, out x, out y, out robotDistance ) /*&& dist < robotDistance*/)
+            {
+                if( x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 && x - _map.XPos < - _map.XSize / 2 && y- _map.YPos < - _map.YSize/2 )
+                    MiniMap.AddObstacle( MiniMap.FindDirection( Rover.Direction ), x, y );
+            }
+            if( InfraredSensors[2].DetectedPoint( MiniMap.FindDirection( Rover.Direction ), _map.XPos, _map.YPos, out x, out y, out robotDistance ) /*&& dist < robotDistance*/)
+            {
+                if( x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 &&  x - _map.XPos < _map.XSize / 2 && y- _map.YPos < _map.YSize/2 )
+                    MiniMap.AddObstacle( MiniMap.FindDirection( Rover.Direction ), x, y );
             }
         }
 

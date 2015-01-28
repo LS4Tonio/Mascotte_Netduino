@@ -60,11 +60,12 @@ namespace RobotMock
         public bool IsPixelBlack(int x, int y)
         {
 
-            if( x > (_envMap.Width-1) || y > (_envMap.Height-1) )
+            if( x > (_envMap.Width-1) || y > (_envMap.Height-1) || x<0 || y<0)
                 return true;
             
             Color color = _envMap.GetPixel(x,_envMap.Height-1 - y);
-            if (color == Color.Black)
+            //if (color == Color.Black)
+            if (color.B==0)
                 return true;
             else
                 return false;

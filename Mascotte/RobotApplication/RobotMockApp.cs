@@ -22,8 +22,8 @@ namespace RobotApplication
         private Graphics robotMapGraphic;
         private bool isConnectionErrorShown;
         private bool isRunning;
-        const int ROBOTMAP_X_SIZE = 31;
-        const int ROBOTMAP_Y_SIZE = 31;
+        const int ROBOTMAP_X_SIZE = 71;
+        const int ROBOTMAP_Y_SIZE = 71;
         const int PAUSE_TIME_MAX = 1000; // Pause time in ms
 
         public RobotMockApp()

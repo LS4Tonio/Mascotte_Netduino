@@ -274,8 +274,9 @@ namespace RobotMock
         {
             //be careful x and y are inverted....
             _map[ x - XPos+ _xSize/2][(_ySize-1) - (y - YPos + _ySize/2) /*-(_yPos-_ySize/2)*/] = 255;//NOT
-            _map[_xSize / 2][_ySize/2] = 255;
-            _map[2][2] = 255;
+            //_map[x - XPos + _xSize / 2][(_ySize - 1) - (y - YPos + _ySize / 2) /*-(_yPos-_ySize/2)*/] = 255;//NOT
+            //_map[_xSize / 2][_ySize/2] = 255;
+            //_map[2][2] = 255;
             RaisePropertyChanged( "MapArray" );
             return _map;
 
