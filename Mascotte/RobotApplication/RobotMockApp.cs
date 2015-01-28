@@ -498,19 +498,38 @@ namespace RobotApplication
         }
         private void PaintOnObstacleMap(Graphics g)
         {
+            Pen pen = new Pen(Color.Red, 1);
             int imageWidth = this.obstacleMapPictureBox.Image.Width;
             int imageHeight = this.obstacleMapPictureBox.Image.Height;
             int pictureBoxWidth = this.obstacleMapPictureBox.Width;
             int pictureBoxHeight = this.obstacleMapPictureBox.Height;
-            float widthPercent = pictureBoxWidth * 100 / imageWidth;
-            float heightPercent = pictureBoxHeight * 100 / imageHeight;
+
+            float widthPercent = 1;
+            float heightPercent = 1;
             float mapX = robot.MiniMap.Xposition;
-            float mapy = robot.MiniMap.Yposition;
+            float mapY = robot.MiniMap.Yposition;
+
+            // Find proper size for the red rectange according the shown map
+            if (imageWidth > pictureBoxWidth)
+                widthPercent = (float)(imageWidth - pictureBoxWidth) / imageWidth;
+            else if (pictureBoxWidth > imageWidth && this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
+                widthPercent = (float)(pictureBoxWidth - imageWidth) / pictureBoxWidth + 1;
+            if (imageHeight > pictureBoxHeight)
+                heightPercent = (float)(imageHeight - pictureBoxHeight) / imageHeight;
+            else if (pictureBoxHeight > imageHeight && this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
+                widthPercent = (float)(pictureBoxHeight - imageHeight) / pictureBoxHeight + 1;
             float robotWidth = ROBOTMAP_X_SIZE * widthPercent;
             float robotHeight = ROBOTMAP_Y_SIZE * heightPercent;
-            Pen pen = new Pen(Color.Red, 1);
 
-            g.DrawRectangle(pen, mapX, mapy, robotWidth, robotHeight);
+            // Place the red rectangle on the proper X/Y pos
+            if (this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
+            {
+                mapX = robot.MiniMap.Xposition * widthPercent;
+                mapY = robot.MiniMap.Yposition * heightPercent;
+            }
+
+            // Drawn rectangle
+            g.DrawRectangle(pen, mapX, mapY, robotWidth, robotHeight);
         }
         private void CleanObstacleMap()
         {

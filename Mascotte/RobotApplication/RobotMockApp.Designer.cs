@@ -30,14 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RobotMockApp));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.connectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.robotStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip = new System.Windows.Forms.ToolStrip();
-            this.applicationStripMenu = new System.Windows.Forms.ToolStripDropDownButton();
-            this.loadMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitMenuButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.configureMenuButton = new System.Windows.Forms.ToolStripButton();
             this.controlPanel = new System.Windows.Forms.GroupBox();
             this.rectangleBox = new System.Windows.Forms.GroupBox();
             this.emptyRectangleButton = new System.Windows.Forms.Button();
@@ -52,14 +45,6 @@
             this.directionBox = new System.Windows.Forms.GroupBox();
             this.robotAngleTextBox = new System.Windows.Forms.TextBox();
             this.robotAngleLabel = new System.Windows.Forms.Label();
-            this.pauseButton = new System.Windows.Forms.Button();
-            this.actualDirection = new System.Windows.Forms.PictureBox();
-            this.stopButton = new System.Windows.Forms.Button();
-            this.startButton = new System.Windows.Forms.Button();
-            this.directionTurnRightButton = new System.Windows.Forms.Button();
-            this.directionDownButton = new System.Windows.Forms.Button();
-            this.directionTurnLeftButton = new System.Windows.Forms.Button();
-            this.directionTopButton = new System.Windows.Forms.Button();
             this.speedBox = new System.Windows.Forms.GroupBox();
             this.speedBar = new System.Windows.Forms.TrackBar();
             this.speedTextBox = new System.Windows.Forms.TextBox();
@@ -68,16 +53,30 @@
             this.robotMapPanel = new System.Windows.Forms.Panel();
             this.obstaclesMapTab = new System.Windows.Forms.TabPage();
             this.obstacleMapPanel = new System.Windows.Forms.Panel();
-            this.obstacleMapPictureBox = new System.Windows.Forms.PictureBox();
             this.loadMapDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveMapDialog = new System.Windows.Forms.SaveFileDialog();
+            this.obstacleMapPictureBox = new System.Windows.Forms.PictureBox();
+            this.pauseButton = new System.Windows.Forms.Button();
+            this.actualDirection = new System.Windows.Forms.PictureBox();
+            this.stopButton = new System.Windows.Forms.Button();
+            this.startButton = new System.Windows.Forms.Button();
+            this.directionTurnRightButton = new System.Windows.Forms.Button();
+            this.directionDownButton = new System.Windows.Forms.Button();
+            this.directionTurnLeftButton = new System.Windows.Forms.Button();
+            this.directionTopButton = new System.Windows.Forms.Button();
+            this.applicationStripMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.loadMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureMenuButton = new System.Windows.Forms.ToolStripButton();
+            this.connectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.robotStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.controlPanel.SuspendLayout();
             this.rectangleBox.SuspendLayout();
             this.mapBox.SuspendLayout();
             this.directionBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.actualDirection)).BeginInit();
             this.speedBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).BeginInit();
             this.mapsPanel.SuspendLayout();
@@ -85,6 +84,7 @@
             this.obstaclesMapTab.SuspendLayout();
             this.obstacleMapPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.obstacleMapPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.actualDirection)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -98,24 +98,6 @@
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "Barre d\'état";
             // 
-            // connectionStatus
-            // 
-            this.connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOff;
-            this.connectionStatus.Name = "connectionStatus";
-            this.connectionStatus.Size = new System.Drawing.Size(135, 17);
-            this.connectionStatus.Text = "Status de connexion :";
-            this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            // 
-            // robotStatus
-            // 
-            this.robotStatus.ActiveLinkColor = System.Drawing.Color.Green;
-            this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
-            this.robotStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.robotStatus.Name = "robotStatus";
-            this.robotStatus.Size = new System.Drawing.Size(109, 17);
-            this.robotStatus.Text = "Status du robot :";
-            this.robotStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            // 
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -126,50 +108,6 @@
             this.menuStrip.Size = new System.Drawing.Size(657, 25);
             this.menuStrip.TabIndex = 3;
             this.menuStrip.Text = "Menu";
-            // 
-            // applicationStripMenu
-            // 
-            this.applicationStripMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.applicationStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadMapMenuButton,
-            this.saveMapMenuButton,
-            this.quitMenuButton});
-            this.applicationStripMenu.Image = ((System.Drawing.Image)(resources.GetObject("applicationStripMenu.Image")));
-            this.applicationStripMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.applicationStripMenu.Name = "applicationStripMenu";
-            this.applicationStripMenu.Size = new System.Drawing.Size(81, 22);
-            this.applicationStripMenu.Text = "Application";
-            // 
-            // loadMapMenuButton
-            // 
-            this.loadMapMenuButton.Name = "loadMapMenuButton";
-            this.loadMapMenuButton.Size = new System.Drawing.Size(168, 22);
-            this.loadMapMenuButton.Text = "Charger carte";
-            this.loadMapMenuButton.Click += new System.EventHandler(this.loadMapMenuButton_Click);
-            // 
-            // saveMapMenuButton
-            // 
-            this.saveMapMenuButton.Name = "saveMapMenuButton";
-            this.saveMapMenuButton.Size = new System.Drawing.Size(168, 22);
-            this.saveMapMenuButton.Text = "Sauvegarder carte";
-            this.saveMapMenuButton.Click += new System.EventHandler(this.saveMapMenuButton_Click);
-            // 
-            // quitMenuButton
-            // 
-            this.quitMenuButton.Name = "quitMenuButton";
-            this.quitMenuButton.Size = new System.Drawing.Size(168, 22);
-            this.quitMenuButton.Text = "Quitter";
-            this.quitMenuButton.Click += new System.EventHandler(this.quitMenuButton_Click);
-            // 
-            // configureMenuButton
-            // 
-            this.configureMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.configureMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("configureMenuButton.Image")));
-            this.configureMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.configureMenuButton.Name = "configureMenuButton";
-            this.configureMenuButton.Size = new System.Drawing.Size(68, 22);
-            this.configureMenuButton.Text = "Configurer";
-            this.configureMenuButton.Click += new System.EventHandler(this.configureMenuButton_Click);
             // 
             // controlPanel
             // 
@@ -345,88 +283,6 @@
             this.robotAngleLabel.TabIndex = 8;
             this.robotAngleLabel.Text = "Angle : ";
             // 
-            // pauseButton
-            // 
-            this.pauseButton.Enabled = false;
-            this.pauseButton.Image = global::RobotApplication.Properties.Resources.pause;
-            this.pauseButton.Location = new System.Drawing.Point(95, 138);
-            this.pauseButton.Name = "pauseButton";
-            this.pauseButton.Size = new System.Drawing.Size(30, 30);
-            this.pauseButton.TabIndex = 7;
-            this.pauseButton.UseVisualStyleBackColor = true;
-            this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
-            // 
-            // actualDirection
-            // 
-            this.actualDirection.Location = new System.Drawing.Point(95, 59);
-            this.actualDirection.Name = "actualDirection";
-            this.actualDirection.Size = new System.Drawing.Size(30, 30);
-            this.actualDirection.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.actualDirection.TabIndex = 7;
-            this.actualDirection.TabStop = false;
-            // 
-            // stopButton
-            // 
-            this.stopButton.Image = global::RobotApplication.Properties.Resources.stop;
-            this.stopButton.Location = new System.Drawing.Point(50, 138);
-            this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(30, 30);
-            this.stopButton.TabIndex = 6;
-            this.stopButton.UseVisualStyleBackColor = true;
-            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
-            // 
-            // startButton
-            // 
-            this.startButton.Image = global::RobotApplication.Properties.Resources.start;
-            this.startButton.Location = new System.Drawing.Point(140, 138);
-            this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(30, 30);
-            this.startButton.TabIndex = 5;
-            this.startButton.UseVisualStyleBackColor = true;
-            this.startButton.Click += new System.EventHandler(this.startButton_Click);
-            // 
-            // directionTurnRightButton
-            // 
-            this.directionTurnRightButton.Image = global::RobotApplication.Properties.Resources.arrowTurnRight;
-            this.directionTurnRightButton.Location = new System.Drawing.Point(140, 59);
-            this.directionTurnRightButton.Name = "directionTurnRightButton";
-            this.directionTurnRightButton.Size = new System.Drawing.Size(30, 30);
-            this.directionTurnRightButton.TabIndex = 3;
-            this.directionTurnRightButton.UseVisualStyleBackColor = true;
-            this.directionTurnRightButton.Click += new System.EventHandler(this.directionTurnRightButton_Click);
-            // 
-            // directionDownButton
-            // 
-            this.directionDownButton.Image = global::RobotApplication.Properties.Resources.arrowDown;
-            this.directionDownButton.Location = new System.Drawing.Point(95, 101);
-            this.directionDownButton.Name = "directionDownButton";
-            this.directionDownButton.Size = new System.Drawing.Size(30, 30);
-            this.directionDownButton.TabIndex = 2;
-            this.directionDownButton.UseVisualStyleBackColor = true;
-            this.directionDownButton.Click += new System.EventHandler(this.directionBackwardButton_Click);
-            // 
-            // directionTurnLeftButton
-            // 
-            this.directionTurnLeftButton.Image = global::RobotApplication.Properties.Resources.arrowTurnLeft;
-            this.directionTurnLeftButton.Location = new System.Drawing.Point(50, 59);
-            this.directionTurnLeftButton.Name = "directionTurnLeftButton";
-            this.directionTurnLeftButton.Size = new System.Drawing.Size(30, 30);
-            this.directionTurnLeftButton.TabIndex = 1;
-            this.directionTurnLeftButton.UseVisualStyleBackColor = true;
-            this.directionTurnLeftButton.Click += new System.EventHandler(this.directionTurnLeftButton_Click);
-            // 
-            // directionTopButton
-            // 
-            this.directionTopButton.Image = global::RobotApplication.Properties.Resources.arrowUp;
-            this.directionTopButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.directionTopButton.Location = new System.Drawing.Point(95, 19);
-            this.directionTopButton.Margin = new System.Windows.Forms.Padding(0);
-            this.directionTopButton.Name = "directionTopButton";
-            this.directionTopButton.Size = new System.Drawing.Size(30, 30);
-            this.directionTopButton.TabIndex = 0;
-            this.directionTopButton.UseVisualStyleBackColor = true;
-            this.directionTopButton.Click += new System.EventHandler(this.directionForwardButton_Click);
-            // 
             // speedBox
             // 
             this.speedBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -528,6 +384,16 @@
             this.obstacleMapPanel.Size = new System.Drawing.Size(395, 368);
             this.obstacleMapPanel.TabIndex = 1;
             // 
+            // loadMapDialog
+            // 
+            this.loadMapDialog.Title = "Charger une carte";
+            this.loadMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.loadMapDialog_FileOk);
+            // 
+            // saveMapDialog
+            // 
+            this.saveMapDialog.Title = "Sauvegarder la map";
+            this.saveMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMapDialog_FileOk);
+            // 
             // obstacleMapPictureBox
             // 
             this.obstacleMapPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -540,15 +406,149 @@
             this.obstacleMapPictureBox.TabStop = false;
             this.obstacleMapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.obstacleMapPictureBox_Paint);
             // 
-            // loadMapDialog
+            // pauseButton
             // 
-            this.loadMapDialog.Title = "Charger une carte";
-            this.loadMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.loadMapDialog_FileOk);
+            this.pauseButton.Enabled = false;
+            this.pauseButton.Image = global::RobotApplication.Properties.Resources.pause;
+            this.pauseButton.Location = new System.Drawing.Point(95, 138);
+            this.pauseButton.Name = "pauseButton";
+            this.pauseButton.Size = new System.Drawing.Size(30, 30);
+            this.pauseButton.TabIndex = 7;
+            this.pauseButton.UseVisualStyleBackColor = true;
+            this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
             // 
-            // saveMapDialog
+            // actualDirection
             // 
-            this.saveMapDialog.Title = "Sauvegarder la map";
-            this.saveMapDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveMapDialog_FileOk);
+            this.actualDirection.Location = new System.Drawing.Point(95, 59);
+            this.actualDirection.Name = "actualDirection";
+            this.actualDirection.Size = new System.Drawing.Size(30, 30);
+            this.actualDirection.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.actualDirection.TabIndex = 7;
+            this.actualDirection.TabStop = false;
+            // 
+            // stopButton
+            // 
+            this.stopButton.Image = global::RobotApplication.Properties.Resources.stop;
+            this.stopButton.Location = new System.Drawing.Point(50, 138);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(30, 30);
+            this.stopButton.TabIndex = 6;
+            this.stopButton.UseVisualStyleBackColor = true;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
+            // startButton
+            // 
+            this.startButton.Image = global::RobotApplication.Properties.Resources.start;
+            this.startButton.Location = new System.Drawing.Point(140, 138);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(30, 30);
+            this.startButton.TabIndex = 5;
+            this.startButton.UseVisualStyleBackColor = true;
+            this.startButton.Click += new System.EventHandler(this.startButton_Click);
+            // 
+            // directionTurnRightButton
+            // 
+            this.directionTurnRightButton.Image = global::RobotApplication.Properties.Resources.arrowTurnRight;
+            this.directionTurnRightButton.Location = new System.Drawing.Point(140, 59);
+            this.directionTurnRightButton.Name = "directionTurnRightButton";
+            this.directionTurnRightButton.Size = new System.Drawing.Size(30, 30);
+            this.directionTurnRightButton.TabIndex = 3;
+            this.directionTurnRightButton.UseVisualStyleBackColor = true;
+            this.directionTurnRightButton.Click += new System.EventHandler(this.directionTurnRightButton_Click);
+            // 
+            // directionDownButton
+            // 
+            this.directionDownButton.Image = global::RobotApplication.Properties.Resources.arrowDown;
+            this.directionDownButton.Location = new System.Drawing.Point(95, 101);
+            this.directionDownButton.Name = "directionDownButton";
+            this.directionDownButton.Size = new System.Drawing.Size(30, 30);
+            this.directionDownButton.TabIndex = 2;
+            this.directionDownButton.UseVisualStyleBackColor = true;
+            this.directionDownButton.Click += new System.EventHandler(this.directionBackwardButton_Click);
+            // 
+            // directionTurnLeftButton
+            // 
+            this.directionTurnLeftButton.Image = global::RobotApplication.Properties.Resources.arrowTurnLeft;
+            this.directionTurnLeftButton.Location = new System.Drawing.Point(50, 59);
+            this.directionTurnLeftButton.Name = "directionTurnLeftButton";
+            this.directionTurnLeftButton.Size = new System.Drawing.Size(30, 30);
+            this.directionTurnLeftButton.TabIndex = 1;
+            this.directionTurnLeftButton.UseVisualStyleBackColor = true;
+            this.directionTurnLeftButton.Click += new System.EventHandler(this.directionTurnLeftButton_Click);
+            // 
+            // directionTopButton
+            // 
+            this.directionTopButton.Image = global::RobotApplication.Properties.Resources.arrowUp;
+            this.directionTopButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.directionTopButton.Location = new System.Drawing.Point(95, 19);
+            this.directionTopButton.Margin = new System.Windows.Forms.Padding(0);
+            this.directionTopButton.Name = "directionTopButton";
+            this.directionTopButton.Size = new System.Drawing.Size(30, 30);
+            this.directionTopButton.TabIndex = 0;
+            this.directionTopButton.UseVisualStyleBackColor = true;
+            this.directionTopButton.Click += new System.EventHandler(this.directionForwardButton_Click);
+            // 
+            // applicationStripMenu
+            // 
+            this.applicationStripMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.applicationStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadMapMenuButton,
+            this.saveMapMenuButton,
+            this.quitMenuButton});
+            this.applicationStripMenu.Image = ((System.Drawing.Image)(resources.GetObject("applicationStripMenu.Image")));
+            this.applicationStripMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.applicationStripMenu.Name = "applicationStripMenu";
+            this.applicationStripMenu.Size = new System.Drawing.Size(81, 22);
+            this.applicationStripMenu.Text = "Application";
+            // 
+            // loadMapMenuButton
+            // 
+            this.loadMapMenuButton.Name = "loadMapMenuButton";
+            this.loadMapMenuButton.Size = new System.Drawing.Size(168, 22);
+            this.loadMapMenuButton.Text = "Charger carte";
+            this.loadMapMenuButton.Click += new System.EventHandler(this.loadMapMenuButton_Click);
+            // 
+            // saveMapMenuButton
+            // 
+            this.saveMapMenuButton.Name = "saveMapMenuButton";
+            this.saveMapMenuButton.Size = new System.Drawing.Size(168, 22);
+            this.saveMapMenuButton.Text = "Sauvegarder carte";
+            this.saveMapMenuButton.Click += new System.EventHandler(this.saveMapMenuButton_Click);
+            // 
+            // quitMenuButton
+            // 
+            this.quitMenuButton.Name = "quitMenuButton";
+            this.quitMenuButton.Size = new System.Drawing.Size(168, 22);
+            this.quitMenuButton.Text = "Quitter";
+            this.quitMenuButton.Click += new System.EventHandler(this.quitMenuButton_Click);
+            // 
+            // configureMenuButton
+            // 
+            this.configureMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.configureMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("configureMenuButton.Image")));
+            this.configureMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.configureMenuButton.Name = "configureMenuButton";
+            this.configureMenuButton.Size = new System.Drawing.Size(68, 22);
+            this.configureMenuButton.Text = "Configurer";
+            this.configureMenuButton.Click += new System.EventHandler(this.configureMenuButton_Click);
+            // 
+            // connectionStatus
+            // 
+            this.connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOff;
+            this.connectionStatus.Name = "connectionStatus";
+            this.connectionStatus.Size = new System.Drawing.Size(135, 16);
+            this.connectionStatus.Text = "Status de connexion :";
+            this.connectionStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            // 
+            // robotStatus
+            // 
+            this.robotStatus.ActiveLinkColor = System.Drawing.Color.Green;
+            this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
+            this.robotStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.robotStatus.Name = "robotStatus";
+            this.robotStatus.Size = new System.Drawing.Size(109, 15);
+            this.robotStatus.Text = "Status du robot :";
+            this.robotStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
             // RobotMockApp
             // 
@@ -574,7 +574,6 @@
             this.mapBox.ResumeLayout(false);
             this.directionBox.ResumeLayout(false);
             this.directionBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.actualDirection)).EndInit();
             this.speedBox.ResumeLayout(false);
             this.speedBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.speedBar)).EndInit();
@@ -583,6 +582,7 @@
             this.obstaclesMapTab.ResumeLayout(false);
             this.obstacleMapPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.obstacleMapPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.actualDirection)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
