@@ -12,7 +12,7 @@ namespace RobotServer.GridMaker
         byte[][] _parentGrid;
         int _xPos;
         int _yPos;
-        private const int TAB_SIZE = 8;
+        private const int TAB_SIZE = 9;
 
         public MiniGrid(byte[][] datas, byte[][] parentGrid)
         {

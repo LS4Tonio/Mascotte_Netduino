@@ -18,6 +18,8 @@ namespace RobotServer
         GeneralMap _generalMap;
         TcpListener listener;
         string path;
+        TcpClient client;
+        NetworkStream s;
 
         public Server()
         {
@@ -83,7 +85,7 @@ namespace RobotServer
                 while (true)
                 {
                     // Get client if there is one
-                    TcpClient client = await listener.AcceptTcpClientAsync();
+                    client = await listener.AcceptTcpClientAsync();
                     Console.WriteLine("Client connected!");
                     //Socket soc = await listener.AcceptSocketAsync();
 
@@ -114,8 +116,7 @@ namespace RobotServer
                 {
                     Console.WriteLine("Read: " + i.ToString());
                     // Get stream
-                    NetworkStream s = client.GetStream();
-                    //Stream s = new NetworkStream(soc);
+                     s = client.GetStream();
 
                     // Create binaries writer et reader
                     BinaryReader binaryReader = new BinaryReader(s);
@@ -155,9 +156,6 @@ namespace RobotServer
             {
                 while (true)
                 {
-                    //NetworkStream s = new NetworkStream(soc);
-                    //BinaryReader br = new BinaryReader(s);
-                    //BinaryWriter bw = new BinaryWriter(s);
                     Console.WriteLine(@"Some works to do");
 
                     // Get positions and direction int on byte array
@@ -176,6 +174,8 @@ namespace RobotServer
                     {
                         bw.Write(true);
                         _generalMap.MoveGrid(informations[0], readMsgData);
+                        _generalMap.ActualPosX = informations[1];
+                        _generalMap.ActualPosY = informations[2];
                         break;
                     }
                 }
@@ -230,6 +230,12 @@ namespace RobotServer
                 var formatter = new BinaryFormatter();
                 _generalMap = (GeneralMap)formatter.Deserialize(file);
             }
+        }
+        public void SendMove(int moveCode)
+        {
+            // Create binaries writer et reader
+            BinaryWriter binaryWriter = new BinaryWriter(s);
+            binaryWriter.Write(moveCode);
         }
     }
 }

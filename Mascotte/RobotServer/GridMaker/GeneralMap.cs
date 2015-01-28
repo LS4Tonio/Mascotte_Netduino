@@ -46,10 +46,9 @@ namespace RobotServer.GridMaker
                 }
             }
             _minimap = new MiniGrid(datas, this.GridContent);
-
-
+            _actualPosX = 10;
+            _actualPosY = 10;
             //RandonessIsCool();
-
         }
 
         private void RandonessIsCool()
@@ -62,7 +61,7 @@ namespace RobotServer.GridMaker
                     var nb = r.Next(0, 120);
                     var nb2 = r.Next(1, 2);
                     this.GridContent[i][j] = (byte)(nb * nb2);
-        }
+                }
 
             }
         }
@@ -90,10 +89,10 @@ namespace RobotServer.GridMaker
         {
             get
             {
-                _actualPosX = this.Minimap.MapPosX;
+                this.Minimap.MapPosX = _actualPosX;
                 return _actualPosX;
             }
-            private set
+            set
             {
                 _actualPosX = value;
                 RaisePropertyChanged();
@@ -103,10 +102,10 @@ namespace RobotServer.GridMaker
         {
             get
             {
-                _actualPosY = this.Minimap.MapPosY;
+                this.Minimap.MapPosY = _actualPosY  ;
                 return _actualPosY;
             }
-            private set
+            set
             {
                 _actualPosY = value;
                 RaisePropertyChanged();
@@ -183,17 +182,15 @@ namespace RobotServer.GridMaker
             switch (direction)
             {
                 case 1:     // Up
-                    if (this.ActualPosY > 0)
-                    {
-                        this.ActualPosY--;
-
+                    
                         // Save datas of the last line
                         tmpX = this.Minimap.DatasInMiniMap[this.Minimap.DatasInMiniMap.Length - 1];
+                        this.GridContent[this.ActualPosY + Minimap.DatasInMiniMap.Length] =
+                            MergePoints(newLine, this.GridContent[this.ActualPosY + Minimap.DatasInMiniMap.Length], _actualPosX);
                         // Move datas
+                        this.ActualPosY--;
                         for (int i = this.Minimap.DatasInMiniMap.Length - 1; i > 0; i--)
                         {
-                            if (i == this.Minimap.DatasInMiniMap.Length)
-                                MergePoints(tmpX, this.GridContent[this.ActualPosY]);
                             this.Minimap.DatasInMiniMap[i] = this.Minimap.DatasInMiniMap[i - 1];
                         }
 
@@ -202,19 +199,19 @@ namespace RobotServer.GridMaker
                         {
                             this.Minimap.DatasInMiniMap[0][i] = this.GridContent[this.ActualPosY][this.ActualPosX + i];
                         }
-                    }
+                    
                     return this.GridContent;
 
                 case 2:     // Down
                     var length = this.Minimap.DatasInMiniMap.Length - 1;
 
-                    this.ActualPosY++;
-
                     //Save and merge old line 
                     tmpX = this.Minimap.DatasInMiniMap[0];
-                    MergePoints(tmpX, this.GridContent[this.ActualPosY]);
+                    this.GridContent[this.ActualPosY] =
+                                    MergePoints(newLine, this.GridContent[this.ActualPosY], _actualPosX);
 
                     // Move datas
+                    this.ActualPosY++;
                     for (int i = 0; i < length; i++)
                     {
                         this.Minimap.DatasInMiniMap[i] = this.Minimap.DatasInMiniMap[i + 1];
@@ -230,25 +227,25 @@ namespace RobotServer.GridMaker
                 case 3:     // Left
                     if (this.ActualPosX > 0)
                     {
-                        this.ActualPosX--;
                         //Save dataline to rewrite
                         tmpY = new byte[1];
                         var data = new byte[1];
                         for (int i = 0; i < this.Minimap.DatasInMiniMap.Length; i++)
                         {
-                            tmpY[0] = this.Minimap.DatasInMiniMap[i][0];
-                            data[0] = this.GridContent[i][0];
-                            MergePoints(tmpY, data);
-                            // TODO rewriting
+                            data[0] = this.GridContent[i][_actualPosX + this.Minimap.DatasInMiniMap.Length];
+                            byte[] tmp = new byte[1];
+                            tmp[0] = newLine[i];
+                            GridContent[i][this.Minimap.DatasInMiniMap.Length] =
+                                MergePoints(tmp, data, 0)[0];
                         }
 
-
+                        //Move datas
+                        this.ActualPosX--;
                         for (int i = 0; i < this.Minimap.DatasInMiniMap.Length; i++)
                         {
                             // Move datas
                             for (int j = this.Minimap.DatasInMiniMap[i].Length - 1; j > 1; j--)
                             {
-
                                 this.Minimap.DatasInMiniMap[i][j] = this.Minimap.DatasInMiniMap[i][j - 1];
                             }
 
@@ -261,11 +258,20 @@ namespace RobotServer.GridMaker
                     return this.GridContent;
 
                 case 4:     // Right
-                    this.ActualPosX++;
 
                     for (int i = 0; i < this.Minimap.DatasInMiniMap.Length; i++)
                     {
+                        var data = new byte[1];
+                        data[0] = this.GridContent[i][0];
+                        byte[] tmp = new byte[1];
+                        tmp[0] = newLine[i];
+                        GridContent[i][this.Minimap.DatasInMiniMap.Length] =
+                            MergePoints(tmp, data, 0)[0];
+                    }
+                    for (int i = 0; i < this.Minimap.DatasInMiniMap.Length; i++)
+                    {
                         // Move datas
+                        this.ActualPosX++;
                         for (int j = 0; j < this.Minimap.DatasInMiniMap[i].Length - 1; j++)
                         {
                             this.Minimap.DatasInMiniMap[i][j] = this.Minimap.DatasInMiniMap[i][j + 1];
@@ -283,44 +289,48 @@ namespace RobotServer.GridMaker
 
             }
         }
-        public void MergePoints(byte[] tabToMerge, byte[] parentTab)
+        public byte[] MergePoints(byte[] tabToMerge, byte[] parentTab, int margin)
         {
             for (int i = 0; i < tabToMerge.Length; i++)
             {
-                if (parentTab[i] < 63
+                if (parentTab[i + margin] < 63
                             && tabToMerge[i] > 0)
                 {
                     parentTab[i]++;
 
                     // When adding is done, scan new value
-                    if (parentTab[i] >= 63
-                        && parentTab[i] < 128)
+                    if (parentTab[i + margin] >= 63
+                        && parentTab[i + margin] < 128)
                     {
                         parentTab[i] += 1 << 7;
                     }
                 }
-                else if (parentTab[i] <= 127
+                else if (parentTab[i + margin] <= 127
                          && tabToMerge[i] == 0
-                         && 0 < parentTab[i])
+                         && 0 < parentTab[i + margin])
                 {
-                    parentTab[i]--;
+                    parentTab[i + margin]--;
                 }
-                else if (parentTab[i] > 254
+                else if (parentTab[i + margin] > 254
                          && tabToMerge[i] == 0)
                 {
                     parentTab[i] -= 1 << 7;
                 }
-                else if (parentTab[i] == 63
-                         || parentTab[i] >= 63
-                         && parentTab[i] < 128
+                else if (parentTab[i + margin] == 63
+                         || parentTab[i + margin] >= 63
+                         && parentTab[i + margin] < 128
                          && tabToMerge[i] > 0)
                 {
-                    parentTab[i] = 64;
-                    parentTab[i] += 1 << 7;
+                    parentTab[i + margin] = 64;
+                    parentTab[i + margin] += 1 << 7;
                 }
+                else if (tabToMerge[i] == parentTab[i + margin]
+                         && parentTab[i + margin] == 0)
+                    parentTab[i] = 0;
                 else
                     Console.WriteLine("Cas non identifié"); // TODO : remove that 
             }
+            return parentTab;
         }
         private void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {

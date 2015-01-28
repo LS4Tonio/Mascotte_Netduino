@@ -49,13 +49,9 @@ namespace RobotServer
             {
                 for (int j = 0; j < MAP_X_SIZE; j++)
                 {
-                    int x = j * width;
-                    int y = i * height;
-
                     byte mapValue = server.GeneralMap.GridContent[i][j];
                     if (mapValue > 0)
-                        FillRectangle(i, j, g, server.GeneralMap.GridContent[i][j]);
-                    //index++;
+                        FillRectangle(j, i, g, server.GeneralMap.GridContent[i][j]);
                 }
             }
         }
@@ -92,6 +88,15 @@ namespace RobotServer
         private void GridChanged(object sender, EventArgs e)
         {
             this.CreateRobotMap(g);
+            Brush b;
+            int width = this.mapPanel.Width / MAP_X_SIZE;
+            int height = this.mapPanel.Height / MAP_Y_SIZE;
+
+            b = new SolidBrush(Color.White);
+            g.FillRectangle(b,server.GeneralMap.ActualPosX + 3, server.GeneralMap.ActualPosY + 3, width, height);
+            b.Dispose();
+            b = new SolidBrush(Color.FromArgb(255,255,0));
+            g.FillRectangle(b, server.GeneralMap.ActualPosX + 4, server.GeneralMap.ActualPosY + 4, width, height);
         }
 
         // Connection check
@@ -141,6 +146,21 @@ namespace RobotServer
         private void saveMapDialog_FileOk(object sender, CancelEventArgs e)
         {
             //TO DO: Create file of actual map anf change version number
+        }
+
+        private void directionTopButton_Click(object sender, EventArgs e)
+        {
+            server.SendMove(1);
+        }
+
+        private void directionTurnRightButton_Click(object sender, EventArgs e)
+        {
+            server.SendMove(3);
+        }
+
+        private void directionTurnLeftButton_Click(object sender, EventArgs e)
+        {
+            server.SendMove(4);
         }
 
     }
