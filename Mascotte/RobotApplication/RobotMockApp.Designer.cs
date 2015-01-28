@@ -538,6 +538,7 @@
             this.obstacleMapPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.obstacleMapPictureBox.TabIndex = 0;
             this.obstacleMapPictureBox.TabStop = false;
+            this.obstacleMapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.obstacleMapPictureBox_Paint);
             // 
             // loadMapDialog
             // 
