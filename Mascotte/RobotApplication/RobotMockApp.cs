@@ -20,10 +20,11 @@ namespace RobotApplication
         private ErrorWindow errorWindow;
         private Robot robot;
         private Graphics robotMapGraphic;
+        private Graphics obstacleMapGraphic;
         private bool isConnectionErrorShown;
         private bool isRunning;
-        const int ROBOTMAP_X_SIZE = 9;
-        const int ROBOTMAP_Y_SIZE = 9;
+        const int ROBOTMAP_X_SIZE = 31;
+        const int ROBOTMAP_Y_SIZE = 31;
         const int PAUSE_TIME_MAX = 1000; // Pause time in ms
 
         public RobotMockApp()
@@ -34,12 +35,12 @@ namespace RobotApplication
             errorWindow = new ErrorWindow();
 
             // Mock
-            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, Math.PI / 2);
+            robot = new Robot(ROBOTMAP_X_SIZE, ROBOTMAP_Y_SIZE, 10, 10, 0);
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
             isRunning = false;
 
             // Display direction arrow
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
 
             // Display speed
             speedTextBox.Text = speedBar.Value.ToString();
@@ -48,7 +49,10 @@ namespace RobotApplication
             robotMapGraphic = this.robotMapPanel.CreateGraphics();
             robot.MiniMap.PropertyChanged += MiniMap_PropertyChanged;
 
-            // Timer for connection checks
+            // Obstacle map
+            obstacleMapGraphic = this.obstacleMapPictureBox.CreateGraphics();
+
+            // Launch connection checks
             isConnectionErrorShown = false;
             CallCheckConnectionAsync();
 
@@ -120,16 +124,15 @@ namespace RobotApplication
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
             double speedValue = robot.Rover.Speed;
-            int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
-
-            int xPos = (int)robot.MiniMap.Yposition;
-            int yPos = (int)robot.MiniMap.Xposition;
+            directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+            int xPos = (int)robot.MiniMap.Xposition;
+            int yPos = (int)robot.MiniMap.Yposition;
 
             // Move
             MoveRobot(true, speedValue, direction, xPos, yPos);
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
-        {
+        {/*
             double speedValue = robot.Rover.Speed;
             int direction = robot.Rover.Direction;
             direction += 180;
@@ -142,20 +145,9 @@ namespace RobotApplication
             int yPos = (int)robot.MiniMap.Yposition;
 
             // Move
-            MoveRobot(false, speedValue, direction, xPos, yPos);
+            MoveRobot(false, speedValue, direction, xPos, yPos);*/
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
-        {
-            // Change robot angle
-            robot.Rover.Turn(false, robot.Rover.Speed, 90);
-
-            // Display new angle
-            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
-
-            // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
-        }
-        private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
             // Change robot angle
             robot.Rover.Turn(true, robot.Rover.Speed, 90);
@@ -164,7 +156,18 @@ namespace RobotApplication
             this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
 
             // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
+        }
+        private void directionTurnRightButton_Click(object sender, EventArgs e)
+        {
+            // Change robot angle
+            robot.Rover.Turn(false, robot.Rover.Speed, 90);
+
+            // Display new angle
+            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+
+            // Change image
+            DisplayDirection((int)robot.MiniMap.FindDirection(robot.Rover.Direction));
         }
         private void DisplayDirection(int direction)
         {
@@ -215,6 +218,7 @@ namespace RobotApplication
             if (!isRunning)
             {
                 isRunning = true;
+                CallMovementAsync();
                 CallMovementOrderAsync();
             }
         }
@@ -234,12 +238,14 @@ namespace RobotApplication
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.pause;
         }
-        private void MoveRobot(bool isForward, double speed, int direction, int x, int y)
+        private void MoveRobot(bool isForward, double speed, directions direction, int x, int y)
         {
             // Move rover
             robot.Rover.Move(isForward, speed);
             // Move map
             byte[] datas = robot.MiniMap.MoveMap(direction);
+            // Drawn moved map
+            UpdatePaintOnObstacleMap();
             // Get obstacles
             robot.GetObstacle();
             // Send movement
@@ -259,7 +265,7 @@ namespace RobotApplication
             {
                 double speed = robot.Rover.Speed;
                 int pauseTime = (PAUSE_TIME_MAX + 10) - ((int)speed * 1000);
-                int direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+                directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
                 int xPos = (int)robot.MiniMap.Xposition;
                 int yPos = (int)robot.MiniMap.Yposition;
 
@@ -322,7 +328,6 @@ namespace RobotApplication
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
             int index = 0;
             Pen pen = new Pen(Color.Black, 1);
-            Rectangle[] rectangles = new Rectangle[ROBOTMAP_X_SIZE * ROBOTMAP_Y_SIZE];
 
             for (int i = 0; i < ROBOTMAP_Y_SIZE; i++)
             {
@@ -332,7 +337,6 @@ namespace RobotApplication
                     int y = i * height;
                     Rectangle rectangle = new Rectangle(x, y, width, height);
                     g.DrawRectangle(pen, rectangle);
-                    //rectangles[index] = rectangle;
 
                     byte mapValue = robot.MiniMap.MapArray[i][j];
                     if (mapValue > 0)
@@ -341,8 +345,6 @@ namespace RobotApplication
                     index++;
                 }
             }
-
-            //g.DrawRectangles(pen, rectangles);
         }
         private void FillRectangle(int x, int y, Graphics g)
         {
@@ -352,7 +354,7 @@ namespace RobotApplication
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
             Brush brush = new SolidBrush(Color.Black);
 
-            g.FillRectangle(brush, x, y, width, height);
+            g.FillRectangle(brush, xPos, yPos, width, height);
             brush.Dispose();
         }
         private void EmptyRectangle(int x, int y, Graphics g)
@@ -363,7 +365,7 @@ namespace RobotApplication
             int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE - 1;
             Brush brush = new SolidBrush(Color.White);
 
-            g.FillRectangle(brush, x, y, width, height);
+            g.FillRectangle(brush, xPos, yPos, width, height);
             brush.Dispose();
         }
         private void UpdateMap(Graphics g, Map m)
@@ -487,6 +489,38 @@ namespace RobotApplication
                 }
                 Thread.Sleep(10);
             }
+        }
+
+        // Obstacle Map
+        private void UpdatePaintOnObstacleMap()
+        {
+            CleanObstacleMap();
+        }
+        private void PaintOnObstacleMap(Graphics g)
+        {
+            int imageWidth = this.obstacleMapPictureBox.Image.Width;
+            int imageHeight = this.obstacleMapPictureBox.Image.Height;
+            int pictureBoxWidth = this.obstacleMapPictureBox.Width;
+            int pictureBoxHeight = this.obstacleMapPictureBox.Height;
+            float widthPercent = pictureBoxWidth * 100 / imageWidth;
+            float heightPercent = pictureBoxHeight * 100 / imageHeight;
+            float mapX = robot.MiniMap.Xposition;
+            float mapy = robot.MiniMap.Yposition;
+            float robotWidth = ROBOTMAP_X_SIZE * widthPercent;
+            float robotHeight = ROBOTMAP_Y_SIZE * heightPercent;
+            Pen pen = new Pen(Color.Red, 1);
+
+            g.DrawRectangle(pen, mapX, mapy, robotWidth, robotHeight);
+        }
+        private void CleanObstacleMap()
+        {
+            this.obstacleMapPictureBox.Invalidate();
+        }
+        private void obstacleMapPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            obstacleMapGraphic = e.Graphics;
+            PaintOnObstacleMap(obstacleMapGraphic);
         }
     }
 }
