@@ -99,7 +99,7 @@ namespace RobotMock
                     y = posY;
                     break;
                 case directions.TOP:
-                    i = posX;
+                    i = posY;
                     while( !IsObstacle && i < SensorMaxRange )
                     {
                         IsObstacle = IsPixelBlack( posX, i );
@@ -109,7 +109,7 @@ namespace RobotMock
                     y = i - 1;
                     break;
                 case directions.BOTTOM:
-                    i = posX;
+                    i = posY;
                     while( !IsObstacle && i < SensorMaxRange )
                     {
                         IsObstacle = IsPixelBlack( posX, i );
