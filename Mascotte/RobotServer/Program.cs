@@ -16,7 +16,7 @@ namespace RobotServer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RobotServerApp());
+                Application.Run(new RobotServerApp());
         }
     }
 }

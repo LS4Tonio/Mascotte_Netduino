@@ -151,6 +151,8 @@ namespace RobotServer
         private void directionTopButton_Click(object sender, EventArgs e)
         {
             server.SendMove(1);
+            Console.WriteLine("ButtonEvent" + DateTime.UtcNow.ToString() + DateTime.UtcNow.Millisecond.ToString());
+
         }
 
         private void directionTurnRightButton_Click(object sender, EventArgs e)

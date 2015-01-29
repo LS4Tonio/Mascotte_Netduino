@@ -234,6 +234,7 @@ namespace RobotServer
         public void SendMove(int moveCode)
         {
             // Create binaries writer
+            Console.WriteLine("SendMove" + DateTime.UtcNow.ToString() + DateTime.UtcNow.Millisecond.ToString());
             BinaryWriter binaryWriter = new BinaryWriter(s);
             binaryWriter.Write((byte)moveCode);
         }

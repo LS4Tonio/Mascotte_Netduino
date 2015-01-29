@@ -290,9 +290,11 @@ namespace RobotApplication
             {
                 while (true)
                 {
-                    switch ((int)robot.Wifi.getOrders())
+                    int choice = 0;
+                    choice = (int)robot.Wifi.getOrders();
+                    switch(choice)
                     {
-                        case 1: //UP
+                        case 1: // UP
                             MoveRobot(true, robot.Rover.Speed,
                                      robot.MiniMap.FindDirection(robot.Rover.Direction),
                                      (int)robot.MiniMap.Yposition,
@@ -308,11 +310,11 @@ namespace RobotApplication
                             robot.Rover.Turn(false, 0.5, 90);
                             DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
                             break;
-                        case 4: //RIGHT
+                        case 4: // RIGHT
                             robot.Rover.Turn(true, 0.5, 90);
                             DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
                             break;
-                        default :
+                        default:
                             Console.WriteLine("nothing");
                             break;
                     }
@@ -324,7 +326,7 @@ namespace RobotApplication
                 Console.WriteLine(e);
             }
         }
-        
+
         // Robot Map
         private void CreateRobotMap(Graphics g)
         {
@@ -363,7 +365,7 @@ namespace RobotApplication
         }
         private void ColorRobotPosition(Graphics g)
         {
-            FillRectangle(ROBOTMAP_X_SIZE/2, ROBOTMAP_Y_SIZE/2, g, confWindow.robotChoosenColor);
+            FillRectangle(ROBOTMAP_X_SIZE / 2, ROBOTMAP_Y_SIZE / 2, g, confWindow.robotChoosenColor);
         }
         private void EmptyRectangle(int x, int y, Graphics g)
         {

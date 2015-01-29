@@ -13,6 +13,7 @@ namespace RobotMock
     {
         TcpClient client;
         TcpListener listener;
+        NetworkStream s;
 
         public Wifi()
         {
@@ -21,9 +22,9 @@ namespace RobotMock
             Connect(out message);
             byte[] localIP = new byte[4];
             localIP = LocalIPAddress();
-
+            s = client.GetStream();
             // Listener
-            listener = new TcpListener(new IPAddress(localIP), 3000);
+            listener = new TcpListener(new IPAddress(localIP), 6000);
             CallInitialization();
         }
         private async void CallInitialization()
@@ -43,6 +44,8 @@ namespace RobotMock
                     // Get client if there is one
                     client = await listener.AcceptTcpClientAsync();
                     Console.WriteLine("Client connected!");
+                    
+                    s = client.GetStream();
                 }
             }
             catch (Exception e)
@@ -94,15 +97,13 @@ namespace RobotMock
         {
             try
             {
-                NetworkStream s = client.GetStream();
-                BinaryReader binaryReader = new BinaryReader(s);
                 BinaryWriter binaryWriter = new BinaryWriter(s);
 
                 binaryWriter.Write("MOVE"); // Instrution to realize
                 binaryWriter.Write(new byte[3] { direction, posX, posY }); // Informations about the move
                 binaryWriter.Write(BitConverter.GetBytes((Int32)oldLine.Length)); // Sending length of the table with 4 bytes
                 binaryWriter.Write(oldLine, 0, oldLine.Length);
-                binaryWriter.Flush();
+                //binaryWriter.Flush();
 
                 s.Flush();
             }
@@ -121,7 +122,6 @@ namespace RobotMock
             {
 
                 Stream s = client.GetStream();
-                BinaryReader _binaryReader = new BinaryReader(s);
                 BinaryWriter _binaryWriter = new BinaryWriter(s);
                 _binaryWriter.Write("MAP");
                 _binaryWriter.Write(BitConverter.GetBytes((Int32)map.Length)); // Sending length of the table with 4 bytes
@@ -130,7 +130,6 @@ namespace RobotMock
                     _binaryWriter.Write(BitConverter.GetBytes((Int32)map[i].Length)); // Sending length of the table with 4 bytes
                     _binaryWriter.Write(map[i], 0, map[i].Length);
                 }
-                while (_binaryReader.ReadBoolean()) { } // Wait for Validation by the server
             }
             catch (Exception e)
             {
@@ -140,11 +139,21 @@ namespace RobotMock
 
         public byte getOrders()
         {
-            NetworkStream s = client.GetStream();
-            BinaryReader br = new BinaryReader(s);
-            byte value = br.ReadByte();
-            s.Flush();
-            return value;
+            Console.WriteLine("getOrders : " + DateTime.UtcNow.ToString() + DateTime.UtcNow.Millisecond.ToString());
+            try
+            {
+                BinaryReader br = new BinaryReader(s);
+                byte value = br.ReadByte();
+                if (value == null)
+                    return 0;
+                else
+                    return value;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("In getOrders() :" + e.Message);
+            }
+            return 0;
         }
         private byte[] LocalIPAddress()
         {
