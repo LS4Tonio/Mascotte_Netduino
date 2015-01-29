@@ -123,51 +123,19 @@ namespace RobotApplication
         // Direction
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
-            double speedValue = robot.Rover.Speed;
-            directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
-            int xPos = (int)robot.MiniMap.Xposition;
-            int yPos = (int)robot.MiniMap.Yposition;
-
-            // Move
-            MoveRobot(true, speedValue, direction, xPos, yPos);
+            ForwardAction();
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
-        {/*
-            double speedValue = robot.Rover.Speed;
-            int direction = robot.Rover.Direction;
-            direction += 180;
-            if (direction > 360)
-                direction -= 360;
-            if (direction < 0)
-                direction += 360;
-            direction = robot.MiniMap.FindDirection(direction);
-            int xPos = (int)robot.MiniMap.Xposition;
-            int yPos = (int)robot.MiniMap.Yposition;
-
-            // Move
-            MoveRobot(false, speedValue, direction, xPos, yPos);*/
+        {
+            BackwardAction();
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
-            // Change robot angle
-            robot.Rover.Turn(true, robot.Rover.Speed, 90);
-
-            // Display new angle
-            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
-
-            // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            TurnAction(true);
         }
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
-            // Change robot angle
-            robot.Rover.Turn(false, robot.Rover.Speed, 90);
-
-            // Display new angle
-            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
-
-            // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            TurnAction(false);
         }
         private void DisplayDirection(directions direction)
         {
@@ -206,6 +174,36 @@ namespace RobotApplication
                     }
             }
         }
+        private void ForwardAction()
+        {
+            double speedValue = robot.Rover.Speed;
+
+            // Direction of the robot
+            directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+
+            // Position of map
+            int xPos = (int)robot.MiniMap.Xposition;
+            int yPos = (int)robot.MiniMap.Yposition;
+
+            // Move
+            MoveRobot(true, speedValue, direction, xPos, yPos);
+        }
+        private void BackwardAction()
+        {
+            TurnAction(true);
+            TurnAction(true);
+        }
+        private void TurnAction(bool isLeft)
+        {
+            // Change robot angle
+            robot.Rover.Turn(isLeft, robot.Rover.Speed, 90);
+
+            // Display new angle
+            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+
+            // Change image
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+        }
 
         // Movement
         private void startButton_Click(object sender, EventArgs e)
@@ -214,12 +212,15 @@ namespace RobotApplication
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
 
+            // Block "forward" button
+            this.directionTopButton.Enabled = false;
+
             // Move
             if (!isRunning)
             {
                 isRunning = true;
                 CallMovementAsync();
-                CallMovementOrderAsync();
+                //CallMovementOrderAsync();
             }
         }
         private void stopButton_Click(object sender, EventArgs e)
@@ -227,6 +228,9 @@ namespace RobotApplication
             // Change image status
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
+
+            // Block "forward" button
+            this.directionTopButton.Enabled = true;
 
             // Stop robot
             if (isRunning)
@@ -341,18 +345,20 @@ namespace RobotApplication
 
                     byte mapValue = robot.MiniMap.MapArray[i][j];
                     if (mapValue > 0)
-                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
+                        FillRectangle(j, i, g, confWindow.ObstacleColor);
 
                     index++;
                 }
             }
+
+            ColorRobotPosition(g);
         }
         private void FillRectangle(int x, int y, Graphics g, Color c)
         {
-            int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x;
-            int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y;
-            int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE;
-            int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
+            int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x + 1;
+            int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y + 1;
+            int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE - 1;
+            int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE - 1;
             Brush brush = new SolidBrush(c);
 
             g.FillRectangle(brush, xPos, yPos, width, height);
@@ -360,7 +366,7 @@ namespace RobotApplication
         }
         private void ColorRobotPosition(Graphics g)
         {
-            FillRectangle(ROBOTMAP_X_SIZE/2, ROBOTMAP_Y_SIZE/2, g, confWindow.robotChoosenColor);
+            FillRectangle(ROBOTMAP_X_SIZE/2, ROBOTMAP_Y_SIZE/2, g, confWindow.RobotColor);
         }
         private void EmptyRectangle(int x, int y, Graphics g)
         {
@@ -384,7 +390,7 @@ namespace RobotApplication
                 for (int j = 0; j < yLength; j++)
                 {
                     if (m.MapArray[i][j] > 0)
-                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
+                        FillRectangle(j, i, g, confWindow.ObstacleColor);
                     else
                         EmptyRectangle(j, i, g);
                 }
@@ -433,7 +439,7 @@ namespace RobotApplication
             int.TryParse(this.yTextBox.Text, out y);
 
             robot.MiniMap.MapArray[x][y] = 255;
-            FillRectangle(x, y, robotMapGraphic, confWindow.obstacleChoosenColor);
+            FillRectangle(x, y, robotMapGraphic, confWindow.ObstacleColor);
         }
         private void emptyRectangleButton_Click(object sender, EventArgs e)
         {
@@ -547,6 +553,30 @@ namespace RobotApplication
             base.OnPaint(e);
             obstacleMapGraphic = e.Graphics;
             PaintOnObstacleMap(obstacleMapGraphic);
+        }
+
+        // Key binding
+        private void KeyAction(Keys k)
+        {
+            switch (k)
+            {
+                case Keys.Z:
+                    TurnAction(true);
+                    break;
+                case Keys.Q:
+                    TurnAction(false);
+                    break;
+                case Keys.D:
+                    ForwardAction();
+                    break;
+                case Keys.S:
+                    BackwardAction();
+                    break;
+            }
+        }
+        private void RobotMockApp_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyAction(e.KeyCode);
         }
     }
 }

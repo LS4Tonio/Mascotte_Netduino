@@ -16,21 +16,18 @@ namespace RobotServer
         private const int MAP_X_SIZE = 100;
         private const int MAP_Y_SIZE = 100;
         private Server server;
-        private Graphics g;
-        private System.Windows.Forms.Timer timer;
+        private Graphics mapGraphics;
 
         public RobotServerApp()
         {
             InitializeComponent();
-            g = this.mapPanel.CreateGraphics();
-            server = new Server();
-            server.GeneralMap.PropertyChanged += new PropertyChangedEventHandler(GridChanged);
 
-            // Timer for connection checks
-            timer = new System.Windows.Forms.Timer();
-            timer.Tick += new EventHandler(ConnectionTimer);
-            timer.Interval = 2000; // in miliseconds
-            //timer.Start();
+            // Create server
+            server = new Server();
+
+            // Create map
+            mapGraphics = this.mapPanel.CreateGraphics();
+            server.GeneralMap.PropertyChanged += new PropertyChangedEventHandler(GridChanged);
         }
 
         // Application closing event
@@ -76,6 +73,7 @@ namespace RobotServer
             g.FillRectangle(brush, xPos, yPos, width, height);
             brush.Dispose();
         }
+
         // Map events
         private void mapPanel_Paint(object sender, PaintEventArgs e)
         {
@@ -87,40 +85,16 @@ namespace RobotServer
         }
         private void GridChanged(object sender, EventArgs e)
         {
-            this.CreateRobotMap(g);
+            this.CreateRobotMap(mapGraphics);
             Brush b;
             int width = this.mapPanel.Width / MAP_X_SIZE;
             int height = this.mapPanel.Height / MAP_Y_SIZE;
 
             b = new SolidBrush(Color.White);
-            g.FillRectangle(b,server.GeneralMap.ActualPosX + 3, server.GeneralMap.ActualPosY + 3, width, height);
+            mapGraphics.FillRectangle(b,server.GeneralMap.ActualPosX + 3, server.GeneralMap.ActualPosY + 3, width, height);
             b.Dispose();
             b = new SolidBrush(Color.FromArgb(255,255,0));
-            g.FillRectangle(b, server.GeneralMap.ActualPosX + 4, server.GeneralMap.ActualPosY + 4, width, height);
-        }
-
-        // Connection check
-        private void CheckConnectionWithClient()
-        {
-            var networkOff = global::RobotServer.Properties.Resources.networkOff;
-            var networkOn = global::RobotServer.Properties.Resources.networkOn;
-
-            if (server.IsClientConnected())
-            {
-                if (this.connectionStatus.Image != networkOn)
-                    this.connectionStatus.Image = networkOn;
-                this.connectionStatus.Text = @"Connecté";
-            }
-            else
-            {
-                if (this.connectionStatus.Image != networkOff)
-                    this.connectionStatus.Image = networkOff;
-                this.connectionStatus.Text = @"Déconnecté";
-            }
-        }
-        private void ConnectionTimer(object sender, EventArgs e)
-        {
-            CheckConnectionWithClient();
+            mapGraphics.FillRectangle(b, server.GeneralMap.ActualPosX + 4, server.GeneralMap.ActualPosY + 4, width, height);
         }
 
         // Menus
@@ -148,20 +122,56 @@ namespace RobotServer
             //TO DO: Create file of actual map anf change version number
         }
 
+        // Movement orders
         private void directionTopButton_Click(object sender, EventArgs e)
         {
             server.SendMove(1);
         }
-
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
             server.SendMove(3);
         }
-
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
             server.SendMove(4);
         }
+        private void directionDownButton_Click(object sender, EventArgs e)
+        {
+            server.SendMove(3);
+            server.SendMove(3);
+        }
 
+        // Speed
+        private void speedTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int speed = 0;
+            if (int.TryParse(speedTextBox.Text, out speed))
+            {
+                if (speed < 0)
+                {
+                    speedTextBox.Text = "0";
+                    speedBar.Value = 0;
+                }
+                else if (speed > 100)
+                {
+                    speedTextBox.Text = "100";
+                    speedBar.Value = 100;
+                }
+                else
+                {
+                    speedTextBox.Text = speed.ToString();
+                    speedBar.Value = speed;
+                }
+            }
+            else
+            {
+                speedTextBox.Text = "50";
+                speedBar.Value = 50;
+            }
+        }
+        private void speedBar_Scroll(object sender, EventArgs e)
+        {
+            speedTextBox.Text = speedBar.Value.ToString();
+        }
     }
 }

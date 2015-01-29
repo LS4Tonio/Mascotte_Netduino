@@ -16,18 +16,27 @@ namespace RobotApplication
         const string CONF_NAME = "netduino_simulator.cfg";
         private Color robotDefaultColor = Color.Red;
         private Color obstacleDefaultColor = Color.Black;
-        public Color robotChoosenColor;
-        public Color obstacleChoosenColor;
+        private Color robotChoosenColor;
+        private Color obstacleChoosenColor;
 
         public ConfigurationWindow()
         {
             InitializeComponent();
             ReadConfiguration(CONF_NAME);
 
-            this.robotColorPictureBox.ForeColor = robotDefaultColor;
-            this.obstaclesColorPictureBox.ForeColor = obstacleDefaultColor;
+            this.robotColorPictureBox.BackColor = robotDefaultColor;
+            this.obstaclesColorPictureBox.BackColor = obstacleDefaultColor;
             robotChoosenColor = robotDefaultColor;
             obstacleChoosenColor = obstacleDefaultColor;
+        }
+
+        public Color RobotColor
+        {
+            get { return robotChoosenColor; }
+        }
+        public Color ObstacleColor
+        {
+            get { return obstacleChoosenColor; }
         }
 
         // Radio events
@@ -82,7 +91,7 @@ namespace RobotApplication
 
             // Apply changes when changed
             if (this.colorPickerDialog.ShowDialog() == DialogResult.OK)
-                this.robotColorPictureBox.ForeColor = this.colorPickerDialog.Color;
+                this.robotColorPictureBox.BackColor = this.colorPickerDialog.Color;
         }
         private void defaultRobotColorButton_Click(object sender, EventArgs e)
         {
@@ -102,7 +111,7 @@ namespace RobotApplication
 
             // Apply changes when changed
             if(this.colorPickerDialog.ShowDialog() == DialogResult.OK)
-                this.obstaclesColorPictureBox.ForeColor = this.colorPickerDialog.Color;
+                this.obstaclesColorPictureBox.BackColor = this.colorPickerDialog.Color;
         }
         private void defaultObstacleColorButton_Click(object sender, EventArgs e)
         {
