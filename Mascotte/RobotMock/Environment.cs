@@ -122,7 +122,6 @@ namespace RobotMock
             return IsObstacle;
         }
 
-
         //out of range is considered an obstacle.
         //public bool ObstacleInFront(out double x, out double y, double angle2)
         //{
@@ -241,7 +240,6 @@ namespace RobotMock
             dist = Math.Sqrt((x - _posX) * (x - _posX) + (y - _posY) * (y - _posY));
             return true;
         }*/
-
 
         /// <summary>
         /// ONLY USE WHEN RATIO=1. directly takes bitmap coordinate values

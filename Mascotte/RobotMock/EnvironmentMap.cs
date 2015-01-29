@@ -14,28 +14,29 @@ namespace RobotMock
         Bitmap source = null;
         BitmapData bitmapData = null;
         byte[][] datasInMap;
+        int _width;
+        int _height;
 
         public byte[] Pixels { get; private set; }
         public int Depth { get; private set; }//PixelFormatSize
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get { return _width; } }
+        public int Height { get { return _height; } }
+        public byte[][] ObstaclesMap { get { return datasInMap; } }
 
         public void Initialize(string bitmapPath)
         {
-            
-            source = Bitmap.FromFile(bitmapPath) as Bitmap;//peut péter des exceptions hein ^^.
-            
-            // Converts bitmap into bidimensionnal byte array
-            datasInMap = ConvertBitmapIntoByte(source);
-            //Image a =  Bitmap.FromFile(bitmapPath);
-            //a.RawFormat
+            source = Bitmap.FromFile(bitmapPath) as Bitmap; //peut péter des exceptions hein ^^.
+
             if (source != null)
             {
                 try
                 {
                     // Get width and height of bitmap
-                    Width = source.Width;
-                    Height = source.Height;
+                    _width = source.Width;
+                    _height = source.Height;
+
+                    // Converts bitmap into bidimensionnal byte array
+                    datasInMap = ConvertBitmapIntoByte(source);
 
                     // get total locked pixels count
                     int PixelCount = Width * Height;
@@ -124,11 +125,13 @@ namespace RobotMock
             ImageConverter converter = new ImageConverter();
             byte[] bytesInLine = (byte[])converter.ConvertTo(image, typeof(byte[]));
             byte[][] result = new byte[Height][];
+
             for (int i = 0; i < Height; i++)
             {
+                result[i] = new byte[Width];
                 for (int j = 0; j < Width; j++)
                 {
-                    result[i][j] = bytesInLine[i * Width + Height];
+                    result[i][j] = bytesInLine[i * Width + j * Height];
                 }
             }
             return result;
