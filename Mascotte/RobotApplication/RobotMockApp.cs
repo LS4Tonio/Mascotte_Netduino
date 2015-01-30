@@ -18,13 +18,14 @@ namespace RobotApplication
     {
         private ConfigurationWindow confWindow;
         private ErrorWindow errorWindow;
+        private ObstaclesMapDraw omd;
         private Robot robot;
         private Graphics robotMapGraphic;
         private Graphics obstacleMapGraphic;
         private bool isConnectionErrorShown;
         private bool isRunning;
-        const int ROBOTMAP_X_SIZE = 71;
-        const int ROBOTMAP_Y_SIZE = 71;
+        const int ROBOTMAP_X_SIZE = 11;
+        const int ROBOTMAP_Y_SIZE = 11;
         const int PAUSE_TIME_MAX = 1000; // Pause time in ms
 
         public RobotMockApp()
@@ -51,6 +52,7 @@ namespace RobotApplication
 
             // Obstacle map
             obstacleMapGraphic = this.obstacleMapPictureBox.CreateGraphics();
+            omd = new ObstaclesMapDraw(robot.Environment.EnvironmentMap.Width, robot.Environment.EnvironmentMap.Height, robot.Environment.EnvironmentMap.ObstaclesMap);
 
             // Launch connection checks
             isConnectionErrorShown = false;
@@ -123,51 +125,19 @@ namespace RobotApplication
         // Direction
         private void directionForwardButton_Click(object sender, EventArgs e)
         {
-            double speedValue = robot.Rover.Speed;
-            directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
-            int xPos = (int)robot.MiniMap.Xposition;
-            int yPos = (int)robot.MiniMap.Yposition;
-
-            // Move
-            MoveRobot(true, speedValue, direction, xPos, yPos);
+            ForwardAction();
         }
         private void directionBackwardButton_Click(object sender, EventArgs e)
-        {/*
-            double speedValue = robot.Rover.Speed;
-            int direction = robot.Rover.Direction;
-            direction += 180;
-            if (direction > 360)
-                direction -= 360;
-            if (direction < 0)
-                direction += 360;
-            direction = robot.MiniMap.FindDirection(direction);
-            int xPos = (int)robot.MiniMap.Xposition;
-            int yPos = (int)robot.MiniMap.Yposition;
-
-            // Move
-            MoveRobot(false, speedValue, direction, xPos, yPos);*/
+        {
+            BackwardAction();
         }
         private void directionTurnLeftButton_Click(object sender, EventArgs e)
         {
-            // Change robot angle
-            robot.Rover.Turn(true, robot.Rover.Speed, 90);
-
-            // Display new angle
-            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
-
-            // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            TurnAction(true);
         }
         private void directionTurnRightButton_Click(object sender, EventArgs e)
         {
-            // Change robot angle
-            robot.Rover.Turn(false, robot.Rover.Speed, 90);
-
-            // Display new angle
-            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
-
-            // Change image
-            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+            TurnAction(false);
         }
         private void DisplayDirection(directions direction)
         {
@@ -206,6 +176,36 @@ namespace RobotApplication
                     }
             }
         }
+        private void ForwardAction()
+        {
+            double speedValue = robot.Rover.Speed;
+
+            // Direction of the robot
+            directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+
+            // Position of map
+            int xPos = (int)robot.MiniMap.Xposition;
+            int yPos = (int)robot.MiniMap.Yposition;
+
+            // Move
+            MoveRobot(true, speedValue, direction, xPos, yPos);
+        }
+        private void BackwardAction()
+        {
+            TurnAction(true);
+            TurnAction(true);
+        }
+        private void TurnAction(bool isLeft)
+        {
+            // Change robot angle
+            robot.Rover.Turn(isLeft, robot.Rover.Speed, 90);
+
+            // Display new angle
+            this.robotAngleTextBox.Text = robot.Rover.Direction.ToString();
+
+            // Change image
+            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+        }
 
         // Movement
         private void startButton_Click(object sender, EventArgs e)
@@ -214,12 +214,15 @@ namespace RobotApplication
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.running)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.running;
 
+            // Block "forward" button
+            this.directionTopButton.Enabled = false;
+
             // Move
             if (!isRunning)
             {
                 isRunning = true;
                 CallMovementAsync();
-                CallMovementOrderAsync();
+                //CallMovementOrderAsync();
             }
         }
         private void stopButton_Click(object sender, EventArgs e)
@@ -227,6 +230,9 @@ namespace RobotApplication
             // Change image status
             if (this.robotStatus.Image != global::RobotApplication.Properties.Resources.stopped)
                 this.robotStatus.Image = global::RobotApplication.Properties.Resources.stopped;
+
+            // Block "forward" button
+            this.directionTopButton.Enabled = true;
 
             // Stop robot
             if (isRunning)
@@ -247,81 +253,74 @@ namespace RobotApplication
             // Drawn moved map
             UpdatePaintOnObstacleMap();
             // Get obstacles
-            robot.GetObstacle();
+            //robot.GetObstacle();
+            robot.GetObstacleEasy();
             // Send movement
             robot.Wifi.SendMove((byte)direction, (byte)x, (byte)y, datas);
         }
         private async void CallMovementAsync()
         {
-            await InitializationMovement();
-        }
-        private Task InitializationMovement()
-        {
-            return Task.Run(() => Movement());
-        }
-        private async Task Movement()
-        {
-            while (isRunning)
+            //await InitializationMovement();
+            await Task.Run(() =>
             {
-                double speed = robot.Rover.Speed;
-                int pauseTime = (PAUSE_TIME_MAX + 10) - ((int)speed * 1000);
-                directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
-                int xPos = (int)robot.MiniMap.Xposition;
-                int yPos = (int)robot.MiniMap.Yposition;
+                while (isRunning)
+                {
+                    double speed = robot.Rover.Speed;
+                    int pauseTime = (PAUSE_TIME_MAX + 10) - ((int)speed * 1000);
+                    directions direction = robot.MiniMap.FindDirection(robot.Rover.Direction);
+                    int xPos = (int)robot.MiniMap.Xposition;
+                    int yPos = (int)robot.MiniMap.Yposition;
 
-                MoveRobot(true, speed, direction, xPos, yPos);
+                    MoveRobot(true, speed, direction, xPos, yPos);
 
-                Thread.Sleep(pauseTime);
-            }
+                    Thread.Sleep(pauseTime);
+                }
+            });
         }
 
         //Movement order receiving 
         private async void CallMovementOrderAsync()
         {
-            await InitializationReceivingMovement();
-        }
-        private Task InitializationReceivingMovement()
-        {
-            return Task.Run(() => CheckInformations());
-        }
-        private async Task CheckInformations()
-        {
-            try
+            //await InitializationReceivingMovement();
+            await Task.Run(() =>
             {
-                while (true)
+                try
                 {
-                    switch ((int)robot.Wifi.getOrders())
+                    while (true)
                     {
-                        case 1: //UP
-                            MoveRobot(true, robot.Rover.Speed,
-                                     robot.MiniMap.FindDirection(robot.Rover.Direction),
-                                     (int)robot.MiniMap.Yposition,
-                                     (int)robot.MiniMap.Xposition);
-                            break;
-                        case 2: // DOWN
-                            MoveRobot(false, robot.Rover.Speed,
-                                        robot.MiniMap.FindDirection(robot.Rover.Direction),
-                                        (int)robot.MiniMap.Yposition,
-                                        (int)robot.MiniMap.Xposition);
-                            break;
-                        case 3: // LEFT
-                            robot.Rover.Turn(false, 0.5, 90);
-                            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
-                            break;
-                        case 4: //RIGHT
-                            robot.Rover.Turn(true, 0.5, 90);
-                            DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
-                            break;
-                    }
+                        switch ((int)robot.Wifi.getOrders())
+                        {
+                            case 1: //UP
+                                MoveRobot(true, robot.Rover.Speed,
+                                         robot.MiniMap.FindDirection(robot.Rover.Direction),
+                                         (int)robot.MiniMap.Yposition,
+                                         (int)robot.MiniMap.Xposition);
+                                break;
+                            case 2: // DOWN
+                                MoveRobot(false, robot.Rover.Speed,
+                                            robot.MiniMap.FindDirection(robot.Rover.Direction),
+                                            (int)robot.MiniMap.Yposition,
+                                            (int)robot.MiniMap.Xposition);
+                                break;
+                            case 3: // LEFT
+                                robot.Rover.Turn(false, 0.5, 90);
+                                DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+                                break;
+                            case 4: //RIGHT
+                                robot.Rover.Turn(true, 0.5, 90);
+                                DisplayDirection(robot.MiniMap.FindDirection(robot.Rover.Direction));
+                                break;
+                        }
 
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            });
         }
-        
+
         // Robot Map
         private void CreateRobotMap(Graphics g)
         {
@@ -341,18 +340,20 @@ namespace RobotApplication
 
                     byte mapValue = robot.MiniMap.MapArray[i][j];
                     if (mapValue > 0)
-                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
+                        FillRectangle(j, i, g, confWindow.ObstacleColor);
 
                     index++;
                 }
             }
+
+            ColorRobotPosition(g);
         }
         private void FillRectangle(int x, int y, Graphics g, Color c)
         {
-            int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x;
-            int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y;
-            int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE;
-            int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE;
+            int xPos = this.robotMapPanel.Width / ROBOTMAP_X_SIZE * x + 1;
+            int yPos = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE * y + 1;
+            int width = this.robotMapPanel.Width / ROBOTMAP_X_SIZE - 1;
+            int height = this.robotMapPanel.Height / ROBOTMAP_Y_SIZE - 1;
             Brush brush = new SolidBrush(c);
 
             g.FillRectangle(brush, xPos, yPos, width, height);
@@ -360,7 +361,7 @@ namespace RobotApplication
         }
         private void ColorRobotPosition(Graphics g)
         {
-            FillRectangle(ROBOTMAP_X_SIZE/2, ROBOTMAP_Y_SIZE/2, g, confWindow.robotChoosenColor);
+            FillRectangle(ROBOTMAP_X_SIZE / 2, ROBOTMAP_Y_SIZE / 2, g, confWindow.RobotColor);
         }
         private void EmptyRectangle(int x, int y, Graphics g)
         {
@@ -384,7 +385,7 @@ namespace RobotApplication
                 for (int j = 0; j < yLength; j++)
                 {
                     if (m.MapArray[i][j] > 0)
-                        FillRectangle(j, i, g, confWindow.obstacleChoosenColor);
+                        FillRectangle(j, i, g, confWindow.ObstacleColor);
                     else
                         EmptyRectangle(j, i, g);
                 }
@@ -433,7 +434,7 @@ namespace RobotApplication
             int.TryParse(this.yTextBox.Text, out y);
 
             robot.MiniMap.MapArray[x][y] = 255;
-            FillRectangle(x, y, robotMapGraphic, confWindow.obstacleChoosenColor);
+            FillRectangle(x, y, robotMapGraphic, confWindow.ObstacleColor);
         }
         private void emptyRectangleButton_Click(object sender, EventArgs e)
         {
@@ -464,38 +465,34 @@ namespace RobotApplication
         // Check connection
         private async void CallCheckConnectionAsync()
         {
-            await InitializationCheckConnection();
-        }
-        private Task InitializationCheckConnection()
-        {
-            return Task.Run(() => CheckConnection());
-        }
-        private async Task CheckConnection()
-        {
-            var networkOff = global::RobotApplication.Properties.Resources.networkOff;
-            var networkOn = global::RobotApplication.Properties.Resources.networkOn;
-
-            while (true)
+            //await InitializationCheckConnection();
+            await Task.Run(() =>
             {
-                string message = "";
-                if (robot.Wifi.CheckConnection(out message))
+                var networkOff = global::RobotApplication.Properties.Resources.networkOff;
+                var networkOn = global::RobotApplication.Properties.Resources.networkOn;
+
+                while (true)
                 {
-                    this.connectionStatus.Text = @"Connecté";
-                    this.connectionStatus.Image = networkOn;
-                    isConnectionErrorShown = false;
-                }
-                else
-                {
-                    this.connectionStatus.Text = @"Déconnecté";
-                    this.connectionStatus.Image = networkOff;
-                    if (!isConnectionErrorShown)
+                    string message = "";
+                    if (robot.Wifi.CheckConnection(out message))
                     {
-                        isConnectionErrorShown = true;
-                        errorWindow.SetErrorMessage("Erreur de connexion", "Aucune connexion", message);
+                        this.connectionStatus.Text = @"Connecté";
+                        this.connectionStatus.Image = networkOn;
+                        isConnectionErrorShown = false;
                     }
+                    else
+                    {
+                        this.connectionStatus.Text = @"Déconnecté";
+                        this.connectionStatus.Image = networkOff;
+                        if (!isConnectionErrorShown)
+                        {
+                            isConnectionErrorShown = true;
+                            errorWindow.SetErrorMessage("Erreur de connexion", "Aucune connexion", message);
+                        }
+                    }
+                    Thread.Sleep(10);
                 }
-                Thread.Sleep(10);
-            }
+            });
         }
 
         // Obstacle Map
@@ -547,6 +544,34 @@ namespace RobotApplication
             base.OnPaint(e);
             obstacleMapGraphic = e.Graphics;
             PaintOnObstacleMap(obstacleMapGraphic);
+        }
+        private void obstacleMapDrawButon_Click(object sender, EventArgs e)
+        {
+            omd.ShowDialog();
+        }
+
+        // Key binding
+        private void KeyAction(Keys k)
+        {
+            switch (k)
+            {
+                case Keys.Z:
+                    TurnAction(true);
+                    break;
+                case Keys.Q:
+                    TurnAction(false);
+                    break;
+                case Keys.D:
+                    ForwardAction();
+                    break;
+                case Keys.S:
+                    BackwardAction();
+                    break;
+            }
+        }
+        private void RobotMockApp_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyAction(e.KeyCode);
         }
     }
 }

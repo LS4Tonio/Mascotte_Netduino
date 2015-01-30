@@ -69,6 +69,7 @@
             this.saveMapMenuButton = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuButton = new System.Windows.Forms.ToolStripMenuItem();
             this.configureMenuButton = new System.Windows.Forms.ToolStripButton();
+            this.obstacleMapDrawButon = new System.Windows.Forms.ToolStripButton();
             this.connectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.robotStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip.SuspendLayout();
@@ -102,7 +103,8 @@
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.applicationStripMenu,
-            this.configureMenuButton});
+            this.configureMenuButton,
+            this.obstacleMapDrawButon});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(657, 25);
@@ -532,6 +534,16 @@
             this.configureMenuButton.Text = "Configurer";
             this.configureMenuButton.Click += new System.EventHandler(this.configureMenuButton_Click);
             // 
+            // obstacleMapDrawButon
+            // 
+            this.obstacleMapDrawButon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.obstacleMapDrawButon.Image = ((System.Drawing.Image)(resources.GetObject("obstacleMapDrawButon.Image")));
+            this.obstacleMapDrawButon.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.obstacleMapDrawButon.Name = "obstacleMapDrawButon";
+            this.obstacleMapDrawButon.Size = new System.Drawing.Size(23, 22);
+            this.obstacleMapDrawButon.Text = "toolStripButton1";
+            this.obstacleMapDrawButon.Click += new System.EventHandler(this.obstacleMapDrawButon_Click);
+            // 
             // connectionStatus
             // 
             this.connectionStatus.Image = global::RobotApplication.Properties.Resources.networkOff;
@@ -564,6 +576,7 @@
             this.MinimumSize = new System.Drawing.Size(650, 470);
             this.Name = "RobotMockApp";
             this.Text = "Netduino Simulator";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RobotMockApp_KeyDown);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);
@@ -632,6 +645,7 @@
         private System.Windows.Forms.Panel obstacleMapPanel;
         private System.Windows.Forms.TextBox robotAngleTextBox;
         private System.Windows.Forms.Label robotAngleLabel;
+        private System.Windows.Forms.ToolStripButton obstacleMapDrawButon;
     }
 }
 

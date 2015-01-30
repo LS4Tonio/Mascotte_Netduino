@@ -86,30 +86,68 @@ namespace RobotMock
             int x = 0;
             int y = 0;
             double dist = 0;
-             
+
             //MiniMap.AddObstacle( MiniMap.FindDirection( Rover.Direction ), x, y );//TEST, à enlever
             if (InfraredSensors[0].DetectedPoint(MiniMap.FindDirection(Rover.Direction), _map.XPos, _map.YPos, out x, out y, out robotDistance) /*&& dist < robotDistance*/)
             {
-                if( x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 && Math.Abs( x - _map.XPos) < _map.XSize / 2 &&Math.Abs( y- _map.YPos) < _map.YSize/2 )
-                    MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction) ,x,y);
+                if (x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 && Math.Abs(x - _map.XPos) < _map.XSize / 2 && Math.Abs(y - _map.YPos) < _map.YSize / 2)
+                    MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction), x, y);
             }
-            if( InfraredSensors[1].DetectedPoint( MiniMap.FindDirection( Rover.Direction ), _map.XPos, _map.YPos, out x, out y, out robotDistance ) /*&& dist < robotDistance*/)
+            if (InfraredSensors[1].DetectedPoint(MiniMap.FindDirection(Rover.Direction), _map.XPos, _map.YPos, out x, out y, out robotDistance) /*&& dist < robotDistance*/)
             {
-                if( x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 && Math.Abs( x - _map.XPos) <  _map.XSize / 2 && Math.Abs(y- _map.YPos) <  _map.YSize/2 )
-                    MiniMap.AddObstacle( MiniMap.FindDirection( Rover.Direction ), x, y );
+                if (x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 && Math.Abs(x - _map.XPos) < _map.XSize / 2 && Math.Abs(y - _map.YPos) < _map.YSize / 2)
+                    MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction), x, y);
             }
-            if( InfraredSensors[2].DetectedPoint( MiniMap.FindDirection( Rover.Direction ), _map.XPos, _map.YPos, out x, out y, out robotDistance ) /*&& dist < robotDistance*/)
+            if (InfraredSensors[2].DetectedPoint(MiniMap.FindDirection(Rover.Direction), _map.XPos, _map.YPos, out x, out y, out robotDistance) /*&& dist < robotDistance*/)
             {
-                if( x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 && Math.Abs( x - _map.XPos) < _map.XSize / 2 && Math.Abs(y- _map.YPos) < _map.YSize/2 )
-                    MiniMap.AddObstacle( MiniMap.FindDirection( Rover.Direction ), x, y );
+                if (x - _map.XPos < _map.XSize / 2 && y - _map.YPos < _map.YSize / 2 && Math.Abs(x - _map.XPos) < _map.XSize / 2 && Math.Abs(y - _map.YPos) < _map.YSize / 2)
+                    MiniMap.AddObstacle(MiniMap.FindDirection(Rover.Direction), x, y);
             }
         }
 
-        // TO DO: Programmable function for robot automatic movement
-        public void Main()
+        public void GetObstacleEasy()
         {
-            // Start pos: (0, 0)
+            int startCol = _map.XPos;
+            int startRow = _map.YPos;
+            int obsWidth = _env.EnvironmentMap.Width;
+            int obsHeight = _env.EnvironmentMap.Height;
+            int mapWidth = _map.XSize;
+            int mapHeight = _map.YSize;
+            directions d = _map.FindDirection(_rover.Direction);
 
+            switch(d)
+            {
+                case directions.TOP:
+                    {
+                        for (int i = 0; i < _map.MapArray[0].Length; i++)
+                            _map.MapArray[0][i] = _env.EnvironmentMap.ObstaclesMap[startRow][startCol + i];
+                        break;
+                    }
+                case directions.BOTTOM:
+                    {
+                        int length = _map.XSize;
+                        for (int i = 0; i < _map.MapArray[length].Length; i++)
+                            _map.MapArray[length][i] = _env.EnvironmentMap.ObstaclesMap[startRow + length][startCol + i];
+                        break;
+                    }
+                case directions.LEFT:
+                    {
+                        for (int i = 0; i < _map.MapArray.Length; i++)
+                            _map.MapArray[i][0] = _env.EnvironmentMap.ObstaclesMap[startRow + i][startCol];
+                        break;
+                    }
+                case directions.RIGHT:
+                    {
+                        int length = _map.YSize;
+                        for (int i = 0; i < _map.MapArray.Length; i++)
+                            _map.MapArray[i][length - 1] = _env.EnvironmentMap.ObstaclesMap[startRow + i][startCol + length];
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
         }
     }
 }
