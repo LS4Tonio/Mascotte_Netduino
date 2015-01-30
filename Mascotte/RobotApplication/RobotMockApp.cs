@@ -24,8 +24,8 @@ namespace RobotApplication
         private Graphics obstacleMapGraphic;
         private bool isConnectionErrorShown;
         private bool isRunning;
-        const int ROBOTMAP_X_SIZE = 11;
-        const int ROBOTMAP_Y_SIZE = 11;
+        const int ROBOTMAP_X_SIZE = 51;
+        const int ROBOTMAP_Y_SIZE = 51;
         const int PAUSE_TIME_MAX = 1000; // Pause time in ms
 
         public RobotMockApp()
@@ -510,27 +510,30 @@ namespace RobotApplication
 
             float widthPercent = 1;
             float heightPercent = 1;
-            float mapX = robot.MiniMap.Xposition;
-            float mapY = robot.MiniMap.Yposition;
 
             // Find proper size for the red rectange according the shown map
             if (imageWidth > pictureBoxWidth)
-                widthPercent = (float)(imageWidth - pictureBoxWidth) / imageWidth;
+                widthPercent = (float) 1 - (imageWidth - pictureBoxWidth) / imageWidth;
             else if (pictureBoxWidth > imageWidth && this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
                 widthPercent = (float)(pictureBoxWidth - imageWidth) / pictureBoxWidth + 1;
+
             if (imageHeight > pictureBoxHeight)
                 heightPercent = (float)(imageHeight - pictureBoxHeight) / imageHeight;
             else if (pictureBoxHeight > imageHeight && this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
-                widthPercent = (float)(pictureBoxHeight - imageHeight) / pictureBoxHeight + 1;
+                heightPercent = (float)(pictureBoxHeight - imageHeight) / pictureBoxHeight + 1;
+
             float robotWidth = ROBOTMAP_X_SIZE * widthPercent;
             float robotHeight = ROBOTMAP_Y_SIZE * heightPercent;
 
+            float mapX = robot.MiniMap.Xposition - robotWidth / 2;
+            float mapY = robot.Environment.EnvironmentMap.Height - 1 - robot.MiniMap.Yposition - robotHeight / 2;
+
             // Place the red rectangle on the proper X/Y pos
-            if (this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
-            {
-                mapX = robot.MiniMap.Xposition * widthPercent;
-                mapY = robot.MiniMap.Yposition * heightPercent;
-            }
+            //if (this.obstacleMapPictureBox.SizeMode == PictureBoxSizeMode.StretchImage)
+            //{
+            //    mapX = mapX * widthPercent;
+            //    mapY = mapY * heightPercent - robotHeight;
+            //}
 
             // Drawn rectangle
             g.DrawRectangle(pen, mapX, mapY, robotWidth, robotHeight);

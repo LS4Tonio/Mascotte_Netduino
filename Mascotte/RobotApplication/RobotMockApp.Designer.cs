@@ -220,6 +220,7 @@
             this.rectangleBox.TabIndex = 9;
             this.rectangleBox.TabStop = false;
             this.rectangleBox.Text = "Rectangle";
+            this.rectangleBox.Visible = false;
             // 
             // emptyRectangleButton
             // 
@@ -296,6 +297,7 @@
             this.mapBox.TabIndex = 4;
             this.mapBox.TabStop = false;
             this.mapBox.Text = "Carte";
+            this.mapBox.Visible = false;
             // 
             // forceSendButton
             // 
