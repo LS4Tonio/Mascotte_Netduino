@@ -273,10 +273,11 @@ namespace RobotMock
         public byte[][] AddObstacle(directions direction, int x, int y)
         {
             //be careful x and y are inverted....
-            _map[ x - XPos+ _xSize/2][(_ySize-1) - (y - YPos + _ySize/2) /*-(_yPos-_ySize/2)*/] = 255;//NOT
+            //_map[ x - XPos+ _xSize/2][(_ySize-1) - (y - YPos + _ySize/2) /*-(_yPos-_ySize/2)*/] = 255;//NOT
             //_map[x - XPos + _xSize / 2][(_ySize - 1) - (y - YPos + _ySize / 2) /*-(_yPos-_ySize/2)*/] = 255;//NOT
             //_map[_xSize / 2][_ySize/2] = 255;
             //_map[2][2] = 255;
+            _map[(_ySize - 1) - (y - YPos + _ySize / 2)][x - XPos + _xSize / 2] = 1;
             RaisePropertyChanged( "MapArray" );
             return _map;
 
