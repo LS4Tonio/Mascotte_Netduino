@@ -105,7 +105,7 @@ namespace RobotMock
             }
         }
 
-        public void GetObstacleEasy()
+        /*public void GetObstacleEasy()
         {
             int startCol = _map.XPos;
             int startRow = _map.YPos;
@@ -148,6 +148,6 @@ namespace RobotMock
                         break;
                     }
             }
-        }
+        }*/
     }
 }

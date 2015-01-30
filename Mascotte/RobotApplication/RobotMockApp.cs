@@ -52,7 +52,7 @@ namespace RobotApplication
 
             // Obstacle map
             obstacleMapGraphic = this.obstacleMapPictureBox.CreateGraphics();
-            omd = new ObstaclesMapDraw(robot.Environment.EnvironmentMap.Width, robot.Environment.EnvironmentMap.Height, robot.Environment.EnvironmentMap.ObstaclesMap);
+            //omd = new ObstaclesMapDraw(robot.Environment.EnvironmentMap.Width, robot.Environment.EnvironmentMap.Height, robot.Environment.EnvironmentMap.ObstaclesMap);
 
             // Launch connection checks
             isConnectionErrorShown = false;
@@ -253,8 +253,8 @@ namespace RobotApplication
             // Drawn moved map
             UpdatePaintOnObstacleMap();
             // Get obstacles
-            //robot.GetObstacle();
-            robot.GetObstacleEasy();
+            robot.GetObstacle();
+            //robot.GetObstacleEasy();
             // Send movement
             robot.Wifi.SendMove((byte)direction, (byte)x, (byte)y, datas);
         }
